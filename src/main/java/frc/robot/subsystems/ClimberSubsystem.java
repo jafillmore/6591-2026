@@ -22,43 +22,39 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberSubsystem extends SubsystemBase {
  
   /** Creates a new Climber. */
-  private final SparkMax m_leftWristSpark; 
-  private final SparkMax m_rightWristSpark;  
-  private final SparkMax m_climberSpark;
+  private final SparkMax m_leftClimberSpark; 
+  private final SparkMax m_rightClimberSpark;  
+ 
 
-  private final RelativeEncoder m_leftWristEncoder;
-  private final RelativeEncoder m_rightWristEncoder;
-  private final AbsoluteEncoder m_climberEncoder;
+  private final RelativeEncoder m_leftClimberEncoder;
+  private final RelativeEncoder m_rightClimberEncoder;
 
-  private final SparkClosedLoopController m_leftWristClosedLoopController;
-  private final SparkClosedLoopController m_rightWristClosedLoopController;
-  private final SparkClosedLoopController m_climberClosedLoopController;
 
+  private final SparkClosedLoopController m_leftClimberClosedLoopController;
+  private final SparkClosedLoopController m_rightClimberClosedLoopController;
+  
     //Variables for System Debugging
   private boolean ClimberSystemDebug = true;
 
   public ClimberSubsystem() {
 
-    m_leftWristSpark = new SparkMax(ClimberConstants.kleftWristCANId, MotorType.kBrushless);
-    m_rightWristSpark = new SparkMax(ClimberConstants.krightWristCANId, MotorType.kBrushless);
-    m_climberSpark = new SparkMax(ClimberConstants.kclimberCANId, MotorType.kBrushless);
+    m_leftClimberSpark = new SparkMax(ClimberConstants.kleftWristCANId, MotorType.kBrushless);
+    m_rightClimberSpark = new SparkMax(ClimberConstants.krightWristCANId, MotorType.kBrushless);
     
-    m_climberEncoder = m_climberSpark.getAbsoluteEncoder();
-    m_leftWristEncoder = m_leftWristSpark.getEncoder();
-    m_rightWristEncoder = m_rightWristSpark.getEncoder();
+    
+    m_leftClimberEncoder = m_leftClimberSpark.getEncoder();
+    m_rightClimberEncoder = m_rightClimberSpark.getEncoder();
 
-    m_leftWristClosedLoopController = m_leftWristSpark.getClosedLoopController();
-    m_rightWristClosedLoopController = m_rightWristSpark.getClosedLoopController();
-    m_climberClosedLoopController = m_climberSpark.getClosedLoopController();
-
-    m_leftWristSpark.configure(Configs.Climber.leftwristConfig, ResetMode.kResetSafeParameters,
+    m_leftClimberClosedLoopController = m_leftClimberSpark.getClosedLoopController();
+    m_rightClimberClosedLoopController = m_rightClimberSpark.getClosedLoopController();
+    
+    m_leftClimberSpark.configure(Configs.Climber.leftwristConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
-    m_rightWristSpark.configure(Configs.Climber.rightwristConfig, ResetMode.kResetSafeParameters,
+    m_rightClimberSpark.configure(Configs.Climber.rightwristConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
-    m_climberSpark.configure(Configs.Climber.climberConfig, ResetMode.kResetSafeParameters,
-        PersistMode.kPersistParameters);
+    
   } 
 
   @Override
@@ -73,30 +69,22 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
   public void setLeftWrist (int leftwristPosition) {
-    m_leftWristClosedLoopController.setReference(leftwristPosition, ControlType.kPosition);
+    m_leftClimberClosedLoopController.setReference(leftwristPosition, ControlType.kPosition);
   }
   
   public void setRightWrist (int rightwristPosition) {
-    m_rightWristClosedLoopController.setReference(rightwristPosition, ControlType.kPosition);
+    m_rightClimberClosedLoopController.setReference(rightwristPosition, ControlType.kPosition);
   }
  
 
-  public void setWrists (int left, int right) {
-    setLeftWrist(left);
-    setRightWrist(right);
-  }
-
-  public void setClimber (double climberPosition) {
-    m_climberClosedLoopController.setReference(climberPosition, ControlType.kPosition);
-  }
 
   //  System Debug Info to display
   public void toggleClimberDebugInfo(){
     if (ClimberSystemDebug) {
       // IMU Status
-      SmartDashboard.putNumber(  "Left Wrist Actual Position", m_leftWristEncoder.getPosition());
-      SmartDashboard.putNumber(  "Right Wrist Actual Postion", m_rightWristEncoder.getPosition());
-      SmartDashboard.putNumber("Climber Actual Position", m_climberEncoder.getPosition());
+      SmartDashboard.putNumber(  "Left Climber Actual Position", m_leftClimberEncoder.getPosition());
+      SmartDashboard.putNumber(  "Right Climber Actual Postion", m_rightClimberEncoder.getPosition());
+  
 
 
    

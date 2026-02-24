@@ -232,7 +232,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return m_pidgey.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return m_pidgey.getAngularVelocityZDevice().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   /** Toggle between Field Centric and Robot Centric Drive Modes */

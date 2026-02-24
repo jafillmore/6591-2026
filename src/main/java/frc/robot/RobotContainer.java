@@ -252,22 +252,6 @@ public class RobotContainer {
 
 
 
-    // Wrists Out
-    new JoystickButton (m_buttonboard,OIConstants.kWristOutButton)
-    .whileTrue(Commands.parallel(
-        new InstantCommand(
-        () -> m_climb.setWrists(ClimberConstants.kleftWristGrab, ClimberConstants.krightWristGrab),
-        m_climb)
-        
-        
-        ));
-    // Wrist In
-    new JoystickButton (m_buttonboard,OIConstants.kWristInButton)
-    .whileTrue(Commands.parallel(
-        new InstantCommand(
-        () -> m_climb.setWrists(ClimberConstants.kleftWristStow, ClimberConstants.krightWristStow),
-        m_climb) 
-        ));
 
     //  Arms Up
     new JoystickButton (m_buttonboard,OIConstants.kArmsUpButton)
