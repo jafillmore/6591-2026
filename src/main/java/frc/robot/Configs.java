@@ -7,7 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public final class Configs {
@@ -61,152 +61,77 @@ public final class Configs {
         }
     }
 
-    public static final class Coral {
+    public static final class Intake {
 
-        public static final SparkMaxConfig troughConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-        public static final ServoHubConfig servoConfig = new ServoHubConfig();
-
+        public static final SparkMaxConfig lowerIntakeConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig upperIntakeConfig = new SparkMaxConfig();
+      
         static {
 
-            double troughRotationFactor = 2 * Math.PI;
 
-            troughConfig
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50)
-                    .inverted(false);
 
-                troughConfig.absoluteEncoder
-                    // Invert the turning encoder, since the output shaft rotates in the opposite
-                    // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(false)
-                    .positionConversionFactor(troughRotationFactor) // radians
-                    .velocityConversionFactor(troughRotationFactor / 60.0); // radians per second
-                troughConfig.closedLoop
-                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                    // These are example gains you may need to them for your own robot!
-                    .pid(CoralConstants.ktroughP, CoralConstants.ktroughI, CoralConstants.ktroughD)
-                    .outputRange(-0.15, 0.15)
-                    // Enable PID wrap around for the turning motor. This will allow the PID
-                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                    // to 10 degrees will go through 0 rather than the other direction which is a
-                    // longer route.
-                    .positionWrappingEnabled(false);
-                    //.positionWrappingInputRange(0, troughRotationFactor);
+            lowerIntakeConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
 
-            elevatorConfig
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50)
-                    .inverted(true);
-
-            elevatorConfig.closedLoop
-                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                    // These are example gains you may need to them for your own robot!
-                    .pid(CoralConstants.ktroughP, CoralConstants.kelevtorI, CoralConstants.kelevtord)
-               
-                    .outputRange(-1, 1);
-
-        
-            servoConfig
-                .channel0.pulseRange(500, 1500, 2500)     
-                .disableBehavior(ServoChannelConfig.BehaviorWhenDisabled.kSupplyPower);
-                           
-                
+            upperIntakeConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
 
         }
 
-    }
-        public static final class Climber {
 
-                public static final SparkMaxConfig leftclimberConfig = new SparkMaxConfig();
-                public static final SparkMaxConfig rightclimberConfig = new SparkMaxConfig();
-                public static final SparkMaxConfig climberConfig = new SparkMaxConfig();
+
+    }
+
+
+    public static final class Climber {
+
+        public static final SparkMaxConfig leftclimberConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig rightclimberConfig = new SparkMaxConfig();
+          
+        static {           
         
-                static {
-        
-                
-        
-                    leftclimberConfig
-                            .idleMode(IdleMode.kBrake)
-                            .smartCurrentLimit(50)
-                            .inverted(true);
+            leftclimberConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(true);
         
                         
                             
-                        leftclimberConfig.closedLoop
-                            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                            // These are example gains you may need to them for your own robot!
-                            .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
-                            .outputRange(-.4, .4)
-                            // Enable PID wrap around for the turning motor. This will allow the PID
-                            // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                            // to 10 degrees will go through 0 rather than the other direction which is a
-                            // longer route.
-                            .positionWrappingEnabled(false);
+            leftclimberConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
+                .outputRange(-.4, .4)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(false);
                           
 
                             
-                    rightclimberConfig
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50)
-                    .inverted(false);
-
+            rightclimberConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
                 
                     
-                rightclimberConfig.closedLoop
-                    .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                    // These are example gains you may need to them for your own robot!
-                    .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
-                    .outputRange(-.4, .4)
-                    // Enable PID wrap around for the turning motor. This will allow the PID
-                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                    // to 10 degrees will go through 0 rather than the other direction which is a
-                    // longer route.
-                    .positionWrappingEnabled(true); 
-
-
-                    double climberRotationFactor = 2 * Math.PI;
-                    climberConfig
-                    .idleMode(IdleMode.kBrake)
-                    .smartCurrentLimit(50)
-                    .inverted(true);
-
-                climberConfig.absoluteEncoder
-                    // Invert the turning encoder, since the output shaft rotates in the opposite
-                    // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(true)
-                    .positionConversionFactor(climberRotationFactor) // radians
-                    .velocityConversionFactor(climberRotationFactor / 60.0); // radians per second
-
-
-
-                    
-                climberConfig.closedLoop
-                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                    // These are example gains you may need to them for your own robot!
-                    .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
-                    .outputRange(-.8, .8)
-                    // Enable PID wrap around for the turning motor. This will allow the PID
-                    // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                    // to 10 degrees will go through 0 rather than the other direction which is a
-                    // longer route.
-                    .positionWrappingEnabled(false);
-                  
-            
-                    
+            rightclimberConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
+                .outputRange(-.4, .4)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(true);           
         
-                
-                        
-                        
-        
-                }
+        }
     }
-
-
-
-
-
-
-
 
 }

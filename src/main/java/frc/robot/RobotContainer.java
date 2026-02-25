@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -175,10 +175,10 @@ public class RobotContainer {
     new JoystickButton(m_rightJoystick, OIConstants.kDropCoralButton)
     .debounce(0.1)   
     .whileTrue(new InstantCommand(
-        () -> m_coral.pinSet(CoralConstants.kPinDown),
+        () -> m_coral.pinSet(IntakeConstants.kPinDown),
         m_coral))
     .whileFalse(new InstantCommand(
-        () -> m_coral.pinSet(CoralConstants.kPinUp),
+        () -> m_coral.pinSet(IntakeConstants.kPinUp),
         m_coral));
         
     //  Toggle Extra Info to Shuffleboard
@@ -191,7 +191,7 @@ public class RobotContainer {
     new JoystickButton (m_buttonboard,OIConstants.kLoadButton)
         .whileTrue(Commands.parallel(
              new InstantCommand(
-            () -> m_coral.setBothELTR(CoralConstants.kElevatorLoad,CoralConstants.ktLoadAngle),
+            () -> m_coral.setBothELTR(IntakeConstants.kElevatorLoad,IntakeConstants.ktLoadAngle),
             m_coral)
             ));
 
@@ -200,7 +200,7 @@ public class RobotContainer {
     new JoystickButton (m_buttonboard,OIConstants.kStowButon)
     .onTrue(
         new InstantCommand (
-        () -> m_coral.setBothELTR(CoralConstants.kElevatorStow, CoralConstants.ktStowAngle),
+        () -> m_coral.setBothELTR(IntakeConstants.kElevatorStow, IntakeConstants.ktStowAngle),
         m_coral)
         );
 
@@ -210,44 +210,44 @@ public class RobotContainer {
     // Elevator Level 1
     new JoystickButton (m_buttonboard,OIConstants.kL1EButton)
     .onTrue    (new InstantCommand(
-        () -> m_coral.setElevator(CoralConstants.kElevatorL1),
+        () -> m_coral.setElevator(IntakeConstants.kElevatorL1),
         m_coral));
     // Elevator Level 2
     new JoystickButton (m_buttonboard,OIConstants.kL2EButton)
     .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(CoralConstants.kElevatorL2),
+        () -> m_coral.setElevator(IntakeConstants.kElevatorL2),
         m_coral));
     // Elevator Level 3
     new JoystickButton (m_buttonboard,OIConstants.kL3EButton)
     .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(CoralConstants.kElevatorL3),
+        () -> m_coral.setElevator(IntakeConstants.kElevatorL3),
         m_coral));
     // Elevator Level 4
     new JoystickButton (m_buttonboard,OIConstants.kL4EButton)
     .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(CoralConstants.kElevatorL4),
+        () -> m_coral.setElevator(IntakeConstants.kElevatorL4),
         m_coral));
     // Stow Trough
 
     // Trough Level 1
     new JoystickButton (m_buttonboard,OIConstants.kL1TButton)
     .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(CoralConstants.ktL1Angle),
+        () -> m_coral.setTrough(IntakeConstants.ktL1Angle),
         m_coral));
     // Trough Level 2
     new JoystickButton (m_buttonboard,OIConstants.kL2TButton)
     .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(CoralConstants.ktL2Angle),
+        () -> m_coral.setTrough(IntakeConstants.ktL2Angle),
         m_coral));
     // Trough Level 3
     new JoystickButton (m_buttonboard,OIConstants.kL3TButton)
     .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(CoralConstants.ktL3Angle),
+        () -> m_coral.setTrough(IntakeConstants.ktL3Angle),
         m_coral));
     // Trough Level 4
     new JoystickButton (m_buttonboard,OIConstants.kL4TButton)
     .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(CoralConstants.ktL4Angle),
+        () -> m_coral.setTrough(IntakeConstants.ktL4Angle),
         m_coral));
 
 
