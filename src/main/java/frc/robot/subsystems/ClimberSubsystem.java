@@ -26,8 +26,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax m_rightClimberSpark;  
  
 
-  private final RelativeEncoder m_leftClimberEncoder;
-  private final RelativeEncoder m_rightClimberEncoder;
+  private final AbsoluteEncoder m_leftClimberEncoder;
+  private final AbsoluteEncoder m_rightClimberEncoder;
 
 
   private final SparkClosedLoopController m_leftClimberClosedLoopController;
@@ -42,16 +42,16 @@ public class ClimberSubsystem extends SubsystemBase {
     m_rightClimberSpark = new SparkMax(ClimberConstants.krightWristCANId, MotorType.kBrushless);
     
     
-    m_leftClimberEncoder = m_leftClimberSpark.getEncoder();
-    m_rightClimberEncoder = m_rightClimberSpark.getEncoder();
+    m_leftClimberEncoder = m_leftClimberSpark.getAbsoluteEncoder();
+    m_rightClimberEncoder = m_rightClimberSpark.getAbsoluteEncoder();
 
     m_leftClimberClosedLoopController = m_leftClimberSpark.getClosedLoopController();
     m_rightClimberClosedLoopController = m_rightClimberSpark.getClosedLoopController();
     
-    m_leftClimberSpark.configure(Configs.Climber.leftwristConfig, ResetMode.kResetSafeParameters,
+    m_leftClimberSpark.configure(Configs.Climber.leftclimberConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
-    m_rightClimberSpark.configure(Configs.Climber.rightwristConfig, ResetMode.kResetSafeParameters,
+    m_rightClimberSpark.configure(Configs.Climber.rightclimberConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
     
