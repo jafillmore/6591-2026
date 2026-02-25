@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.CoralConstants;
 
-public class CoralSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new CoralSubsystem. */
   private final SparkMax m_troughSpark;
   private final SparkMax m_elevatorSpark; 
@@ -76,7 +76,7 @@ public class CoralSubsystem extends SubsystemBase {
 
 
 
-  public CoralSubsystem() {
+  public IntakeSubsystem() {
 
     m_troughSpark = new SparkMax(CoralConstants.ktroughCANId, MotorType.kBrushless);
     m_elevatorSpark = new SparkMax(CoralConstants.kelevatorCANId, MotorType.kBrushless);

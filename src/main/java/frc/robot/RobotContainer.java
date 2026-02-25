@@ -36,7 +36,7 @@ import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -55,7 +55,7 @@ public class RobotContainer {
   
     // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final CoralSubsystem m_coral = new CoralSubsystem();
+  private final IntakeSubsystem m_coral = new IntakeSubsystem();
   private final ClimberSubsystem m_climb = new ClimberSubsystem();
   private final AutoFactory autoFactory;
 
