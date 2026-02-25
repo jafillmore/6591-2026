@@ -26,21 +26,14 @@ import frc.robot.Constants.CoralConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new CoralSubsystem. */
-  private final SparkMax m_troughSpark;
-  private final SparkMax m_elevatorSpark; 
+  private final SparkMax m_lowerIntakeSpark;
+  private final SparkMax m_uperIntakeSpark; 
     
-  private final AbsoluteEncoder m_troughEncoder;
-  private final RelativeEncoder m_elevatorEncoder;
-
-  private final SparkClosedLoopController m_troughClosedLoopController;
-  private final SparkClosedLoopController m_elevatorClosedLoopController;
-  private final ServoHub m_servoHub; 
-  private final ServoChannel m_Channel0;
 
   //Variables for System Debugging
   private boolean CoralSystemDebug = true;
 
-  public Command setTroughForClearingAlgeaCommand() {
+  public Command setIntakeToIntake() {
     return this.startEnd(
       () -> this.setTrough(CoralConstants.ktAlgeaAngle), // Start
       () -> this.setTrough(CoralConstants.ktAlgeaAngle));  // End
@@ -78,14 +71,14 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
 
-    m_troughSpark = new SparkMax(CoralConstants.ktroughCANId, MotorType.kBrushless);
-    m_elevatorSpark = new SparkMax(CoralConstants.kelevatorCANId, MotorType.kBrushless);
+    m_lowerIntakeSpark = new SparkMax(CoralConstants.ktroughCANId, MotorType.kBrushless);
+    m_uperIntakeSpark = new SparkMax(CoralConstants.kelevatorCANId, MotorType.kBrushless);
 
-    m_troughEncoder = m_troughSpark.getAbsoluteEncoder();
-    m_elevatorEncoder = m_elevatorSpark.getEncoder();
+    m_troughEncoder = m_lowerIntakeSpark.getAbsoluteEncoder();
+    m_elevatorEncoder = m_uperIntakeSpark.getEncoder();
 
-    m_troughClosedLoopController = m_troughSpark.getClosedLoopController();
-    m_elevatorClosedLoopController = m_elevatorSpark.getClosedLoopController();
+    m_troughClosedLoopController = m_lowerIntakeSpark.getClosedLoopController();
+    m_elevatorClosedLoopController = m_uperIntakeSpark.getClosedLoopController();
 
     m_servoHub = new ServoHub (CoralConstants.kServohubCANId);
     m_Channel0 = m_servoHub.getServoChannel(ChannelId.kChannelId0);
@@ -93,10 +86,10 @@ public class IntakeSubsystem extends SubsystemBase {
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
-    m_troughSpark.configure(Configs.Coral.troughConfig, ResetMode.kResetSafeParameters,
+    m_lowerIntakeSpark.configure(Configs.Coral.troughConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    m_elevatorSpark.configure(Configs.Coral.elevatorConfig, ResetMode.kResetSafeParameters,
+    m_uperIntakeSpark.configure(Configs.Coral.elevatorConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
   
     m_servoHub.configure(Configs.Coral.servoConfig,ServoHub.ResetMode.kNoResetSafeParameters);
@@ -134,10 +127,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
   public void zeroElevator () {
-    m_elevatorSpark.set (0.02);
+    m_uperIntakeSpark.set (0.02);
     Timer.delay (0.7);
     m_elevatorEncoder.setPosition(0);
-    m_elevatorSpark.set(0);
+    m_uperIntakeSpark.set(0);
   }
 
   public void pinSet (int pinpsn) {

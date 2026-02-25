@@ -375,7 +375,7 @@ public class RobotContainer {
         );
 
         // Starting at the event marker named "SetTroughToClearAlgea", lower the trough 
-        scoreOnReefTraj.atTime("troughStraightOut").onTrue(m_coral.setTroughForClearingAlgeaCommand());
+        scoreOnReefTraj.atTime("troughStraightOut").onTrue(m_coral.setIntakeToIntake());
         
         // Starting at the event marker named "ClearAlgea" by raising elevator to L4 
         scoreOnReefTraj.atTime("ClearAlgae").onTrue(m_coral.clearAlgeaCommand());
