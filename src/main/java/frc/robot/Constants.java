@@ -112,7 +112,7 @@ public final class Constants {
 
 
     // Left Controller Buttons
-    public static final int kSwitchCameraButton =1; //Left Trigger to switch between two cameras
+    public static final int kintakeButton =1; //Left Trigger to switch between two cameras
     public static final int kSetXButton = 4; // Need to decide which stick and button we should use...
     public static final int kGyroRestButton = 5;  // Need to decide which stick and button we should use...
 
@@ -122,28 +122,30 @@ public final class Constants {
 
 
     // Right Controller Buttons
-    public static final int kDropCoralButton = 1;
+    public static final int kejectButton = 1;
     public static final int kFieldRelativeButton = 3;
 
 
     // button board buttons
-    public static final int kLoadButton = 1;
-    public static final int kL1EButton = 2;
-    public static final int kL2EButton = 3;
-    public static final int kL3EButton = 4;
-    public static final int kL4EButton = 5;
+    public static final int kAutoAim = 1;
+    public static final int kManualAim = 2;
+    public static final int kShoot = 3;
+    //public static final int kL3EButton = 4;
+    //public static final int kShoot = 5;
     public static final int kStowButon = 6;
-    public static final int kL1TButton = 7;
-    public static final int kL2TButton = 8;
-    public static final int kL3TButton = 9;
-    public static final int kL4TButton = 10;
-    public static final int kWristOutButton = 11;
-    public static final int kWristInButton = 12;
-    public static final int kArmsUpButton = 15;
-    public static final int kArmsDownButton = 16;
-    public static final int kCoralInfoButton = 24;
-    public static final int kClimberInfoButton = 25;
-    public static final int kdriveInfoButton = 26; // Moved from left stick
+    //public static final int kL1TButton = 7;
+    //public static final int kL2TButton = 8;
+    //public static final int kL3TButton = 9;
+    //public static final int kL4TButton = 10;
+    public static final int kleftArmUpButton = 11;
+    public static final int kleftArmDownButton = 12;
+    //  public static final int  = 13;
+    // public static final int  = 14;
+    public static final int krightArmUpButton = 15;
+    public static final int krightArmDownButton = 16;
+    public static final int kshooterInfoButton = 22;
+    public static final int kClimberInfoButton = 23;
+    public static final int kdriveInfoButton = 24; // Moved from left stick
   
 
   }
