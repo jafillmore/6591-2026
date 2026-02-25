@@ -181,9 +181,9 @@ public final class Constants {
     public static final int kclimberCANId = 12;
     public static final double kclimberPower =0.3;
     
-    public static final double kwristP = 0.3;
-    public static final double kwristI = 0.0;
-    public static final double kwristD = 0.0;
+    public static final double kclimberP = 0.3;
+    public static final double kclimberI = 0.0;
+    public static final double kclimberD = 0.0;
 
     public static final double kclimberP =0.85;
     public static final double kclimberI =0.0;

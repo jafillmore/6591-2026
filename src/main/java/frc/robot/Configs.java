@@ -104,7 +104,7 @@ public final class Configs {
             leftclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
-                .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
+                .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
                 .outputRange(-.4, .4)
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
@@ -123,7 +123,7 @@ public final class Configs {
             rightclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
-                .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
+                .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
                 .outputRange(-.4, .4)
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
