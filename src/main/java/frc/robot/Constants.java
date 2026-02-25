@@ -161,10 +161,7 @@ public final class Constants {
     public static final int kupperIntakeCANId = 10;
     public static final double kupperIntakeIntakePower = 0.3;
     public static final double kupperIntakeEjectPower = 0.3;
-    public static final double kupperIntakeShootPower = 0.3;
-    
-        
-    
+    public static final double kupperIntakeShootPower = 0.3; 
 
   }
  
@@ -185,9 +182,6 @@ public final class Constants {
     public static final double kclimberI = 0.0;
     public static final double kclimberD = 0.0;
 
-    public static final double kclimberP =0.85;
-    public static final double kclimberI =0.0;
-    public static final double kclimberD =0.05; 
 
     public static final int kleftWristStow = 0;
     public static final int kleftWristGrab = -7;
@@ -197,5 +191,9 @@ public final class Constants {
     public static final double karmsDown = 0.01;
   
   }
+
+
+
+
 
 }

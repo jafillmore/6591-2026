@@ -151,11 +151,7 @@ public class RobotContainer {
             m_robotDrive));
 
     
-    //  Toggle Coral Info to Shuffleboard
-    new JoystickButton(m_buttonboard, OIConstants.kCoralInfoButton)
-    .whileTrue(new InstantCommand(
-        () -> m_coral.toggleCoralebugInfo(),
-        m_coral));
+
 
     //  Toggle Climber Info to Shuffleboard
     new JoystickButton(m_buttonboard, OIConstants.kClimberInfoButton)
