@@ -22,66 +22,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
-import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new CoralSubsystem. */
   private final SparkMax m_lowerIntakeSpark;
-  private final SparkMax m_uperIntakeSpark; 
+  private final SparkMax m_upperIntakeSpark; 
     
-
-  //Variables for System Debugging
-  private boolean CoralSystemDebug = true;
-
-  public Command setIntakeToIntake() {
-    return this.startEnd(
-      () -> this.setTrough(CoralConstants.ktAlgeaAngle), // Start
-      () -> this.setTrough(CoralConstants.ktAlgeaAngle));  // End
-  }
-  
-  public Command clearAlgeaCommand() {
-    return this.startEnd(
-      () -> this.setElevator(CoralConstants.kElevatorL4),  // Start
-      () -> this.setTrough(CoralConstants.kElevatorL4));  //End
-  }
-
-  public Command dumpCoralCommand() {
-    return this.startEnd(
-      () -> this.setTrough(CoralConstants.ktL4Angle), // Start
-      () -> this.setTrough(CoralConstants.ktL4Angle));
-  }
-
-
- public Command stowCoralCommand() {
-    return this.startEnd(
-      () -> setBothELTR(CoralConstants.kElevatorStow, CoralConstants.ktStowAngle),
-      () -> setBothELTR(CoralConstants.kElevatorStow, CoralConstants.ktStowAngle));
- }
-
- public Command loadCommand() {
-    return this.startEnd(
-      () -> setTrough(CoralConstants.ktLoadAngle),
-      () -> setTrough(CoralConstants.ktLoadAngle));
- }
-
-
-  
-
-
+ 
 
   public IntakeSubsystem() {
 
-    m_lowerIntakeSpark = new SparkMax(CoralConstants.ktroughCANId, MotorType.kBrushless);
-    m_uperIntakeSpark = new SparkMax(CoralConstants.kelevatorCANId, MotorType.kBrushless);
+    m_lowerIntakeSpark = new SparkMax(IntakeConstants.klowerIntakeCANId, MotorType.kBrushless);
+    m_upperIntakeSpark = new SparkMax(IntakeConstants.kupperIntakeCANId, MotorType.kBrushless);
 
-    m_troughEncoder = m_lowerIntakeSpark.getAbsoluteEncoder();
-    m_elevatorEncoder = m_uperIntakeSpark.getEncoder();
-
-    m_troughClosedLoopController = m_lowerIntakeSpark.getClosedLoopController();
-    m_elevatorClosedLoopController = m_uperIntakeSpark.getClosedLoopController();
-
-    m_servoHub = new ServoHub (CoralConstants.kServohubCANId);
-    m_Channel0 = m_servoHub.getServoChannel(ChannelId.kChannelId0);
 
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
@@ -89,71 +43,34 @@ public class IntakeSubsystem extends SubsystemBase {
     m_lowerIntakeSpark.configure(Configs.Coral.troughConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    m_uperIntakeSpark.configure(Configs.Coral.elevatorConfig, ResetMode.kResetSafeParameters,
+    m_upperIntakeSpark.configure(Configs.Coral.elevatorConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
   
-    m_servoHub.configure(Configs.Coral.servoConfig,ServoHub.ResetMode.kNoResetSafeParameters);
-    m_servoHub.setBankPulsePeriod (ServoHub.Bank.kBank0_2,1500);
+
   }
 
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    coaralDebugInfo();
+
+  }
+
+  
+  public void setIntakeToIntake(double lowerPower, double upperPower) {
+    m_lowerIntakeSpark.set(lowerPower);
+    m_upperIntakeSpark.set(upperPower);
   }
 
   
 
-  public void setElevator (int elevatorPosition) {
-    m_elevatorClosedLoopController.setReference(elevatorPosition, ControlType.kPosition);
-  }
+
+
+
+
+ 
+
+
 
   
-
-
-
-  public void setTrough (double troughPosition) {
-    m_troughClosedLoopController.setReference(troughPosition,ControlType.kPosition);
-  }
-
-
-
-  public void setBothELTR (int elevatorPsn, double troughPsn) {
-    setElevator(elevatorPsn);
-    setTrough(troughPsn);
-  }
-
-
-
-  public void zeroElevator () {
-    m_uperIntakeSpark.set (0.02);
-    Timer.delay (0.7);
-    m_elevatorEncoder.setPosition(0);
-    m_uperIntakeSpark.set(0);
-  }
-
-  public void pinSet (int pinpsn) {
-    m_Channel0.setPulseWidth(pinpsn);
-  }
-
-
-  //Toggle Drive Debug Info
-  public void toggleCoralebugInfo (){
-    CoralSystemDebug = !CoralSystemDebug;
-    return;    
-
-  }
-
-//  System Debug Info to display
-  public void coaralDebugInfo(){
-    if (CoralSystemDebug) {
-      // IMU Status
-      SmartDashboard.putNumber(  "Trough Actual Position", m_troughEncoder.getPosition());
-      ///SmartDashboard.putNumber("Target Postion",
-      SmartDashboard.putNumber(  "Elevator Actual Postion", m_elevatorEncoder.getPosition());
-   
-    }
-  }
 
 }
