@@ -118,22 +118,22 @@ public final class Configs {
     }
         public static final class Climber {
 
-                public static final SparkMaxConfig leftwristConfig = new SparkMaxConfig();
-                public static final SparkMaxConfig rightwristConfig = new SparkMaxConfig();
+                public static final SparkMaxConfig leftclimberConfig = new SparkMaxConfig();
+                public static final SparkMaxConfig rightclimberConfig = new SparkMaxConfig();
                 public static final SparkMaxConfig climberConfig = new SparkMaxConfig();
         
                 static {
         
                 
         
-                    leftwristConfig
+                    leftclimberConfig
                             .idleMode(IdleMode.kBrake)
                             .smartCurrentLimit(50)
                             .inverted(true);
         
                         
                             
-                        leftwristConfig.closedLoop
+                        leftclimberConfig.closedLoop
                             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                             // These are example gains you may need to them for your own robot!
                             .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
@@ -146,14 +146,14 @@ public final class Configs {
                           
 
                             
-                    rightwristConfig
+                    rightclimberConfig
                     .idleMode(IdleMode.kBrake)
                     .smartCurrentLimit(50)
                     .inverted(false);
 
                 
                     
-                rightwristConfig.closedLoop
+                rightclimberConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(ClimberConstants.kwristP,ClimberConstants.kwristI,ClimberConstants.kwristD)
