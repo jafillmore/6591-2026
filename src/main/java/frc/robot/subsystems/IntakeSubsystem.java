@@ -5,21 +5,11 @@
 package frc.robot.subsystems;
 
 
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.servohub.ServoChannel;
-import com.revrobotics.servohub.ServoChannel.ChannelId;
-import com.revrobotics.servohub.ServoHub;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants.IntakeConstants;
@@ -40,10 +30,10 @@ public class IntakeSubsystem extends SubsystemBase {
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
-    m_lowerIntakeSpark.configure(Configs.Coral.troughConfig, ResetMode.kResetSafeParameters,
+    m_lowerIntakeSpark.configure(Configs.Intake.lowerIntakeConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    m_upperIntakeSpark.configure(Configs.Coral.elevatorConfig, ResetMode.kResetSafeParameters,
+    m_upperIntakeSpark.configure(Configs.Intake.upperIntakeConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
   
 
