@@ -38,8 +38,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public ClimberSubsystem() {
 
-    m_leftClimberSpark = new SparkMax(ClimberConstants.kleftWristCANId, MotorType.kBrushless);
-    m_rightClimberSpark = new SparkMax(ClimberConstants.krightWristCANId, MotorType.kBrushless);
+    m_leftClimberSpark = new SparkMax(ClimberConstants.kleftClimberCANId, MotorType.kBrushless);
+    m_rightClimberSpark = new SparkMax(ClimberConstants.krightClimberCANId, MotorType.kBrushless);
     
     
     m_leftClimberEncoder = m_leftClimberSpark.getAbsoluteEncoder();
@@ -68,11 +68,11 @@ public class ClimberSubsystem extends SubsystemBase {
   
 
 
-  public void setLeftClimber (int leftclimberPosition) {
+  public void setLeftClimber (Double leftclimberPosition) {
     m_leftClimberClosedLoopController.setReference(leftclimberPosition, ControlType.kPosition);
   }
   
-  public void setRightClimber (int rightclimberPosition) {
+  public void setRightClimber (Double rightclimberPosition) {
     m_rightClimberClosedLoopController.setReference(rightclimberPosition, ControlType.kPosition);
   }
  

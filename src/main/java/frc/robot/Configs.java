@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public final class Configs {
     public static final class MAXSwerveModule {
@@ -133,5 +134,54 @@ public final class Configs {
         
         }
     }
+
+
+public static final class Shooter {
+        public static final SparkMaxConfig shooterShooterConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig shooterTurnerConfig = new SparkMaxConfig();
+
+          
+        static {           
+        
+            shooterShooterConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(true);
+        
+                        
+                            
+            shooterShooterConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ShooterConstants.kShooterP,ShooterConstants.kShooterI,ShooterConstants.kShooterD)
+                .outputRange(-.4, .4)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(false);
+                          
+
+                            
+            shooterTurnerConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
+                
+                    
+            shooterTurnerConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ShooterConstants.kShooterTurnerP,ShooterConstants.kShooterTurnerI,ShooterConstants.kShooterTurnerD)
+                .outputRange(-.4, .4)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(true);           
+        
+        }
+    }
+
 
 }

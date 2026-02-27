@@ -35,9 +35,12 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -55,8 +58,9 @@ public class RobotContainer {
   
     // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_coral = new IntakeSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ClimberSubsystem m_climb = new ClimberSubsystem();
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
   private final AutoFactory autoFactory;
 
   private final Timer timer = new Timer();
@@ -130,7 +134,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-     //  Set Wheels in an X configuration to prevent movement
+    //  Set Wheels in an X configuration to prevent movement
     new JoystickButton(m_leftJoystick, OIConstants.kSetXButton)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
@@ -150,9 +154,6 @@ public class RobotContainer {
             () -> m_robotDrive.toggleFieldRelative(),
             m_robotDrive));
 
-    
-
-
     //  Toggle Climber Info to Shuffleboard
     new JoystickButton(m_buttonboard, OIConstants.kClimberInfoButton)
     .whileTrue(new InstantCommand(
@@ -167,103 +168,96 @@ public class RobotContainer {
 
     
 
-    //  eject Coral
-    new JoystickButton(m_rightJoystick, OIConstants.kDropCoralButton)
+    //  Intake on
+    new JoystickButton(m_rightJoystick, OIConstants.kintakeButton)
     .debounce(0.1)   
     .whileTrue(new InstantCommand(
-        () -> m_coral.pinSet(IntakeConstants.kPinDown),
-        m_coral))
+        () -> m_intake.setIntake(IntakeConstants.klowerIntakeIntakePower,IntakeConstants.kupperIntakeIntakePower),
+        m_intake))
     .whileFalse(new InstantCommand(
-        () -> m_coral.pinSet(IntakeConstants.kPinUp),
-        m_coral));
+        () -> m_intake.setIntake(0,0),
+        m_intake));
         
+        
+    
+
+    //  Eject
+    new JoystickButton(m_leftJoystick, OIConstants.kejectButton)
+    .debounce(0.1)   
+    .whileTrue(new InstantCommand(
+        () -> m_intake.setIntake(IntakeConstants.klowerIntakeEjectPower,IntakeConstants.kupperIntakeEjectPower),
+        m_intake))
+    .whileFalse(new InstantCommand(
+        () -> m_intake.setIntake(0,0),
+        m_intake));
+      
+         
+
+    //  Shoot
+    new JoystickButton(m_buttonboard, OIConstants.kShootButton)
+    .debounce(0.1)   
+    .whileTrue(new InstantCommand(
+        () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
+        m_shooter))
+    .whileTrue(new InstantCommand(
+        () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower,IntakeConstants.kupperIntakeShootPower),
+        m_intake))
+    .whileFalse(new InstantCommand(
+        () -> m_shooter.setShooterSpeed(0),
+        m_shooter))
+    .whileFalse(new InstantCommand(
+        () -> m_intake.setIntake(0,0),
+        m_intake));
+      
+
+
     //  Toggle Extra Info to Shuffleboard
     new JoystickButton(m_leftJoystick, OIConstants.kdriveInfoButton)
         .whileTrue(new InstantCommand(
             () -> m_robotDrive.toggleDriveDebugInfo(),
             m_robotDrive));
 
-    // Load Coral
-    new JoystickButton (m_buttonboard,OIConstants.kLoadButton)
-        .whileTrue(Commands.parallel(
-             new InstantCommand(
-            () -> m_coral.setBothELTR(IntakeConstants.kElevatorLoad,IntakeConstants.ktLoadAngle),
-            m_coral)
-            ));
-
-
-    //  Stow Corral and Elevator
-    new JoystickButton (m_buttonboard,OIConstants.kStowButon)
+    //  Stow shooter
+    new JoystickButton (m_buttonboard,OIConstants.kStowButton)
     .onTrue(
         new InstantCommand (
-        () -> m_coral.setBothELTR(IntakeConstants.kElevatorStow, IntakeConstants.ktStowAngle),
-        m_coral)
+        () -> m_shooter.setTurnerAngle(ShooterConstants.kshooterturnerhomePostion),
+        m_shooter)
         );
 
 
 
-
-    // Elevator Level 1
-    new JoystickButton (m_buttonboard,OIConstants.kL1EButton)
-    .onTrue    (new InstantCommand(
-        () -> m_coral.setElevator(IntakeConstants.kElevatorL1),
-        m_coral));
-    // Elevator Level 2
-    new JoystickButton (m_buttonboard,OIConstants.kL2EButton)
-    .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(IntakeConstants.kElevatorL2),
-        m_coral));
-    // Elevator Level 3
-    new JoystickButton (m_buttonboard,OIConstants.kL3EButton)
-    .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(IntakeConstants.kElevatorL3),
-        m_coral));
-    // Elevator Level 4
-    new JoystickButton (m_buttonboard,OIConstants.kL4EButton)
-    .onTrue(new InstantCommand(
-        () -> m_coral.setElevator(IntakeConstants.kElevatorL4),
-        m_coral));
-    // Stow Trough
-
-    // Trough Level 1
-    new JoystickButton (m_buttonboard,OIConstants.kL1TButton)
-    .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(IntakeConstants.ktL1Angle),
-        m_coral));
-    // Trough Level 2
-    new JoystickButton (m_buttonboard,OIConstants.kL2TButton)
-    .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(IntakeConstants.ktL2Angle),
-        m_coral));
-    // Trough Level 3
-    new JoystickButton (m_buttonboard,OIConstants.kL3TButton)
-    .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(IntakeConstants.ktL3Angle),
-        m_coral));
-    // Trough Level 4
-    new JoystickButton (m_buttonboard,OIConstants.kL4TButton)
-    .whileTrue(new InstantCommand(
-        () -> m_coral.setTrough(IntakeConstants.ktL4Angle),
-        m_coral));
-
-
-
-
-    //  Arms Up
-    new JoystickButton (m_buttonboard,OIConstants.kArmsUpButton)
+    //  Left Arm Up
+    new JoystickButton (m_buttonboard,OIConstants.kleftArmUpButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setClimber(ClimberConstants.karmsUp),
+        () -> m_climb.setLeftClimber(ClimberConstants.kleftArmUp),
         m_climb));
 
-    //  Arms Down
-    new JoystickButton (m_buttonboard,OIConstants.kArmsDownButton)
+    //  Left Arm Down
+    new JoystickButton (m_buttonboard,OIConstants.kleftArmDownButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setClimber(ClimberConstants.karmsDown),
+        () -> m_climb.setLeftClimber(ClimberConstants.kleftArmDown),
+        m_climb));
+  
+
+
+
+    //  Right Arm Up
+    new JoystickButton (m_buttonboard,OIConstants.krightArmUpButton)
+    .whileTrue( 
+        new InstantCommand(
+        () -> m_climb.setRightClimber(ClimberConstants.krightArmUp),
+        m_climb));
+
+    //  Right Arm Down
+    new JoystickButton (m_buttonboard,OIConstants.krightArmDownButton)
+    .whileTrue( 
+        new InstantCommand(
+        () ->    m_climb.setRightClimber(ClimberConstants.krightArmDown),
         m_climb));
   }
-
 
 
   private void configureDashboard() {
@@ -370,14 +364,7 @@ public class RobotContainer {
             )
         );
 
-        // Starting at the event marker named "SetTroughToClearAlgea", lower the trough 
-        scoreOnReefTraj.atTime("troughStraightOut").onTrue(m_coral.setIntakeToIntake());
         
-        // Starting at the event marker named "ClearAlgea" by raising elevator to L4 
-        scoreOnReefTraj.atTime("ClearAlgae").onTrue(m_coral.clearAlgeaCommand());
-
-        // Starting at the event marker named "DropCoarl" score by dropping the trough
-        scoreOnReefTraj.atTime("DropCoral").onTrue(m_coral.dumpCoralCommand());
 
         return routine;
     }

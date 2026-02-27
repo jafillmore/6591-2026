@@ -112,7 +112,8 @@ public final class Constants {
 
 
     // Left Controller Buttons
-    public static final int kintakeButton =1; //Left Trigger to switch between two cameras
+  
+    public static final int kejectButton = 1; //Left Trigger to eject
     public static final int kSetXButton = 4; // Need to decide which stick and button we should use...
     public static final int kGyroRestButton = 5;  // Need to decide which stick and button we should use...
 
@@ -122,17 +123,17 @@ public final class Constants {
 
 
     // Right Controller Buttons
-    public static final int kejectButton = 1;
+  public static final int kintakeButton = 1; //Right Trigger to intake
     public static final int kFieldRelativeButton = 3;
 
 
     // button board buttons
-    public static final int kAutoAim = 1;
-    public static final int kManualAim = 2;
-    public static final int kShoot = 3;
+    public static final int kAutoAimButton = 1;
+    public static final int kManualAimButton = 2;
+    public static final int kShootButton = 3;
     //public static final int kL3EButton = 4;
     //public static final int kShoot = 5;
-    public static final int kStowButon = 6;
+    public static final int kStowButton = 6;
     //public static final int kL1TButton = 7;
     //public static final int kL2TButton = 8;
     //public static final int kL3TButton = 9;
@@ -171,10 +172,10 @@ public final class Constants {
 
     //  constants for thee climber subsystem
 
-    public static final int kleftWristCANId = 11; 
+    public static final int kleftClimberCANId = 11; 
     public static final double kleftWristPower = 0.15;
    
-    public static final int krightWristCANId = 9; 
+    public static final int krightClimberCANId = 9; 
     public static final double krightWristPower = 0.15;
    
     public static final int kclimberCANId = 12;
@@ -185,17 +186,33 @@ public final class Constants {
     public static final double kclimberD = 0.0;
 
 
-    public static final int kleftWristStow = 0;
-    public static final int kleftWristGrab = -7;
-    public static final int krightWristStow = 0;
-    public static final int krightWristGrab = -7;
-    public static final double karmsUp =1.0; 
-    public static final double karmsDown = 0.01;
+
+    public static final double krightArmUp = 1.0;
+    public static final double krightArmDown = 0.0;
+    public static final double kleftArmUp =1.0; 
+    public static final double kleftArmDown = 0.0;
   
   }
 
 
+  public static final class ShooterConstants {
 
+    //  constants for the shooter subsystem
 
+    public static final int kshooterShooterCANId = 14; 
+    public static final double kshooterShooterSpeed = 0.3;
+   
+    public static final int kshooterTurnerCANId = 15; 
+    public static final double kshooterturnerhomePostion = 0.0;
+   
+    
+    public static final double kShooterP = 0.3;
+    public static final double kShooterI = 0.0;
+    public static final double kShooterD = 0.0;
+
+    public static final double kShooterTurnerP = 0.3;
+    public static final double kShooterTurnerI = 0.0;
+    public static final double kShooterTurnerD = 0.0;
+  }
 
 }

@@ -46,7 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   
-  public void setIntakeToIntake(double lowerPower, double upperPower) {
+  public void setIntake(double lowerPower, double upperPower) {
     m_lowerIntakeSpark.set(lowerPower);
     m_upperIntakeSpark.set(upperPower);
   }
