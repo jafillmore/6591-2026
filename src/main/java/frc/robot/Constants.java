@@ -46,15 +46,15 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 1;
-    public static final int kRearLeftDrivingCanId = 3;
-    public static final int kFrontRightDrivingCanId = 5;
-    public static final int kRearRightDrivingCanId = 7;
+    public static final int kFrontLeftDrivingCanId = 7;
+    public static final int kRearLeftDrivingCanId = 5;
+    public static final int kFrontRightDrivingCanId = 1;
+    public static final int kRearRightDrivingCanId = 3;
 
-    public static final int kFrontLeftTurningCanId = 2;
-    public static final int kRearLeftTurningCanId = 4;
-    public static final int kFrontRightTurningCanId = 6;
-    public static final int kRearRightTurningCanId = 8;
+    public static final int kFrontLeftTurningCanId = 8;
+    public static final int kRearLeftTurningCanId = 6;
+    public static final int kFrontRightTurningCanId = 2;
+    public static final int kRearRightTurningCanId = 4;
 
     public static final boolean kGyroReversed = false;
 
@@ -155,13 +155,13 @@ public final class Constants {
 
     //  constants for the intake subsystem
 
-    public static final int klowerIntakeCANId = 13; 
+    public static final int klowerIntakeCANId = 12; 
     public static final double klowerIntakeIntakePower = 0.05;
     public static final double klowerIntakeEjectPower = -0.05;
     public static final double klowerIntakeShootPower = 0.1;
 
 
-    public static final int kupperIntakeCANId = 10;
+    public static final int kupperIntakeCANId = 11;
     public static final double kupperIntakeIntakePower = 0.3;
     public static final double kupperIntakeEjectPower = 0.3;
     public static final double kupperIntakeShootPower = 0.3; 
@@ -172,15 +172,12 @@ public final class Constants {
 
     //  constants for thee climber subsystem
 
-    public static final int kleftClimberCANId = 11; 
+    public static final int kleftClimberCANId = 13; 
     public static final double kleftWristPower = 0.15;
    
-    public static final int krightClimberCANId = 9; 
+    public static final int krightClimberCANId = 14; 
     public static final double krightWristPower = 0.15;
-   
-    public static final int kclimberCANId = 12;
-    public static final double kclimberPower =0.3;
-    
+
     public static final double kclimberP = 0.3;
     public static final double kclimberI = 0.0;
     public static final double kclimberD = 0.0;
@@ -199,10 +196,10 @@ public final class Constants {
 
     //  constants for the shooter subsystem
 
-    public static final int kshooterShooterCANId = 14; 
+    public static final int kshooterShooterCANId = 10; 
     public static final double kshooterShooterSpeed = 0.3;
    
-    public static final int kshooterTurnerCANId = 15; 
+    public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
    
     
