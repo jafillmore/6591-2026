@@ -156,15 +156,15 @@ public final class Constants {
     //  constants for the intake subsystem
 
     public static final int klowerIntakeCANId = 12; 
-    public static final double klowerIntakeIntakePower = 0.05;
-    public static final double klowerIntakeEjectPower = -0.05;
-    public static final double klowerIntakeShootPower = 0.1;
+    public static final double klowerIntakeIntakePower = -0.60;
+    public static final double klowerIntakeEjectPower = 0.60;
+    public static final double klowerIntakeShootPower = -0.6;
 
 
     public static final int kupperIntakeCANId = 11;
-    public static final double kupperIntakeIntakePower = 0.3;
-    public static final double kupperIntakeEjectPower = 0.3;
-    public static final double kupperIntakeShootPower = 0.3; 
+    public static final double kupperIntakeIntakePower = 0.5;
+    public static final double kupperIntakeEjectPower = -0.5;
+    public static final double kupperIntakeShootPower = -0.5; 
 
   }
  
