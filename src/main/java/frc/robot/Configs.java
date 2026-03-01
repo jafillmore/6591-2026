@@ -165,7 +165,7 @@ public static final class Shooter {
             shooterTurnerConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
-                .inverted(false);
+                .inverted(true);
                 
                     
             shooterTurnerConfig.closedLoop
@@ -177,7 +177,9 @@ public static final class Shooter {
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(true);           
+                .positionWrappingEnabled(true);
+                
+            
         
         }
     }

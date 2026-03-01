@@ -76,6 +76,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setTurnerAngle(double turnerAngle) {
     m_shooterTurnerClosedLoopController.setSetpoint(turnerAngle, ControlType.kPosition);
   }
+  
 
   public void stopShooter() {
     m_shooterShooterSpark.stopMotor();

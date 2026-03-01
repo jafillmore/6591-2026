@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.concurrent.RunnableFuture;
 
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
@@ -64,7 +65,7 @@ public class RobotContainer {
     private final AutoFactory autoFactory;
 
   private final Timer timer = new Timer();
-  private boolean manualShooterActive = false;
+  private boolean manualShooterActive = true;
 
 
   // Loads a swerve trajectory, alternatively use DifferentialSample if the robot is tank drive
@@ -192,7 +193,7 @@ public class RobotContainer {
         () -> m_intake.setIntake(0,0),
         m_intake));
       
-         
+    //****************** Shooter Stuff ***********************         
 
     //  Shoot
     new JoystickButton(m_buttonboard, OIConstants.kShootButton)
@@ -215,29 +216,7 @@ public class RobotContainer {
         () -> m_shooter.stopShooter(),
         m_shooter));
 
-    // Manual Turret Rotation
-    if (manualShooterActive) {new InstantCommand(
-                () -> m_shooter.setManualTurretPower(m_buttonboard.getTwist()), // Adjust the angle increment as needed
-                m_shooter);};
-    
-
-
-    //  Toggle Extra Info to Shuffleboard
-    new JoystickButton(m_buttonboard, OIConstants.kdriveInfoButton)
-        .whileTrue(new InstantCommand(
-            () -> m_robotDrive.toggleDriveDebugInfo(),
-            m_robotDrive));
-
-
-
-    //****************** Shooter Stuff ***********************
-
-
-    // Toggle Shooter Debug Info to Shuffleboard
-    new JoystickButton(m_buttonboard, OIConstants.kshooterInfoButton)
-        .whileTrue(new InstantCommand(
-            () -> m_shooter.toggleShooterDebugInfo(),
-            m_shooter));
+       
 
     //  Stow shooter
     new JoystickButton (m_buttonboard,OIConstants.kStowButton)
@@ -250,8 +229,34 @@ public class RobotContainer {
 
     //  Turn on manual shooter control
     new JoystickButton (m_buttonboard,OIConstants.kManualAimButton)
-    .onTrue(new InstantCommand(() -> manualShooterActive = true));
+    .whileTrue(
+        new RunCommand(
+            () -> m_shooter.setManualTurretPower(0.1*m_buttonboard.getZ()), // Adjust the angle increment as needed
+            m_shooter))
+    .whileFalse(new InstantCommand(
+        () -> m_shooter.setManualTurretPower(0),
+        m_shooter));
 
+
+
+
+
+    //  Toggle Extra Info to Shuffleboard
+    new JoystickButton(m_buttonboard, OIConstants.kdriveInfoButton)
+        .whileTrue(new InstantCommand(
+            () -> m_robotDrive.toggleDriveDebugInfo(),
+            m_robotDrive));
+
+
+
+
+
+
+    // Toggle Shooter Debug Info to Shuffleboard
+    new JoystickButton(m_buttonboard, OIConstants.kshooterInfoButton)
+        .whileTrue(new InstantCommand(
+            () -> m_shooter.toggleShooterDebugInfo(),
+            m_shooter));
 
 
 
