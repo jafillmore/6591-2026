@@ -63,7 +63,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
       if (ShooterDebug) {
           SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
-          //SmartDashboard.putNumber("Turner Angle: ",  m_shooterTurnerEncoder.getAbsolutePosition());
+          SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
+          SmartDashboard.putNumber("Turner Angle: ",  m_shooterTurnerEncoder.getPosition());
       }
     }
 
