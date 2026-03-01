@@ -57,13 +57,14 @@ public class RobotContainer {
     
   
     // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
-  private final ClimberSubsystem m_climb = new ClimberSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-  private final AutoFactory autoFactory;
+    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final ClimberSubsystem m_climb = new ClimberSubsystem();
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final AutoFactory autoFactory;
 
   private final Timer timer = new Timer();
+  private boolean manualShooterActive = false;
 
 
   // Loads a swerve trajectory, alternatively use DifferentialSample if the robot is tank drive
@@ -214,12 +215,23 @@ public class RobotContainer {
         () -> m_shooter.stopShooter(),
         m_shooter));
 
+    // Manual Turret Rotation
+    if (manualShooterActive) {new InstantCommand(
+                () -> m_shooter.setManualTurretPower(m_buttonboard.getTwist()), // Adjust the angle increment as needed
+                m_shooter);};
+    
+
 
     //  Toggle Extra Info to Shuffleboard
     new JoystickButton(m_buttonboard, OIConstants.kdriveInfoButton)
         .whileTrue(new InstantCommand(
             () -> m_robotDrive.toggleDriveDebugInfo(),
             m_robotDrive));
+
+
+
+    //****************** Shooter Stuff ***********************
+
 
     // Toggle Shooter Debug Info to Shuffleboard
     new JoystickButton(m_buttonboard, OIConstants.kshooterInfoButton)
@@ -236,8 +248,16 @@ public class RobotContainer {
         );
 
 
+    //  Turn on manual shooter control
+    new JoystickButton (m_buttonboard,OIConstants.kManualAimButton)
+    .onTrue(new InstantCommand(() -> manualShooterActive = true));
 
-    //  Left Arm Up
+
+
+
+    // ********************Arm Stuff**************************
+
+    //  Left Arm U
     new JoystickButton (m_buttonboard,OIConstants.kleftArmUpButton)
     .whileTrue( 
         new InstantCommand(
@@ -251,9 +271,6 @@ public class RobotContainer {
         () -> m_climb.setLeftClimber(ClimberConstants.kleftArmDown),
         m_climb));
   
-
-
-
     //  Right Arm Up
     new JoystickButton (m_buttonboard,OIConstants.krightArmUpButton)
     .whileTrue( 

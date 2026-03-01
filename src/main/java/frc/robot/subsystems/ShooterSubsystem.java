@@ -85,4 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterDebug = !ShooterDebug;
   }
 
+  public void setManualTurretPower(double power) {
+    m_shooterTurnerSpark.set(power);
+  }
+
 }

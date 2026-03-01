@@ -197,7 +197,7 @@ public final class Constants {
     //  constants for the shooter subsystem
 
     public static final int kshooterShooterCANId = 10; 
-    public static final double kshooterShooterSpeed = 3000.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterShooterSpeed = 5200.0; // Need to determine the actual speed we want to shoot at
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
@@ -206,7 +206,7 @@ public final class Constants {
     public static final double kShooterP = 0.0001; 
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
-    public static final double kShooterFF = 0.0022; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
+    public static final double kShooterFF = 0.0023; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
     public static final double kShooterTurnerP = 0.3;
     public static final double kShooterTurnerI = 0.0;
