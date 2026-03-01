@@ -203,19 +203,29 @@ public class RobotContainer {
         () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower,IntakeConstants.kupperIntakeShootPower),
         m_intake))
     .whileFalse(new InstantCommand(
-        () -> m_shooter.setShooterSpeed(0),
-        m_shooter))
-    .whileFalse(new InstantCommand(
         () -> m_intake.setIntake(0,0),
         m_intake));
       
 
+    //  Shooter off
+    new JoystickButton(m_buttonboard, OIConstants.kShooterOffButton)
+    .debounce(0.1)   
+    .whileTrue(new InstantCommand(
+        () -> m_shooter.stopShooter(),
+        m_shooter));
+
 
     //  Toggle Extra Info to Shuffleboard
-    new JoystickButton(m_leftJoystick, OIConstants.kdriveInfoButton)
+    new JoystickButton(m_buttonboard, OIConstants.kdriveInfoButton)
         .whileTrue(new InstantCommand(
             () -> m_robotDrive.toggleDriveDebugInfo(),
             m_robotDrive));
+
+    // Toggle Shooter Debug Info to Shuffleboard
+    new JoystickButton(m_buttonboard, OIConstants.kshooterInfoButton)
+        .whileTrue(new InstantCommand(
+            () -> m_shooter.toggleShooterDebugInfo(),
+            m_shooter));
 
     //  Stow shooter
     new JoystickButton (m_buttonboard,OIConstants.kStowButton)

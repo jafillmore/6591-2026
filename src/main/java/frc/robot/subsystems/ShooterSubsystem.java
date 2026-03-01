@@ -6,13 +6,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
@@ -30,6 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final SparkClosedLoopController m_shooterShooterClosedLoopController;
     private final SparkClosedLoopController m_shooterTurnerClosedLoopController;
+    private boolean ShooterDebug = true;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -57,15 +59,29 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  // This method will be called once per scheduler run
+
+      if (ShooterDebug) {
+          SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
+          //SmartDashboard.putNumber("Turner Angle: ",  m_shooterTurnerEncoder.getAbsolutePosition());
+      }
+    }
+
 
   public void setShooterSpeed(double shooterSpeed) {
-    m_shooterShooterClosedLoopController.setReference(shooterSpeed, ControlType.kVelocity);
+    m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed, ControlType.kVelocity);
   }
 
   public void setTurnerAngle(double turnerAngle) {
-    m_shooterTurnerClosedLoopController.setReference(turnerAngle, ControlType.kPosition);
+    m_shooterTurnerClosedLoopController.setSetpoint(turnerAngle, ControlType.kPosition);
+  }
+
+  public void stopShooter() {
+    m_shooterShooterSpark.stopMotor();
+  }
+
+  public void toggleShooterDebugInfo() {
+    ShooterDebug = !ShooterDebug;
   }
 
 }
