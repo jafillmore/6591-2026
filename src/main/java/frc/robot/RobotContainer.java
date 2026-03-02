@@ -18,6 +18,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -53,12 +54,10 @@ public class RobotContainer {
     Optional<Alliance> ally = DriverStation.getAlliance();
     private String alli = "None! (What's up with that?)";
 
-    UsbCamera camera1;
-    VideoSink server;
-    
   
     // The robot's subsystems
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    private final VisionSubsystem m_vision = new VisionSubsystem(m_robotDrive);
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ClimberSubsystem m_climb = new ClimberSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
@@ -92,14 +91,14 @@ public class RobotContainer {
             m_robotDrive // The drive subsystem
         );
 
-    
 
-    camera1 = CameraServer.startAutomaticCapture(0);
-    
-    server = CameraServer.getServer();
     
     // Run configuration options for Pigeon 2 navigation module
     m_robotDrive.pidgeyConfig();
+
+    // Publish default auto-aim target coordinates (editable on Shuffleboard)
+    SmartDashboard.putNumber("AutoAim Target X", 0.0);
+    SmartDashboard.putNumber("AutoAim Target Y", 0.0);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -236,6 +235,17 @@ public class RobotContainer {
     .whileFalse(new InstantCommand(
         () -> m_shooter.setManualTurretPower(0),
         m_shooter));
+
+    // Auto-aim at a fixed field pose while the AutoAim button is held
+    new JoystickButton(m_buttonboard, OIConstants.kAutoAimButton)
+        .whileTrue(
+            new RunCommand(
+                () -> {
+                  double ax = SmartDashboard.getNumber("AutoAim Target X", 0.0);
+                  double ay = SmartDashboard.getNumber("AutoAim Target Y", 0.0);
+                  m_shooter.aimAtFieldLocation(new Pose2d(ax, ay, new Rotation2d()), m_robotDrive);
+                },
+                m_shooter));
 
 
 

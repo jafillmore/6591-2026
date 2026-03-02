@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -212,5 +215,57 @@ public final class Constants {
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
   }
+
+
+    // Camera Constants
+  public static final class PoseCamera1 {
+    public static final String name = "Pantherpi-Cam1";
+    // XYZ
+    private static final double xLocation = Units.inchesToMeters(6);
+    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double zLocation = Units.inchesToMeters(10.5);
+    // ROTATION
+    public static final double roll = Units.degreesToRadians(90);
+    public static final double pitch = Units.degreesToRadians(0.0);
+    public static final double yaw = Units.degreesToRadians(0);
+
+    public static final Transform3d location =
+        new Transform3d(
+            new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
+  }
+
+  public static final class PoseCamera2 {
+    public static final String name = "Pantherpi-Cam2";
+    // XYZ
+    private static final double xLocation = Units.inchesToMeters(6);
+    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double zLocation = Units.inchesToMeters(10.5);
+    // ROTATION
+    public static final double roll = Units.degreesToRadians(90);
+    public static final double pitch = Units.degreesToRadians(0.0);
+    public static final double yaw = Units.degreesToRadians(0);
+
+    public static final Transform3d location =
+        new Transform3d(
+            new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
+  }
+
+  public static final class TargetingCamera1 {
+    public static final String name = "Pantherpi-Cam3";
+    // XYZ
+    private static final double xLocation = Units.inchesToMeters(6);
+    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double zLocation = Units.inchesToMeters(10.5);
+    // ROTATION
+    public static final double roll = Units.degreesToRadians(90);
+    public static final double pitch = Units.degreesToRadians(0.0);
+    public static final double yaw = Units.degreesToRadians(0);
+
+    public static final Transform3d location =
+        new Transform3d(
+            new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
+  }
+
+
 
 }
