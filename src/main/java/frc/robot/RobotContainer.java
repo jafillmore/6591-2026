@@ -13,9 +13,6 @@ import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -64,8 +61,7 @@ public class RobotContainer {
     private final AutoFactory autoFactory;
 
   private final Timer timer = new Timer();
-  private boolean manualShooterActive = true;
-
+ 
 
   // Loads a swerve trajectory, alternatively use DifferentialSample if the robot is tank drive
   private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("startonwall");

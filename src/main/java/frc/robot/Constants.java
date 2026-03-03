@@ -204,6 +204,7 @@ public final class Constants {
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
+    public static final double kTurningMotorReduction = 18.0/144.0;
    
     
     public static final double kShooterP = 0.0001; 

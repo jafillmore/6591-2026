@@ -21,6 +21,8 @@ public final class Configs {
             double turningFactor = 2 * Math.PI;
             double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
 
+                   
+
            
             drivingConfig
                     .idleMode(IdleMode.kBrake)
@@ -138,9 +140,11 @@ public static final class Shooter {
         public static final SparkMaxConfig shooterShooterConfig = new SparkMaxConfig();
         public static final SparkMaxConfig shooterTurnerConfig = new SparkMaxConfig();
 
-          
+                
         static {           
         
+            double shooterTurnerFactor = (2 * Math.PI) / ShooterConstants.kTurningMotorReduction;
+
             shooterShooterConfig
                 .idleMode(IdleMode.kCoast)
                 .smartCurrentLimit(50)
@@ -166,6 +170,13 @@ public static final class Shooter {
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(true);
+
+            shooterTurnerConfig.absoluteEncoder
+                    // Invert the turning encoder, since the output shaft rotates in the opposite
+                    // direction of the steering motor in the MAXSwerve Module.
+                    .inverted(false)
+                    .positionConversionFactor(shooterTurnerFactor); // radians
+                   
                 
                     
             shooterTurnerConfig.closedLoop
