@@ -237,8 +237,15 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(
                 () -> {
-                  double ax = SmartDashboard.getNumber("AutoAim Target X", 0.0);
-                  double ay = SmartDashboard.getNumber("AutoAim Target Y", 0.0);
+                  double ax;
+                  double ay;
+                  if (ally.isPresent() && ally.get() == Alliance.Red) {
+                    ax = ShooterConstants.kRedHubXPosition;
+                    ay = ShooterConstants.kRedHubYPosition;
+                  } else {
+                    ax = ShooterConstants.kBlueHubXPosition;
+                    ay = ShooterConstants.kBlueHubYPosition;        
+                  }
                   m_shooter.aimAtFieldLocation(new Pose2d(ax, ay, new Rotation2d()), m_robotDrive);
                 },
                 m_shooter));
@@ -268,7 +275,7 @@ public class RobotContainer {
 
     // ********************Arm Stuff**************************
 
-    //  Left Arm U
+    //  Left Arm Up
     new JoystickButton (m_buttonboard,OIConstants.kleftArmUpButton)
     .whileTrue( 
         new InstantCommand(

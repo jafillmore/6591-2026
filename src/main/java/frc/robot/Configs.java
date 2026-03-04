@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -170,12 +169,21 @@ public static final class Shooter {
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(true);
+          
 
             shooterTurnerConfig.absoluteEncoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
                     .inverted(false)
                     .positionConversionFactor(shooterTurnerFactor); // radians
+                    
+            shooterTurnerConfig.softLimit.forwardSoftLimit(ShooterConstants.kTurnerForwardSoftLimit);
+            shooterShooterConfig.softLimit.forwardSoftLimitEnabled(true);
+            shooterTurnerConfig.softLimit.reverseSoftLimit(ShooterConstants.kTurnerReverseSoftLimit);
+            shooterShooterConfig.softLimit.reverseSoftLimitEnabled(true);
+            
+            
+      
                    
                 
                     
@@ -188,7 +196,7 @@ public static final class Shooter {
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(true);
+                .positionWrappingEnabled(false);
                 
             
         

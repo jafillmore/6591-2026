@@ -194,6 +194,15 @@ public final class Constants {
   
   }
 
+  
+ 
+
+
+  
+
+
+
+
 
   public static final class ShooterConstants {
 
@@ -204,7 +213,9 @@ public final class Constants {
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
-    public static final double kTurningMotorReduction = 18.0/144.0;
+    public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
+    public static final double kTurnerForwardSoftLimit = 3.1765; // radians
+    public static final double kTurnerReverseSoftLimit = -0.349; // radians
    
     
     public static final double kShooterP = 0.0001; 
@@ -215,6 +226,17 @@ public final class Constants {
     public static final double kShooterTurnerP = 0.3;
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
+
+    //  constants for the hub position
+
+    public static final double kBlueHubXPosition = Units.inchesToMeters(158.9764);
+    public static final double kBlueHubYPosition = Units.inchesToMeters(158.84375);
+    
+    public static final double kRedHubXPosition = Units.inchesToMeters(158.6);
+    public static final double kRedHubYPosition = Units.inchesToMeters(158.84375);
+
+
+
   }
 
 
