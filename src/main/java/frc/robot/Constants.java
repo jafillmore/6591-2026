@@ -226,6 +226,7 @@ public final class Constants {
     public static final double kShooterTurnerP = 0.3;
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
+    public static final double kShooterTurnerFF = 0.0;
 
     //  constants for the hub position
 

@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkMax m_shooterTurnerSpark;
 
     private final RelativeEncoder m_shooterShooterEncoder;
-    private final AbsoluteEncoder m_shooterTurnerEncoder;
+    private final RelativeEncoder m_shooterTurnerEncoder;
 
     private final SparkClosedLoopController m_shooterShooterClosedLoopController;
     private final SparkClosedLoopController m_shooterTurnerClosedLoopController;
@@ -41,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // Retrieve encoders and closed-loop controllers from the shooter sparks as local variables
     m_shooterShooterEncoder = m_shooterShooterSpark.getEncoder();
-    m_shooterTurnerEncoder = m_shooterTurnerSpark.getAbsoluteEncoder();
+    m_shooterTurnerEncoder = m_shooterTurnerSpark.getEncoder();
 
     m_shooterShooterClosedLoopController = m_shooterShooterSpark.getClosedLoopController();
     m_shooterTurnerClosedLoopController = m_shooterTurnerSpark.getClosedLoopController();
@@ -90,6 +90,15 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setManualTurretPower(double power) {
     m_shooterTurnerSpark.set(power);
   }
+
+  public void zeroTurretEncoder() {
+    m_shooterTurnerEncoder.setPosition(0);
+  }
+
+
+
+
+
 
   /**
    * Aim the turret at a fixed field location.

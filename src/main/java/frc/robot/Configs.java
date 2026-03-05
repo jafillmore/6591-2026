@@ -169,13 +169,16 @@ public static final class Shooter {
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(true);
+              
           
 
-            shooterTurnerConfig.absoluteEncoder
+            
+            shooterTurnerConfig.encoder
                     // Invert the turning encoder, since the output shaft rotates in the opposite
                     // direction of the steering motor in the MAXSwerve Module.
-                    .inverted(false)
+                    //.inverted(false)
                     .positionConversionFactor(shooterTurnerFactor); // radians
+           
                     
             shooterTurnerConfig.softLimit.forwardSoftLimit(ShooterConstants.kTurnerForwardSoftLimit);
             shooterShooterConfig.softLimit.forwardSoftLimitEnabled(true);
@@ -191,12 +194,12 @@ public static final class Shooter {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ShooterConstants.kShooterTurnerP,ShooterConstants.kShooterTurnerI,ShooterConstants.kShooterTurnerD)
-                .outputRange(-.4, .4)
+                .outputRange(-.4, .4);
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(false);
+                //.positionWrappingEnabled(false);
                 
             
         
