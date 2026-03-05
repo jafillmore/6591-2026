@@ -121,18 +121,18 @@ public class ShooterSubsystem extends SubsystemBase {
     turretAngleRad = Math.atan2(Math.sin(turretAngleRad), Math.cos(turretAngleRad));
 
     // Convert radians to motor rotations (assuming encoder reports rotations)
-    double turretRotations = turretAngleRad / (2.0 * Math.PI);
+    double turretDegrees = turretAngleRad * 180.0 / Math.PI;
 
     // Command the turret controller to the desired position
-    setTurnerAngle(turretRotations);
+    setTurnerAngle(turretDegrees);
 
     // Publish debug info
     if (ShooterDebug) {
       SmartDashboard.putNumber("AutoAim Target X", fieldTarget.getX());
       SmartDashboard.putNumber("AutoAim Target Y", fieldTarget.getY());
-      SmartDashboard.putNumber("AutoAim DesiredHeadingRad", desiredHeading);
-      SmartDashboard.putNumber("AutoAim TurretAngleRad", turretAngleRad);
-      SmartDashboard.putNumber("AutoAim TurretRotations", turretRotations);
+      SmartDashboard.putNumber("AutoAim DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
+      SmartDashboard.putNumber("AutoAim TurretTargetAngle", turretAngleRad);
+      SmartDashboard.putNumber("AutoAim TurretActualAngle", m_shooterTurnerEncoder.getPosition());
     }
   }
 

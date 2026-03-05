@@ -214,8 +214,8 @@ public final class Constants {
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
     public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
-    public static final double kTurnerForwardSoftLimit = 3.1765; // radians
-    public static final double kTurnerReverseSoftLimit = -0.349; // radians
+    public static final double kTurnerForwardSoftLimit = 182.0; // degrees
+    public static final double kTurnerReverseSoftLimit = -2.0; // radians
    
     
     public static final double kShooterP = 0.0001; 
@@ -223,7 +223,7 @@ public final class Constants {
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0023; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
-    public static final double kShooterTurnerP = 0.3;
+    public static final double kShooterTurnerP = 0.001;
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
     public static final double kShooterTurnerFF = 0.0;
