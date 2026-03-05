@@ -167,7 +167,7 @@ public static final class Shooter {
             shooterTurnerConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
-                .inverted(true);
+                .inverted(false);
               
           
 
