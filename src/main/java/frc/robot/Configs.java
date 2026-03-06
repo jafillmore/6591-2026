@@ -180,9 +180,9 @@ public static final class Shooter {
            
                     
             shooterTurnerConfig.softLimit.forwardSoftLimit(ShooterConstants.kTurnerForwardSoftLimit);
-            shooterShooterConfig.softLimit.forwardSoftLimitEnabled(true);
+            shooterTurnerConfig.softLimit.forwardSoftLimitEnabled(true);
             shooterTurnerConfig.softLimit.reverseSoftLimit(ShooterConstants.kTurnerReverseSoftLimit);
-            shooterShooterConfig.softLimit.reverseSoftLimitEnabled(true);
+            shooterTurnerConfig.softLimit.reverseSoftLimitEnabled(true);
             
                     
             shooterTurnerConfig.closedLoop
