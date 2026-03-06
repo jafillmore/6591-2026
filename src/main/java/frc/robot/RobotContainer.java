@@ -317,10 +317,8 @@ public class RobotContainer {
     AutoChooser autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addCmd("Left out of the way", this::leftOutOfTheWayCommand);
-    autoChooser.addCmd("Left to Reef", this::leftToReefCommand);
-    autoChooser.addCmd("Right to Reef", this::rightToReefCommand);
-    autoChooser.addCmd("Right out of the way", this::rightOutOfTheWayCommand);
+    autoChooser.addCmd("Left Straight", this::leftStraightCommand);
+      autoChooser.addCmd("Right Straight", this::rightStraightCommand);
 
     // Put the auto chooser on the dashboard
     SmartDashboard.putData("Options",autoChooser);
@@ -355,93 +353,62 @@ public class RobotContainer {
   }
 
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command leftToReefCommand() {
-        autonStatus = "Left Wall to Reef";
-        SmartDashboard.putString("Attempting", autonStatus);
-    
-        return Commands.sequence(
-            autoFactory.resetOdometry("leftWallToReef"), 
-            Commands.deadline(
-                autoFactory.trajectoryCmd("leftWallToReef")
-                
-        ));
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command leftOutOfTheWayCommand() {
+    public Command leftStraightCommand() {
         autonStatus = "Left Wall out of the way";
         SmartDashboard.putString("Attempting", autonStatus);
 
         return Commands.sequence(
-            autoFactory.resetOdometry("leftWallOutOfTheWay"), 
-            Commands.deadline(
-                autoFactory.trajectoryCmd("leftWallOutOfTheWay")
+      
+            new InstantCommand(
+                () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
+                m_shooter))
                 
-        ));
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            .alongWith(
+                autoFactory.resetOdometry("leftWallStraight"), 
+                Commands.deadline(
+                    autoFactory.trajectoryCmd("leftWallStraight")
+                    
+            .andThen(
 
+                new InstantCommand(
+                () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower,IntakeConstants.kupperIntakeShootPower),
+                m_intake)
+               
+                        
+             )
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command rightToReefCommand() {
-        autonStatus = "Right Wall to Reef";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-        return Commands.sequence(
-            autoFactory.resetOdometry("rightWallToReef"), 
-            Commands.deadline(
-                autoFactory.trajectoryCmd("rightWallToReef")
-                
-        ));
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command rightOutOfTheWayCommand() {
-        autonStatus = "RightOutOfTheWay";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-        return Commands.sequence(
-            autoFactory.resetOdometry("rightWallOutOfTheWay"), 
-            Commands.deadline(
-                autoFactory.trajectoryCmd("rightWallOutOfTheWay")
-                
-        ));
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command basicBackupCommand() {
-        autonStatus = "Basic Backup Command";
-        SmartDashboard.putString("Attempting", autonStatus);
-        return Commands.sequence(
             
-            Commands.run(() -> m_robotDrive.drive(-1.0,0,0,true)).withTimeout(5)
-            //Commands.waitSeconds(5),
-            //Commands.runOnce(() -> m_robotDrive.drive(0, 0, 0, true)).withTimeout(2)
-        );
+                
+        ));
+        
     }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
- 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
-    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public Command rightStraightCommand() {
+        autonStatus = "Right Straight";
+        SmartDashboard.putString("Attempting", autonStatus);
+
+        return Commands.sequence(
+            autoFactory.resetOdometry("rightWallStraight"), 
+            Commands.deadline(
+                autoFactory.trajectoryCmd("rightWallStraight")
+                
+        ));
+        
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+   
     
 
 
