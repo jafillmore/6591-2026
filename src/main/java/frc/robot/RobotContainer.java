@@ -362,25 +362,27 @@ public class RobotContainer {
 
         return Commands.sequence(
       
+            /*
             new InstantCommand(
                 () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
                 m_shooter))
                 
-            .alongWith(
+            .alongWith(  
+
+            */
                 autoFactory.resetOdometry("leftWallStraight"), 
                 Commands.deadline(
                     autoFactory.trajectoryCmd("leftWallStraight")
-                    
+            /*         
             .andThen(
 
                 new InstantCommand(
                 () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower,IntakeConstants.kupperIntakeShootPower),
                 m_intake)
-               
+              
                         
              )
-
-            
+            */            
                 
         ));
         
