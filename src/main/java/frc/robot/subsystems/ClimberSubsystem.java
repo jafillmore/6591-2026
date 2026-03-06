@@ -34,7 +34,7 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkClosedLoopController m_rightClimberClosedLoopController;
   
     //Variables for System Debugging
-  private boolean ClimberSystemDebug = true;
+  private boolean ClimberSystemDebug = false;
 
   public ClimberSubsystem() {
 
@@ -61,7 +61,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    toggleClimberDebugInfo();
+    climberDebugInfo();
   
   }
 
@@ -78,16 +78,16 @@ public class ClimberSubsystem extends SubsystemBase {
  
 
 
+  public void toggleClimberDebugInfo() {
+    ClimberSystemDebug = !ClimberSystemDebug;
+    return; 
+  }
+
   //  System Debug Info to display
-  public void toggleClimberDebugInfo(){
+  public void climberDebugInfo(){
     if (ClimberSystemDebug) {
-      // IMU Status
-      SmartDashboard.putNumber(  "Left Climber Actual Position", m_leftClimberEncoder.getPosition());
-      SmartDashboard.putNumber(  "Right Climber Actual Postion", m_rightClimberEncoder.getPosition());
-  
-
-
-   
+      SmartDashboard.putNumber(  "LC Actual", m_leftClimberEncoder.getPosition());
+      SmartDashboard.putNumber(  "RC Actual", m_rightClimberEncoder.getPosition());
     }
   }
 

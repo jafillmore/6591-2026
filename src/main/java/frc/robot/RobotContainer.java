@@ -158,19 +158,7 @@ public class RobotContainer {
             () -> m_robotDrive.toggleFieldRelative(),
             m_robotDrive));
 
-    //  Toggle Climber Info to Shuffleboard
-    new JoystickButton(m_buttonboard, OIConstants.kClimberInfoButton)
-    .whileTrue(new InstantCommand(
-        () -> m_climb.toggleClimberDebugInfo(),
-        m_climb));
- 
-    //  Toggle Drive Info to Shuffleboard
-    new JoystickButton(m_leftJoystick, OIConstants.kdriveInfoButton)
-    .whileTrue(new InstantCommand(
-        () -> m_robotDrive.toggleDriveDebugInfo(),
-         m_robotDrive));
-
-    
+        
 
     //  Intake on
     new JoystickButton(m_rightJoystick, OIConstants.kintakeButton)
@@ -268,9 +256,12 @@ public class RobotContainer {
             m_robotDrive));
 
 
-
-
-
+    //  Toggle Climber Info to Shuffleboard
+    new JoystickButton(m_buttonboard, OIConstants.kClimberInfoButton)
+    .whileTrue(new InstantCommand(
+        () -> m_climb.toggleClimberDebugInfo(),
+        m_climb));
+ 
 
     // Toggle Shooter Debug Info to Shuffleboard
     new JoystickButton(m_buttonboard, OIConstants.kshooterInfoButton)

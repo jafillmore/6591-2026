@@ -28,7 +28,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
+    public static final double kMaxSpeedMetersPerSecond = 8.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -210,13 +210,16 @@ public final class Constants {
 
     public static final int kshooterShooterCANId = 10; 
     public static final double kshooterShooterSpeed = 5200.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterShooterSpeedAdjust = 50.0; // Need to determine the actual speed we want to eject at
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
     public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
     public static final double kTurnerForwardSoftLimit = 182.0; // degrees
     public static final double kTurnerReverseSoftLimit = -2.0; // radians
-   
+    public static final double kTurnerResetPostion = -3.0; // Need to determine the actual reset position for the turret
+    public static final double kTurnerMaxPower = 0.5; // Max power to apply to the turret motor to prevent damage
+    public static final double kTurnerMinPower = -0.5; // Min power to apply to the turret motor to prevent damage   
     
     public static final double kShooterP = 0.0001; 
     public static final double kShooterI = 0.0;
@@ -267,7 +270,7 @@ public final class Constants {
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
     public static final double pitch = Units.degreesToRadians(0.0);
-    public static final double yaw = Units.degreesToRadians(0);
+    public static final double yaw = Units.degreesToRadians(180);
 
     public static final Transform3d location =
         new Transform3d(

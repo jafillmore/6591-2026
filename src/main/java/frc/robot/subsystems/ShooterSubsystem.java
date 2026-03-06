@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
+//import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -13,11 +13,13 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 
 
@@ -62,11 +64,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
   // This method will be called once per scheduler run
 
-      if (ShooterDebug) {
-          SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
-          SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
-          SmartDashboard.putNumber("Turner Angle: ",  m_shooterTurnerEncoder.getPosition());
-      }
+
     }
 
 
@@ -94,6 +92,43 @@ public class ShooterSubsystem extends SubsystemBase {
   public void zeroTurretEncoder() {
     m_shooterTurnerEncoder.setPosition(0);
   }
+
+
+  public void turretReset () {
+    
+    m_shooterTurnerSpark.configure(Configs.Shooter.shooterTurnerResetConfig, ResetMode.kNoResetSafeParameters,
+        PersistMode.kPersistParameters);
+    
+    m_shooterTurnerSpark.set(-0.06);
+    Timer.delay(2.0); // Run the motor at low power for 2 seconds to move to the hard stop
+    
+    m_shooterTurnerSpark.stopMotor();
+
+    m_shooterTurnerEncoder.setPosition(Constants.ShooterConstants.kTurnerResetPostion);
+    
+    m_shooterTurnerSpark.configure(Configs.Shooter.shooterTurnerConfig, ResetMode.kNoResetSafeParameters,
+        PersistMode.kPersistParameters);
+
+
+  }
+
+    public void shooterDebugInfo() {
+        if (ShooterDebug) {
+          //SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
+          //SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
+          SmartDashboard.putNumber("Turret Actual: ",  m_shooterTurnerEncoder.getPosition());
+          SmartDashboard.putNumber("Turret Target: ",  m_shooterTurnerEncoder.getVelocity());
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -128,11 +163,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // Publish debug info
     if (ShooterDebug) {
-      SmartDashboard.putNumber("AutoAim Target X", fieldTarget.getX());
-      SmartDashboard.putNumber("AutoAim Target Y", fieldTarget.getY());
-      SmartDashboard.putNumber("AutoAim DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
-      SmartDashboard.putNumber("AutoAim TurretTargetAngle", turretAngleRad);
-      SmartDashboard.putNumber("AutoAim TurretActualAngle", m_shooterTurnerEncoder.getPosition());
+      SmartDashboard.putNumber("Target X", fieldTarget.getX());
+      SmartDashboard.putNumber("Target Y", fieldTarget.getY());
+      SmartDashboard.putNumber("DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
+      SmartDashboard.putNumber("TurretTargetAngle", turretAngleRad);
+      SmartDashboard.putNumber("TurretActualAngle", m_shooterTurnerEncoder.getPosition());
     }
   }
 
