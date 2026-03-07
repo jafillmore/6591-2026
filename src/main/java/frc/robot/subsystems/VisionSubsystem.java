@@ -45,12 +45,12 @@ public class VisionSubsystem extends SubsystemBase {
   public boolean targetVisible;
   private boolean VisionSystemDebug = false;
   // Default hostname is "photonvision", but we changed that to "CAMERA_NAME"
-  private PhotonCamera camera;
+  //private PhotonCamera camera;
   private final DriveSubsystem m_driveSubsystem;
   public final AprilTagFieldLayout aprilTagFieldLayout;
   private final PhotonCamera poseCamera1;
   private final PhotonCamera poseCamera2;
-  private final PhotonCamera targetingCamera1;
+  //private final PhotonCamera targetingCamera1;
 
   public Optional<PhotonPipelineResult> targetingCamera1Result;
 
@@ -65,7 +65,7 @@ public class VisionSubsystem extends SubsystemBase {
 //////////////////////////   UPDATE to Center of Hub Based on Alliance ////////////////////////////////////////////  
   
   
-  private final Pose3d targetPose = new Pose3d(16, 4, 2, new Rotation3d(0, 0, 0));
+  //private final Pose3d targetPose = new Pose3d(16, 4, 2, new Rotation3d(0, 0, 0));
   // The given target model at the given pose
 
 
@@ -86,7 +86,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     poseCamera1 = new PhotonCamera(Constants.PoseCamera1.name);
     poseCamera2 = new PhotonCamera(Constants.PoseCamera2.name);
-    targetingCamera1 = new PhotonCamera(Constants.TargetingCamera1.name);
+    //targetingCamera1 = new PhotonCamera(Constants.TargetingCamera1.name);
 
     poseCamera1PoseEstimator =
         new PhotonPoseEstimator(
@@ -169,7 +169,7 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
      // update the pipeline result for targeting cameras
-    targetingCamera1Result = getPipelineResults(targetingCamera1);
+    //targetingCamera1Result = getPipelineResults(targetingCamera1);
     // update the pose estimators
     updateGlobalPose(poseCamera1, poseCamera1PoseEstimator);
     updateGlobalPose(poseCamera2, poseCamera2PoseEstimator);
@@ -178,7 +178,7 @@ public class VisionSubsystem extends SubsystemBase {
     if (VisionSystemDebug) {
       SmartDashboard.putBoolean("poseCamera1Connected", poseCamera1.isConnected());
       SmartDashboard.putBoolean("poseCamera2Connected", poseCamera2.isConnected());
-      SmartDashboard.putBoolean("TargetingCamera1Connnected", targetingCamera1.isConnected());
+      //SmartDashboard.putBoolean("TargetingCamera1Connnected", targetingCamera1.isConnected());
     }
 
     // Publish latest vision pose if available

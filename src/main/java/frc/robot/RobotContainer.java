@@ -64,18 +64,15 @@ public class RobotContainer {
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final AutoFactory autoFactory;
 
-  private final Timer timer = new Timer();
+    private final Timer timer = new Timer();
+    
+
  
-
-  // Loads a swerve trajectory, alternatively use DifferentialSample if the robot is tank drive
-  private final Optional<Trajectory<SwerveSample>> trajectory = Choreo.loadTrajectory("startonwall");
-
-
-  // The driver's controllers
-  Joystick m_leftJoystick = new Joystick(OIConstants.kLeftControllerPort);
-  Joystick m_rightJoystick = new Joystick(OIConstants.kRightControllerPort);
-  Joystick m_buttonboard = new Joystick(OIConstants.kButtonBoardPort);
-  
+    // The driver's controllers
+    Joystick m_leftJoystick = new Joystick(OIConstants.kLeftControllerPort);
+    Joystick m_rightJoystick = new Joystick(OIConstants.kRightControllerPort);
+    Joystick m_buttonboard = new Joystick(OIConstants.kButtonBoardPort);
+    
 
  
   /**
@@ -99,9 +96,6 @@ public class RobotContainer {
     // Confirm Turret Encoder is zeroed at startup to prevent runaway turret
     m_shooter.zeroTurretEncoder();
 
-    // Publish default auto-aim target coordinates (editable on Shuffleboard)
-    SmartDashboard.putNumber("AutoAim Target X", 0.0);
-    SmartDashboard.putNumber("AutoAim Target Y", 0.0);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -221,7 +215,7 @@ public class RobotContainer {
     new JoystickButton (m_buttonboard,OIConstants.kManualAimButton)
     .whileTrue(
         new RunCommand(
-            () -> m_shooter.setManualTurretPower(0.1*m_buttonboard.getZ()), // Adjust the angle increment as needed
+            () -> m_shooter.setManualTurretPower(-0.1*m_buttonboard.getZ()), // Adjust the angle increment as needed
             m_shooter))
     .whileFalse(new InstantCommand(
         () -> m_shooter.setManualTurretPower(0),
@@ -245,7 +239,12 @@ public class RobotContainer {
                 },
                 m_shooter));
 
-
+    //  Zero Shooter
+    new JoystickButton(m_buttonboard, OIConstants.kzeroShooterButton)
+        .whileTrue(new InstantCommand(
+            () -> m_shooter.turretReset(),
+            m_shooter));
+    
 
 
 
@@ -357,19 +356,19 @@ public class RobotContainer {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Command leftStraightCommand() {
-        autonStatus = "Left Wall out of the way";
+        autonStatus = "Left Wall Straight";
         SmartDashboard.putString("Attempting", autonStatus);
 
         return Commands.sequence(
       
-            /*
+
             new InstantCommand(
                 () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
-                m_shooter))
-                
+                m_shooter));
+            /* 
             .alongWith(  
 
-            */
+
                 autoFactory.resetOdometry("leftWallStraight"), 
                 Commands.deadline(
                     autoFactory.trajectoryCmd("leftWallStraight")
@@ -384,7 +383,7 @@ public class RobotContainer {
              )
             */            
                 
-        ));
+        //));
         
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,7 +398,7 @@ public class RobotContainer {
         SmartDashboard.putString("Attempting", autonStatus);
 
         return Commands.sequence(
-            autoFactory.resetOdometry("rightWallStraight"), 
+            autoFactory.resetOdometry("rightWallStraight.traj"), 
             Commands.deadline(
                 autoFactory.trajectoryCmd("rightWallStraight")
                 

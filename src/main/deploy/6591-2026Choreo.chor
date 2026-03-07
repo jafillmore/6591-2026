@@ -1,5 +1,5 @@
 {
- "name":"6591-2026ChoreoProject",
+ "name":"6591-2026Choreo",
  "version":2,
  "type":"Swerve",
  "variables":{
@@ -76,7 +76,7 @@
  },
  "generationFeatures":[],
  "codegen":{
-  "root":"src\\main\\deploy\\choreo",
+  "root":"..",
   "genVars":true,
   "genTrajData":true,
   "useChoreoLib":true

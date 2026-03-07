@@ -140,7 +140,7 @@ public final class Constants {
     //public static final int kL1TButton = 7;
     //public static final int kL2TButton = 8;
     //public static final int kL3TButton = 9;
-    //public static final int kL4TButton = 10;
+    public static final int kzeroShooterButton = 10;
     public static final int kleftArmUpButton = 11;
     public static final int kleftArmDownButton = 12;
     //  public static final int  = 13;
@@ -217,7 +217,7 @@ public final class Constants {
     public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
     public static final double kTurnerForwardSoftLimit = 182.0; // degrees
     public static final double kTurnerReverseSoftLimit = -2.0; // radians
-    public static final double kTurnerResetPostion = -3.0; // Need to determine the actual reset position for the turret
+    public static final double kTurnerResetPostion = -5.0; // Need to determine the actual reset position for the turret
     public static final double kTurnerMaxPower = 0.5; // Max power to apply to the turret motor to prevent damage
     public static final double kTurnerMinPower = -0.5; // Min power to apply to the turret motor to prevent damage   
     
@@ -226,10 +226,10 @@ public final class Constants {
     public static final double kShooterD = 0.0;
     public static final double kShooterFF = 0.0023; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
-    public static final double kShooterTurnerP = 0.001;
+    public static final double kShooterTurnerP = 0.002;
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
-    public static final double kShooterTurnerFF = 0.0;
+    public static final double kShooterTurnerFF = 0.0001;
 
     //  constants for the hub position
 
@@ -250,11 +250,11 @@ public final class Constants {
     // XYZ
     private static final double xLocation = Units.inchesToMeters(6);
     private static final double yLocation = Units.inchesToMeters(9.3);
-    private static final double zLocation = Units.inchesToMeters(10.5);
+    private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
     public static final double pitch = Units.degreesToRadians(0.0);
-    public static final double yaw = Units.degreesToRadians(0);
+    public static final double yaw = Units.degreesToRadians(180);
 
     public static final Transform3d location =
         new Transform3d(
@@ -266,11 +266,11 @@ public final class Constants {
     // XYZ
     private static final double xLocation = Units.inchesToMeters(6);
     private static final double yLocation = Units.inchesToMeters(9.3);
-    private static final double zLocation = Units.inchesToMeters(10.5);
+    private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
     public static final double pitch = Units.degreesToRadians(0.0);
-    public static final double yaw = Units.degreesToRadians(180);
+    public static final double yaw = Units.degreesToRadians(0);
 
     public static final Transform3d location =
         new Transform3d(

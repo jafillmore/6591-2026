@@ -114,8 +114,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void shooterDebugInfo() {
         if (ShooterDebug) {
-          //SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
-          //SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
+          SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
+          SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
           SmartDashboard.putNumber("Turret Actual: ",  m_shooterTurnerEncoder.getPosition());
           SmartDashboard.putNumber("Turret Target: ",  m_shooterTurnerEncoder.getVelocity());
         }
