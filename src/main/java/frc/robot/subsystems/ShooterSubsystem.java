@@ -36,6 +36,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkClosedLoopController m_shooterTurnerClosedLoopController;
     private boolean ShooterDebug = true;
 
+    private double shooterSpeedAdjust =0.0;
+  
+
+
+
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     m_shooterShooterSpark = new SparkMax(Constants.ShooterConstants.kshooterShooterCANId, MotorType.kBrushless);
@@ -51,6 +56,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
+
+
  
 
     m_shooterShooterSpark.configure(Configs.Shooter.shooterShooterConfig, ResetMode.kResetSafeParameters,
@@ -60,16 +67,30 @@ public class ShooterSubsystem extends SubsystemBase {
         PersistMode.kPersistParameters);
   }
 
+
+   
+
   @Override
   public void periodic() {
   // This method will be called once per scheduler run
+  shooterDebugInfo();
 
+  }
 
-    }
+    //private double shooterSpeedAdjust =0.0;
 
+  public void shooterSpeedUp() {
+    shooterSpeedAdjust =+ ShooterConstants.kshooterSpeedOffset;
+    
+  };
+
+  public void shooterSpeedDown() {
+    shooterSpeedAdjust =- ShooterConstants.kshooterSpeedOffset;
+    
+  };
 
   public void setShooterSpeed(double shooterSpeed) {
-    m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed+shooterSpeedAdjust, ControlType.kVelocity);
   }
 
   public void setTurnerAngle(double turnerAngle) {
@@ -112,10 +133,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
   }
 
+  public void turretOff () {
+
+    m_shooterTurnerSpark.stopMotor();
+
+  }
+
     public void shooterDebugInfo() {
         if (ShooterDebug) {
-          SmartDashboard.putNumber("Shooter Speed: ", m_shooterShooterEncoder.getVelocity());
-          SmartDashboard.putNumber("Shooter Error: ", (Constants.ShooterConstants.kshooterShooterSpeed - m_shooterShooterEncoder.getVelocity()));
+          SmartDashboard.putNumber("Speed Adj", shooterSpeedAdjust);
+          SmartDashboard.putNumber("Target Speed", m_shooterShooterClosedLoopController.getSetpoint());
+          SmartDashboard.putNumber("Actual Speed: ", m_shooterShooterEncoder.getVelocity());
+          SmartDashboard.putNumber("Shooter Error: ", (m_shooterShooterClosedLoopController.getSetpoint() - m_shooterShooterEncoder.getVelocity()));
           SmartDashboard.putNumber("Turret Actual: ",  m_shooterTurnerEncoder.getPosition());
           SmartDashboard.putNumber("Turret Target: ",  m_shooterTurnerEncoder.getVelocity());
         }

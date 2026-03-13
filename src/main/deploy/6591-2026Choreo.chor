@@ -9,22 +9,22 @@
  "config":{
   "frontLeft":{
    "x":{
-    "exp":"-0.23495 m",
-    "val":-0.23495
+    "exp":"9.25 in",
+    "val":0.23495
    },
    "y":{
-    "exp":"0.37465 m",
+    "exp":"14.75 in",
     "val":0.37465
    }
   },
   "backLeft":{
    "x":{
-    "exp":"-0.23495 m",
+    "exp":"-9.25 in",
     "val":-0.23495
    },
    "y":{
-    "exp":"-0.37465 m",
-    "val":-0.37465
+    "exp":"14.75 in",
+    "val":0.37465
    }
   },
   "mass":{
@@ -57,16 +57,16 @@
   },
   "bumper":{
    "front":{
-    "exp":"0.9906 m",
-    "val":0.9906
+    "exp":"14 in",
+    "val":0.35559999999999997
    },
    "side":{
-    "exp":"0.9906 m",
-    "val":0.9906
+    "exp":"19.5 in",
+    "val":0.4953
    },
    "back":{
-    "exp":"0.7112 m",
-    "val":0.7112
+    "exp":"14 in",
+    "val":0.35559999999999997
    }
   },
   "differentialTrackWidth":{
@@ -76,7 +76,7 @@
  },
  "generationFeatures":[],
  "codegen":{
-  "root":"..",
+  "root":"..\\C:\\Users\\Joel\\Documents\\FRC\\2026\\Code\\6591-2026\\src\\main\\deploy",
   "genVars":true,
   "genTrajData":true,
   "useChoreoLib":true

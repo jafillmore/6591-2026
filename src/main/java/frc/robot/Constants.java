@@ -28,7 +28,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 8.0;
+    public static final double kMaxSpeedMetersPerSecond = 18.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -87,8 +87,8 @@ public final class Constants {
 
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 4;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 4;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -150,6 +150,8 @@ public final class Constants {
     public static final int kshooterInfoButton = 22;
     public static final int kClimberInfoButton = 23;
     public static final int kdriveInfoButton = 24; // Moved from left stick
+    public static final int kshooterSpeedUpButton = 26;
+    public static final int kshooterSpeedDownButton = 27;
   
 
   }
@@ -196,40 +198,37 @@ public final class Constants {
 
   
  
-
-
-  
-
-
-
-
-
   public static final class ShooterConstants {
 
     //  constants for the shooter subsystem
 
     public static final int kshooterShooterCANId = 10; 
     public static final double kshooterShooterSpeed = 5200.0; // Need to determine the actual speed we want to shoot at
-    public static final double kshooterShooterSpeedAdjust = 50.0; // Need to determine the actual speed we want to eject at
+    public static final double kbloopShooterSpeed = 2100.0; // 
+    public static final double kshooterShooterSpeedAdjust = 500.0; // Need to determine the actual speed we want to eject at
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
     public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
     public static final double kTurnerForwardSoftLimit = 182.0; // degrees
     public static final double kTurnerReverseSoftLimit = -2.0; // radians
-    public static final double kTurnerResetPostion = -5.0; // Need to determine the actual reset position for the turret
+    public static final double kTurnerResetPostion = -15.0; // Need to determine the actual reset position for the turret
     public static final double kTurnerMaxPower = 0.5; // Max power to apply to the turret motor to prevent damage
     public static final double kTurnerMinPower = -0.5; // Min power to apply to the turret motor to prevent damage   
     
     public static final double kShooterP = 0.0001; 
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
-    public static final double kShooterFF = 0.0023; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
+    public static final double kShooterFF = 0.0028; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
-    public static final double kShooterTurnerP = 0.002;
+    public static final double kShooterTurnerP = 0.012;
+
+
     public static final double kShooterTurnerI = 0.0;
     public static final double kShooterTurnerD = 0.0;
-    public static final double kShooterTurnerFF = 0.0001;
+    public static final double kShooterTurnerFF = 0.008;
+
+    public static final double kshooterSpeedOffset=200;
 
     //  constants for the hub position
 
