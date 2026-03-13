@@ -232,11 +232,10 @@ public final class Constants {
 
     //  constants for the hub position
 
-    public static final double kBlueHubXPosition = Units.inchesToMeters(158.9764);
-    public static final double kBlueHubYPosition = Units.inchesToMeters(158.84375);
-    
-    public static final double kRedHubXPosition = Units.inchesToMeters(158.6);
-    public static final double kRedHubYPosition = Units.inchesToMeters(158.84375);
+    public static final double kBlueHubXPosition = (1.96315);
+    public static final double kBlueHubYPosition = (4.0);
+    public static final double kRedHubXPosition = (11.9142475);
+    public static final double kRedHubYPosition = (4.0);
 
 
 
