@@ -8,9 +8,11 @@ import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,6 +23,7 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -61,19 +64,9 @@ public class VisionSubsystem extends SubsystemBase {
   // Latest vision pose and timestamp
   private java.util.Optional<edu.wpi.first.math.geometry.Pose2d> latestVisionPose = java.util.Optional.empty();
   private double latestVisionTimestamp = 0.0;
-
-//////////////////////////   UPDATE to Center of Hub Based on Alliance ////////////////////////////////////////////  
-  
-  
-  //private final Pose3d targetPose = new Pose3d(16, 4, 2, new Rotation3d(0, 0, 0));
-  // The given target model at the given pose
-
-
-
-
-
-
-
+  private double turnError = 0.0;
+  private boolean AimingDebug = false;
+  public double range = 0.0;
 
   public VisionSubsystem(DriveSubsystem d_subsystem) {
     
@@ -155,14 +148,18 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-    //Toggle Drive Debug Info
+    //Toggle Vision Debug Info
     public void toggleVisionDebugInfo (){
       VisionSystemDebug = !VisionSystemDebug;
       return; 
     }
 
   
-
+   //Toggle Target Debug Info
+    public void toggleTargetDebugInfo (){
+      AimingDebug = !AimingDebug;
+      return; 
+    }
 
 
   @Override
@@ -242,10 +239,51 @@ public class VisionSubsystem extends SubsystemBase {
     
   }
 
-  public double getTargetYaw() {
-    return targetYaw;
-  }
 
+  /**
+   * Aim the turret at a fixed field location.
+   *
+   * @param fieldTarget The target pose on the field to aim at (x,y used; rotation ignored)
+   * @param drive The DriveSubsystem to get the robot's current pose from
+   */
+  public double aimAtFieldLocation(DriveSubsystem drive) {
+    Pose2d robotPose = drive.getPose();
+
+    double ax;
+    double ay;
+    if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+      ax = ShooterConstants.kRedHubXPosition;
+      ay = ShooterConstants.kRedHubYPosition;
+    } else {
+      ax = ShooterConstants.kBlueHubXPosition;
+      ay = ShooterConstants.kBlueHubYPosition;        
+    }
+    // Compute vector from robot to target in field coordinates
+    double dx = ax - robotPose.getX();
+    double dy = ay - robotPose.getY();
+    // Desired heading in field frame
+    double desiredHeading = Math.atan2(dy, dx);
+    // Robot heading in field frame
+    double robotHeading = robotPose.getRotation().getRadians();
+    // Robot angle relative to target (radians)
+    turnError = desiredHeading - robotHeading;
+
+    
+    // Normalize to [-pi, pi]
+    // turnError = Math.atan2(Math.sin(turnError), Math.cos(turnError));
+
+
+    // Publish debug info
+    if (AimingDebug) {
+      SmartDashboard.putNumber("Target X", ax);
+      SmartDashboard.putNumber("Target Y", ay);
+      SmartDashboard.putNumber("DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
+      SmartDashboard.putNumber("RobotAngleError", turnError);
+    }
+
+    return turnError;
+
+  }
 
    
 }

@@ -37,6 +37,7 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -226,27 +227,13 @@ public class RobotContainer {
     // Auto-aim at a fixed field pose while the AutoAim button is held
     new JoystickButton(m_buttonboard, OIConstants.kAutoAimButton)
         .whileTrue(
-            new RunCommand(
-                () -> {
-                  double ax;
-                  double ay;
-                  if (ally.isPresent() && ally.get() == Alliance.Red) {
-                    ax = ShooterConstants.kRedHubXPosition;
-                    ay = ShooterConstants.kRedHubYPosition;
-                  } else {
-                    ax = ShooterConstants.kBlueHubXPosition;
-                    ay = ShooterConstants.kBlueHubYPosition;        
-                  }
-                  m_shooter.aimAtFieldLocation(new Pose2d(ax, ay, new Rotation2d()), m_robotDrive);
-                },
-                m_shooter));
-
-    //  Zero Shooter
-    new JoystickButton(m_buttonboard, OIConstants.kzeroShooterButton)
-        .whileTrue(new InstantCommand(
-            () -> m_shooter.turretReset(),
-            m_shooter));
-
+         new RunCommand(() -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband((m_vision.aimAtFieldLocation(m_robotDrive))*VisionConstants.VISION_TURN_kP, OIConstants.kDriveDeadband),
+                DriveConstants.driveFieldRelative),
+            m_robotDrive));       
+         
     //  Shooter Speed Up
     new JoystickButton(m_leftJoystick, OIConstants.kshooterSpeedUpButton)
         .onTrue(new InstantCommand(
@@ -681,6 +668,9 @@ public class RobotContainer {
                 )
             );
         
+
+
+
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////    
 

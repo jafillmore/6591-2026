@@ -240,7 +240,10 @@ public final class Constants {
 
 
   }
-
+    //  constants for the vision subsystem
+public static final class VisionConstants {
+    public static final double VISION_TURN_kP = 0.1;
+  }
 
     // Camera Constants
   public static final class PoseCamera1 {

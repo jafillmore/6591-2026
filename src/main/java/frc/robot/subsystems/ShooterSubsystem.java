@@ -37,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private boolean ShooterDebug = true;
 
     private double shooterSpeedAdjust =0.0;
-  
+
 
 
 
@@ -153,51 +153,5 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  /**
-   * Aim the turret at a fixed field location.
-   *
-   * @param fieldTarget The target pose on the field to aim at (x,y used; rotation ignored)
-   * @param drive The DriveSubsystem to get the robot's current pose from
-   */
-  public void aimAtFieldLocation(Pose2d fieldTarget, DriveSubsystem drive) {
-    Pose2d robotPose = drive.getPose();
-    // Compute vector from robot to target in field coordinates
-    double dx = fieldTarget.getX() - robotPose.getX();
-    double dy = fieldTarget.getY() - robotPose.getY();
-    // Desired heading in field frame
-    double desiredHeading = Math.atan2(dy, dx);
-    // Robot heading in field frame
-    double robotHeading = robotPose.getRotation().getRadians();
-    // Turret angle relative to robot forward (radians)
-    double turretAngleRad = desiredHeading - robotHeading;
-    // Normalize to [-pi, pi]
-    turretAngleRad = Math.atan2(Math.sin(turretAngleRad), Math.cos(turretAngleRad));
-
-    // Convert radians to motor rotations (assuming encoder reports rotations)
-    double turretDegrees = turretAngleRad * 180.0 / Math.PI;
-
-    // Command the turret controller to the desired position
-    setTurnerAngle(turretDegrees);
-
-    // Publish debug info
-    if (ShooterDebug) {
-      SmartDashboard.putNumber("Target X", fieldTarget.getX());
-      SmartDashboard.putNumber("Target Y", fieldTarget.getY());
-      SmartDashboard.putNumber("DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
-      SmartDashboard.putNumber("TurretTargetAngle", turretAngleRad);
-      SmartDashboard.putNumber("TurretActualAngle", m_shooterTurnerEncoder.getPosition());
-    }
-  }
 
 }
