@@ -246,8 +246,8 @@ public final class Constants {
   public static final class PoseCamera1 {
     public static final String name = "Pantherpi-Cam1";
     // XYZ
-    private static final double xLocation = Units.inchesToMeters(6);
-    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double xLocation = Units.inchesToMeters(-8.0);
+    private static final double yLocation = Units.inchesToMeters(-9.0);
     private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
@@ -262,8 +262,8 @@ public final class Constants {
   public static final class PoseCamera2 {
     public static final String name = "Pantherpi-Cam2";
     // XYZ
-    private static final double xLocation = Units.inchesToMeters(6);
-    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double xLocation = Units.inchesToMeters(5.0);
+    private static final double yLocation = Units.inchesToMeters(13.0);
     private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
