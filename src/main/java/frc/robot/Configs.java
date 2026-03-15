@@ -148,7 +148,7 @@ public static final class Shooter {
             shooterShooterConfig
                 .idleMode(IdleMode.kCoast)
                 .smartCurrentLimit(50)
-                .inverted(false);
+                .inverted(true);
         
                         
                             
