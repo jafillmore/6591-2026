@@ -10,6 +10,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -20,10 +21,16 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.estimation.TargetModel;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 
 
@@ -68,11 +75,34 @@ public class VisionSubsystem extends SubsystemBase {
   private boolean AimingDebug = false;
   public double range = 0.0;
 
-  public VisionSubsystem(DriveSubsystem d_subsystem) {
-    
-    
-    
+    // Simulation Config
+  // A vision system sim labelled as "pose and targeting" in NetworkTables
+  private VisionSystemSim poseVisionSim;
+  private VisionSystemSim targetingVisionSim;
 
+  /*
+  // A 0.5 x 0.25 meter rectangular target
+  private final TargetModel targetModel = new TargetModel(0.5, 0.25);
+  // The pose of where the target is on the field.
+  // Its rotation determines where "forward" or the target x-axis points.
+  // Let's say this target is flat against the far wall center, facing the blue driver stations.
+  private final Pose3d targetPose = new Pose3d(16, 4, 2, new Rotation3d(0, 0, Math.PI));
+  // The given target model at the given pose
+  private final VisionTargetSim visionTarget = new VisionTargetSim(targetPose, targetModel);
+  */
+  
+  // setup cameras
+  private final SimCameraProperties PoseCameraProp = new SimCameraProperties();
+ 
+  private PhotonCameraSim poseCamera1Sim;
+  private PhotonCameraSim poseCamera2Sim;
+
+
+
+
+
+
+  public VisionSubsystem(DriveSubsystem d_subsystem) {
 
     m_driveSubsystem = d_subsystem;
     aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -94,6 +124,43 @@ public class VisionSubsystem extends SubsystemBase {
     poseCamera1PoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     poseCamera2PoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
+    if (Robot.isSimulation()) {
+      simulationInit();
+    }
+  }
+
+  private void simulationInit() {
+    // setup simulation for vision system
+    poseVisionSim = new VisionSystemSim("pose");
+    poseVisionSim.addAprilTags(aprilTagFieldLayout);
+
+
+
+    // Set the properties of the camera
+ 
+    PoseCameraProp.setCalibration(1280, 720, Rotation2d.fromDegrees(70));
+
+    // Approximate detection noise with average and standard deviation error in pixels.
+
+    PoseCameraProp.setCalibError(0.25, 0.08);
+    // Set the camera image capture framerate (Note: this is limited by robot loop rate).
+
+    PoseCameraProp.setFPS(50);
+
+    // The average and standard deviation in milliseconds of image data latency.
+
+    PoseCameraProp.setAvgLatencyMs(35);
+
+    PoseCameraProp.setLatencyStdDevMs(5);
+
+    // initialize the cameras
+    poseCamera1Sim = new PhotonCameraSim(poseCamera1, PoseCameraProp);
+    poseCamera2Sim = new PhotonCameraSim(poseCamera2, PoseCameraProp);
+
+
+    // Set Camera locations and add them to the vision simulation
+    poseVisionSim.addCamera(poseCamera1Sim, Constants.PoseCamera1.location);
+    poseVisionSim.addCamera(poseCamera2Sim, Constants.PoseCamera2.location);
 
   }
 
@@ -162,82 +229,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-     // update the pipeline result for targeting cameras
-    //targetingCamera1Result = getPipelineResults(targetingCamera1);
-    // update the pose estimators
-    updateGlobalPose(poseCamera1, poseCamera1PoseEstimator);
-    updateGlobalPose(poseCamera2, poseCamera2PoseEstimator);
 
-    // Publish diagnostic info and latest vision pose for Shuffleboard
-    if (VisionSystemDebug) {
-      SmartDashboard.putBoolean("poseCamera1Connected", poseCamera1.isConnected());
-      SmartDashboard.putBoolean("poseCamera2Connected", poseCamera2.isConnected());
-      //SmartDashboard.putBoolean("TargetingCamera1Connnected", targetingCamera1.isConnected());
-    }
-
-    // Publish latest vision pose if available
-    if (latestVisionPose.isPresent()) {
-      var p = latestVisionPose.get();
-      SmartDashboard.putNumber("Vision Pose X", p.getX());
-      SmartDashboard.putNumber("Vision Pose Y", p.getY());
-      SmartDashboard.putNumber("Vision Pose RotDeg", p.getRotation().getDegrees());
-      SmartDashboard.putNumber("Vision Pose Timestamp", latestVisionTimestamp);
-      SmartDashboard.putBoolean("Vision Pose Available", true);
-    } else {
-      SmartDashboard.putBoolean("Vision Pose Available", false);
-    }
-
-    // Provide a Shuffleboard/SmartDashboard button named "Force Reset Odometry". If set true,
-    // perform a one-time reset to the latest vision pose (if available) and clear the button.
-    boolean forceReset = SmartDashboard.getBoolean("Force Reset Odometry", false);
-    if (forceReset) {
-      if (latestVisionPose.isPresent()) {
-        m_driveSubsystem.resetOdometry(latestVisionPose.get());
-        initialPoseSet = true;
-        SmartDashboard.putBoolean("InitialPoseSetFromVision", true);
-        System.out.println("[VisionSubsystem] Force-reset odometry from vision pose via Shuffleboard at timestamp: " + latestVisionTimestamp);
-      } else {
-        System.out.println("[VisionSubsystem] Force reset requested but no vision pose available yet.");
-      }
-      // Clear the dashboard button so repeated resets require another manual press
-      SmartDashboard.putBoolean("Force Reset Odometry", false);
-    }
-
-    //************** Basic vision to get yaw to a target ************************************ 
-    /*
-        // Read in relevant data from the Camera
-    targetVisible = false;
-    targetYaw = 0.0;
-    var results = camera.getAllUnreadResults();
-    if (!results.isEmpty()) {
-      // Camera processed a new frame since last
-      // Get the last one in the list.
-        var result = results.get(results.size() - 1);
-        if (result.hasTargets()) {
-          // At least one AprilTag was seen by the camera
-          for (var target : result.getTargets()) {
-            if (target.getFiducialId() == 10) {
-            // Found Tag 7, record its information
-              targetYaw = target.getYaw();
-              targetVisible = true;
-              
-            
-            }
-          }
-        }
-    }
-
-    
-
-    SmartDashboard.putBoolean("Target Visible from subsys", targetVisible);
-    SmartDashboard.putNumber("Target yaw from subsys",targetYaw);
-
-    */
-    
-  }
 
 
   /**
@@ -285,7 +277,59 @@ public class VisionSubsystem extends SubsystemBase {
 
   }
 
-   
+    @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+     // update the pipeline result for targeting cameras
+    //targetingCamera1Result = getPipelineResults(targetingCamera1);
+    // update the pose estimators
+    updateGlobalPose(poseCamera1, poseCamera1PoseEstimator);
+    updateGlobalPose(poseCamera2, poseCamera2PoseEstimator);
+
+    // Publish diagnostic info and latest vision pose for Shuffleboard
+    if (VisionSystemDebug) {
+      SmartDashboard.putBoolean("poseCamera1Connected", poseCamera1.isConnected());
+      SmartDashboard.putBoolean("poseCamera2Connected", poseCamera2.isConnected());
+      //SmartDashboard.putBoolean("TargetingCamera1Connnected", targetingCamera1.isConnected());
+    }
+
+    // Publish latest vision pose if available
+    if (latestVisionPose.isPresent()) {
+      var p = latestVisionPose.get();
+      SmartDashboard.putNumber("Vision Pose X", p.getX());
+      SmartDashboard.putNumber("Vision Pose Y", p.getY());
+      SmartDashboard.putNumber("Vision Pose RotDeg", p.getRotation().getDegrees());
+      SmartDashboard.putNumber("Vision Pose Timestamp", latestVisionTimestamp);
+      SmartDashboard.putBoolean("Vision Pose Available", true);
+    } else {
+      SmartDashboard.putBoolean("Vision Pose Available", false);
+    }
+
+    // Provide a Shuffleboard/SmartDashboard button named "Force Reset Odometry". If set true,
+    // perform a one-time reset to the latest vision pose (if available) and clear the button.
+    boolean forceReset = SmartDashboard.getBoolean("Force Reset Odometry", false);
+    if (forceReset) {
+      if (latestVisionPose.isPresent()) {
+        m_driveSubsystem.resetOdometry(latestVisionPose.get());
+        initialPoseSet = true;
+        SmartDashboard.putBoolean("InitialPoseSetFromVision", true);
+        System.out.println("[VisionSubsystem] Force-reset odometry from vision pose via Shuffleboard at timestamp: " + latestVisionTimestamp);
+      } else {
+        System.out.println("[VisionSubsystem] Force reset requested but no vision pose available yet.");
+      }
+      // Clear the dashboard button so repeated resets require another manual press
+      SmartDashboard.putBoolean("Force Reset Odometry", false);
+    }    
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+    // Update with the simulated drivetrain pose. This should be called every loop in simulation.
+    poseVisionSim.update(m_driveSubsystem.getPose());
+    targetingVisionSim.update(m_driveSubsystem.getPose());
+  }  
+
 }
 
 
