@@ -240,7 +240,7 @@ public class DriveSubsystem extends SubsystemBase {
       
     }
   
-  //Toggle Drive Debug Info
+  //Toggle  Drive Debug Info
   public void toggleDriveDebugInfo (){
     DriveSystemDebug = !DriveSystemDebug;
     return;    

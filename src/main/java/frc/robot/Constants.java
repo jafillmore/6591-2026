@@ -204,7 +204,7 @@ public final class Constants {
     //  constants for the shooter subsystem
 
     public static final int kshooterShooterCANId = 10; 
-    public static final double kshooterShooterSpeed = 5200.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterShooterSpeed = 2500.0; // Need to determine the actual speed we want to shoot at
     public static final double kbloopShooterSpeed = 2100.0; // 
     public static final double kshooterShooterSpeedAdjust = 500.0; // Need to determine the actual speed we want to eject at
    
