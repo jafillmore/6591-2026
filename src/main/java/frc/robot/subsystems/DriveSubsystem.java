@@ -55,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
   private final PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-  private final PIDController headingController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+  public final PIDController headingController = new PIDController(AutoConstants.kPThetaController, 0, 0);
   
 
     //Variables for Drive System Debugging

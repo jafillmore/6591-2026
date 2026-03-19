@@ -230,7 +230,7 @@ public class RobotContainer {
          new RunCommand(() -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband((m_vision.aimAtFieldLocation(m_robotDrive))*VisionConstants.VISION_TURN_kP, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_robotDrive.headingController.calculate(m_robotDrive.getPose().getRotation().getRadians(), m_vision.aimAtFieldLocation(m_robotDrive)), OIConstants.kDriveDeadband),
                 DriveConstants.driveFieldRelative),
             m_robotDrive));       
          

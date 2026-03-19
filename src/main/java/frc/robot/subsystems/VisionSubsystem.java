@@ -270,10 +270,10 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Target X", ax);
       SmartDashboard.putNumber("Target Y", ay);
       SmartDashboard.putNumber("DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
-      SmartDashboard.putNumber("RobotAngleError", turnError);
+      SmartDashboard.putNumber("RobotAngleError", turnError * 180 / Math.PI);
     }
 
-    return turnError;
+    return desiredHeading;
 
   }
 
