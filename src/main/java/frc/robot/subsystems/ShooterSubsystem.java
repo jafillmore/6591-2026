@@ -73,25 +73,25 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   // This method will be called once per scheduler run
-          if (ShooterDebug) {
+          //if (ShooterDebug) {
           SmartDashboard.putNumber("Speed Adj", shooterSpeedAdjust);
           SmartDashboard.putNumber("Target Speed", m_shooterShooterClosedLoopController.getSetpoint());
           SmartDashboard.putNumber("Actual Speed: ", m_shooterShooterEncoder.getVelocity());
           SmartDashboard.putNumber("Shooter Error: ", (m_shooterShooterClosedLoopController.getSetpoint() - m_shooterShooterEncoder.getVelocity()));
-        }
+        //}
 
   }
 
     //private double shooterSpeedAdjust =0.0;
 
   public void shooterSpeedUp() {
-    shooterSpeedAdjust =+ ShooterConstants.kshooterSpeedOffset;
+    shooterSpeedAdjust = shooterSpeedAdjust + ShooterConstants.kshooterSpeedOffset;
     m_shooterShooterClosedLoopController.setSetpoint(ShooterConstants.kshooterShooterSpeed + shooterSpeedAdjust, ControlType.kVelocity);
     
   };
 
   public void shooterSpeedDown() {
-    shooterSpeedAdjust =- ShooterConstants.kshooterSpeedOffset;
+    shooterSpeedAdjust =shooterSpeedAdjust - ShooterConstants.kshooterSpeedOffset;
     m_shooterShooterClosedLoopController.setSetpoint(ShooterConstants.kshooterShooterSpeed + shooterSpeedAdjust, ControlType.kVelocity);
     
   };

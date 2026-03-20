@@ -181,7 +181,7 @@ public class RobotContainer {
 
     //  Shoot
     new JoystickButton(m_buttonboard, OIConstants.kShootButton)
-    .debounce(0.1)   
+    .debounce(0.03)   
     .whileTrue(new InstantCommand(
         () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
         m_shooter))
@@ -214,7 +214,7 @@ public class RobotContainer {
             m_robotDrive));       
          
     //  Shooter Speed Up
-    new JoystickButton(m_leftJoystick, OIConstants.kshooterSpeedUpButton)
+    new JoystickButton(m_buttonboard, OIConstants.kshooterSpeedUpButton)
         .onTrue(new InstantCommand(
             () -> m_shooter.shooterSpeedUp(),
             m_shooter)
@@ -222,7 +222,7 @@ public class RobotContainer {
         );
 
         //  Shooter Speed down
-    new JoystickButton(m_leftJoystick, OIConstants.kshooterSpeedDownButton)
+    new JoystickButton(m_buttonboard, OIConstants.kshooterSpeedDownButton)
         .onTrue(new InstantCommand(
             () -> m_shooter.shooterSpeedDown(),
             m_shooter)

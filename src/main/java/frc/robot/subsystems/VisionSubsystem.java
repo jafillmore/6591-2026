@@ -53,7 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
   /** Creates a new VisionSubsystem. */
   public double targetYaw;
   public boolean targetVisible;
-  private boolean VisionSystemDebug = false;
+  private boolean VisionSystemDebug = true;
   // Default hostname is "photonvision", but we changed that to "CAMERA_NAME"
   //private PhotonCamera camera;
   private final DriveSubsystem m_driveSubsystem;

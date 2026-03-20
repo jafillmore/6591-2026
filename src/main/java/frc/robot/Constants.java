@@ -94,8 +94,8 @@ public final class Constants {
 
     public static final double kPXController = 1;
     public static final double kPYController = 1;
-    public static final double kPThetaController = 0.5;
-    public static final double kDThetaController = .001;
+    public static final double kPThetaController = 0.15;
+    public static final double kDThetaController = .01;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
@@ -206,7 +206,7 @@ public final class Constants {
     public static final int kshooterShooterCANId = 10; 
     public static final double kshooterShooterSpeed = 2500.0; // Need to determine the actual speed we want to shoot at
     public static final double kbloopShooterSpeed = 2100.0; // 
-    public static final double kshooterShooterSpeedAdjust = 500.0; // Need to determine the actual speed we want to eject at
+    public static final double kshooterSpeedOffset= 100; // Need to determine the actual speed we want to shoot at
    
     public static final int kshooterTurnerCANId = 9; 
     public static final double kshooterturnerhomePostion = 0.0;
@@ -229,7 +229,7 @@ public final class Constants {
     public static final double kShooterTurnerD = 0.0;
     public static final double kShooterTurnerFF = 0.008;
 
-    public static final double kshooterSpeedOffset=200;
+
 
     //  constants for the hub position
 
@@ -251,7 +251,7 @@ public static final class VisionConstants {
     public static final String name = "Pantherpi-Cam1";
     // XYZ
     private static final double xLocation = Units.inchesToMeters(-8.0);
-    private static final double yLocation = Units.inchesToMeters(-9.0);
+    private static final double yLocation = Units.inchesToMeters(9.0);
     private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
@@ -282,8 +282,8 @@ public static final class VisionConstants {
   public static final class TargetingCamera1 {
     public static final String name = "Pantherpi-Cam3";
     // XYZ
-    private static final double xLocation = Units.inchesToMeters(6);
-    private static final double yLocation = Units.inchesToMeters(9.3);
+    private static final double xLocation = Units.inchesToMeters(-6);
+    private static final double yLocation = Units.inchesToMeters(-9.3);
     private static final double zLocation = Units.inchesToMeters(10.5);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
