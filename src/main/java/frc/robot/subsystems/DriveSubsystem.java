@@ -55,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
   private final PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-  public final PIDController headingController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+  public final PIDController headingController = new PIDController(AutoConstants.kPThetaController, 0, AutoConstants.kDThetaController);
   
 
     //Variables for Drive System Debugging
@@ -258,8 +258,8 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putBoolean(   "IMU Is Good",BaseStatusSignal.isAllGood());        
       SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
       SmartDashboard.putBoolean(  "Field Relative", DriveConstants.driveFieldRelative);
-      SmartDashboard.putNumber(   "FC Toggle Count",       fieldRelativeCount);
-      SmartDashboard.putNumber(   "IMU Reset Count",       imuResetCount);
+      //SmartDashboard.putNumber(   "FC Toggle Count",       fieldRelativeCount);
+      //SmartDashboard.putNumber(   "IMU Reset Count",       imuResetCount);
       
     //}
   }

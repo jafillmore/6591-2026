@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -26,8 +26,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax m_rightClimberSpark;  
  
 
-  private final AbsoluteEncoder m_leftClimberEncoder;
-  private final AbsoluteEncoder m_rightClimberEncoder;
+  private final RelativeEncoder m_leftClimberEncoder;
+  private final RelativeEncoder m_rightClimberEncoder;
 
 
   private final SparkClosedLoopController m_leftClimberClosedLoopController;
@@ -42,8 +42,8 @@ public class ClimberSubsystem extends SubsystemBase {
     m_rightClimberSpark = new SparkMax(ClimberConstants.krightClimberCANId, MotorType.kBrushless);
     
     
-    m_leftClimberEncoder = m_leftClimberSpark.getAbsoluteEncoder();
-    m_rightClimberEncoder = m_rightClimberSpark.getAbsoluteEncoder();
+    m_leftClimberEncoder = m_leftClimberSpark.getEncoder();
+    m_rightClimberEncoder = m_rightClimberSpark.getEncoder();
 
     m_leftClimberClosedLoopController = m_leftClimberSpark.getClosedLoopController();
     m_rightClimberClosedLoopController = m_rightClimberSpark.getClosedLoopController();

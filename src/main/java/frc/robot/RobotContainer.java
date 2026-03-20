@@ -96,9 +96,6 @@ public class RobotContainer {
     // Run configuration options for Pigeon 2 navigation module
     m_robotDrive.pidgeyConfig();
 
-    // Confirm Turret Encoder is zeroed at startup to prevent runaway turret
-    m_shooter.zeroTurretEncoder();
-
 
     // Configure the button bindings
     configureButtonBindings();
@@ -205,24 +202,6 @@ public class RobotContainer {
 
        
 
-    //  Stow shooter
-    new JoystickButton (m_buttonboard,OIConstants.kStowButton)
-    .onTrue(
-        new InstantCommand (
-        () -> m_shooter.setTurnerAngle(ShooterConstants.kshooterturnerhomePostion),
-        m_shooter)
-        );
-
-
-    //  Turn on manual shooter control
-    new JoystickButton (m_buttonboard,OIConstants.kManualAimButton)
-    .whileTrue(
-        new RunCommand(
-            () -> m_shooter.setManualTurretPower(-0.1*m_buttonboard.getZ()), // Adjust the angle increment as needed
-            m_shooter))
-    .whileFalse(new InstantCommand(
-        () -> m_shooter.setManualTurretPower(0),
-        m_shooter));
 
     // Auto-aim at a fixed field pose while the AutoAim button is held
     new JoystickButton(m_buttonboard, OIConstants.kAutoAimButton)
@@ -382,11 +361,6 @@ public class RobotContainer {
             ),
 
 
-            new InstantCommand(
-                () -> m_shooter.setTurnerAngle(15.0),
-                    m_shooter
-            ),
-
             // Wait for shooter to spin up
             Commands.waitSeconds(2),
              
@@ -407,7 +381,7 @@ public class RobotContainer {
                 () -> {
                     m_robotDrive.drive(0.0, 0.0, 0.0,true);
                     m_intake.setIntake(0, 0);
-                    m_shooter.turretOff();
+
                 },
                 m_robotDrive,
                 m_intake,
@@ -479,13 +453,6 @@ public class RobotContainer {
                     m_shooter
                 ),
 
-                
-
-
-                new InstantCommand(
-                    () -> m_shooter.setTurnerAngle(50.0),
-                    m_shooter
-                ),
 
                 // Wait for shooter to spin up and turret to rotate
                 Commands.waitSeconds(2),
@@ -508,7 +475,6 @@ public class RobotContainer {
                     () -> {
                         m_robotDrive.drive(0.0, 0.0, 0.0,true);
                         m_intake.setIntake(0, 0);
-                        m_shooter.setTurnerAngle(0);
                        
                     },
                     m_robotDrive,
@@ -535,16 +501,10 @@ public class RobotContainer {
                     m_shooter
                 ),
 
-                new InstantCommand(
-                    () -> m_shooter.setTurnerAngle(185),
-                    m_shooter
-                ),
 
                 // Wait for shooter to spin up and turret to rotate
                 Commands.waitSeconds(2),
-              
-
-                
+                 
                 
                 // Start intake (one-shot to set motors)
                 new InstantCommand(
@@ -583,14 +543,6 @@ public class RobotContainer {
                 Commands.run(
                     () -> m_robotDrive.drive(-0.12, 0.0, 0.0,true), m_robotDrive).withTimeout(3.0),
 
-                
-
-
-                new InstantCommand(
-                    () -> m_shooter.setTurnerAngle(98.0),
-                    m_shooter
-                ),
-
        
                 // Wait robot to move for shooter to spin up and turret to rotate
                 Commands.waitSeconds(5),
@@ -613,7 +565,7 @@ public class RobotContainer {
                     () -> {
                         m_robotDrive.drive(0.0, 0.0, 0.0,true);
                         m_intake.setIntake(0, 0);
-                        m_shooter.turretOff();
+
                     },
                     m_robotDrive,
                     m_intake,
@@ -639,10 +591,7 @@ public class RobotContainer {
                     m_shooter
                 ),
 
-                new InstantCommand(
-                    () -> m_shooter.setTurnerAngle(98),
-                    m_shooter
-                ),
+
 
                 // Wait for shooter to spin up and turret to rotate
                 Commands.waitSeconds(2),

@@ -73,7 +73,12 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   // This method will be called once per scheduler run
-  shooterDebugInfo();
+          if (ShooterDebug) {
+          SmartDashboard.putNumber("Speed Adj", shooterSpeedAdjust);
+          SmartDashboard.putNumber("Target Speed", m_shooterShooterClosedLoopController.getSetpoint());
+          SmartDashboard.putNumber("Actual Speed: ", m_shooterShooterEncoder.getVelocity());
+          SmartDashboard.putNumber("Shooter Error: ", (m_shooterShooterClosedLoopController.getSetpoint() - m_shooterShooterEncoder.getVelocity()));
+        }
 
   }
 
@@ -81,11 +86,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shooterSpeedUp() {
     shooterSpeedAdjust =+ ShooterConstants.kshooterSpeedOffset;
+    m_shooterShooterClosedLoopController.setSetpoint(ShooterConstants.kshooterShooterSpeed + shooterSpeedAdjust, ControlType.kVelocity);
     
   };
 
   public void shooterSpeedDown() {
     shooterSpeedAdjust =- ShooterConstants.kshooterSpeedOffset;
+    m_shooterShooterClosedLoopController.setSetpoint(ShooterConstants.kshooterShooterSpeed + shooterSpeedAdjust, ControlType.kVelocity);
     
   };
 
@@ -93,10 +100,6 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed+shooterSpeedAdjust, ControlType.kVelocity);
   }
 
-  public void setTurnerAngle(double turnerAngle) {
-    m_shooterTurnerClosedLoopController.setSetpoint(turnerAngle, ControlType.kPosition);
-  }
-  
 
   public void stopShooter() {
     m_shooterShooterSpark.stopMotor();
@@ -105,51 +108,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void toggleShooterDebugInfo() {
     ShooterDebug = !ShooterDebug;
   }
-
-  public void setManualTurretPower(double power) {
-    m_shooterTurnerSpark.set(power);
-  }
-
-  public void zeroTurretEncoder() {
-    m_shooterTurnerEncoder.setPosition(0);
-  }
-
-
-  public void turretReset () {
-    
-    m_shooterTurnerSpark.configure(Configs.Shooter.shooterTurnerResetConfig, ResetMode.kNoResetSafeParameters,
-        PersistMode.kPersistParameters);
-    
-    m_shooterTurnerSpark.set(-0.06);
-    Timer.delay(2.0); // Run the motor at low power for 2 seconds to move to the hard stop
-    
-    m_shooterTurnerSpark.stopMotor();
-
-    m_shooterTurnerEncoder.setPosition(Constants.ShooterConstants.kTurnerResetPostion);
-    
-    m_shooterTurnerSpark.configure(Configs.Shooter.shooterTurnerConfig, ResetMode.kNoResetSafeParameters,
-        PersistMode.kPersistParameters);
-
-
-  }
-
-  public void turretOff () {
-
-    m_shooterTurnerSpark.stopMotor();
-
-  }
-
-    public void shooterDebugInfo() {
-        if (ShooterDebug) {
-          SmartDashboard.putNumber("Speed Adj", shooterSpeedAdjust);
-          SmartDashboard.putNumber("Target Speed", m_shooterShooterClosedLoopController.getSetpoint());
-          SmartDashboard.putNumber("Actual Speed: ", m_shooterShooterEncoder.getVelocity());
-          SmartDashboard.putNumber("Shooter Error: ", (m_shooterShooterClosedLoopController.getSetpoint() - m_shooterShooterEncoder.getVelocity()));
-          SmartDashboard.putNumber("Turret Actual: ",  m_shooterTurnerEncoder.getPosition());
-          SmartDashboard.putNumber("Turret Target: ",  m_shooterTurnerEncoder.getVelocity());
-        }
-    }
-
 
 
 
