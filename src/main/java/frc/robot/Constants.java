@@ -268,7 +268,7 @@ public static final class VisionConstants {
     public static final String name = "Pantherpi-Cam2";
     // XYZ
     private static final double xLocation = Units.inchesToMeters(5.0);
-    private static final double yLocation = Units.inchesToMeters(13.0);
+    private static final double yLocation = Units.inchesToMeters(0.0);
     private static final double zLocation = Units.inchesToMeters(31.0);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
@@ -284,7 +284,7 @@ public static final class VisionConstants {
     public static final String name = "Pantherpi-Cam3";
     // XYZ
     private static final double xLocation = Units.inchesToMeters(-6);
-    private static final double yLocation = Units.inchesToMeters(-9.3);
+    private static final double yLocation = Units.inchesToMeters(0);
     private static final double zLocation = Units.inchesToMeters(10.5);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
