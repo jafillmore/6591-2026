@@ -28,8 +28,8 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 18.0;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 50.0;
+    public static final double kMaxAngularSpeed = 4 * Math.PI; // radians per second
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(29.5);
@@ -220,7 +220,7 @@ public final class Constants {
     public static final double kShooterP = 0.0001; 
     public static final double kShooterI = 0.0;
     public static final double kShooterD = 0.0;
-    public static final double kShooterFF = 0.0028; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
+    public static final double kShooterFF = 0.0025; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
     public static final double kShooterTurnerP = 0.012;
 
@@ -243,7 +243,8 @@ public final class Constants {
   }
     //  constants for the vision subsystem
 public static final class VisionConstants {
-    public static final double VISION_TURN_kP = 0.4;
+    public static final double kPAimingController = 0.4;
+    public static final double kDAimingController = 0.0;
   }
 
     // Camera Constants

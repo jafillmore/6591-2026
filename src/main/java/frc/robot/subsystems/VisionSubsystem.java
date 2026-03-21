@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -29,7 +31,9 @@ import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -71,8 +75,12 @@ public class VisionSubsystem extends SubsystemBase {
   // Latest vision pose and timestamp
   private java.util.Optional<edu.wpi.first.math.geometry.Pose2d> latestVisionPose = java.util.Optional.empty();
   private double latestVisionTimestamp = 0.0;
+  
+   public final PIDController aimingController = new PIDController(VisionConstants.kPAimingController, 0, VisionConstants.kDAimingController);
+  
+  
   private double turnError = 0.0;
-  private boolean AimingDebug = false;
+  private boolean AimingDebug = true;
   public double range = 0.0;
 
     // Simulation Config
@@ -151,7 +159,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     PoseCameraProp.setAvgLatencyMs(35);
 
-    PoseCameraProp.setLatencyStdDevMs(5);
+    PoseCameraProp.setLatencyStdDevMs(15);
 
     // initialize the cameras
     poseCamera1Sim = new PhotonCameraSim(poseCamera1, PoseCameraProp);
@@ -259,6 +267,7 @@ public class VisionSubsystem extends SubsystemBase {
     double robotHeading = robotPose.getRotation().getRadians();
     // Robot angle relative to target (radians)
     turnError = desiredHeading - robotHeading;
+    double turnPower = aimingController.calculate(robotHeading, desiredHeading);
 
     
     // Normalize to [-pi, pi]
@@ -273,7 +282,7 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("RobotAngleError", turnError * 180 / Math.PI);
     }
 
-    return desiredHeading;
+    return turnPower;
 
   }
 

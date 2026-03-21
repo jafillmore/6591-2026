@@ -255,9 +255,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveDebugInfo(){
     //if (DriveSystemDebug) {
       // IMU Status
-      SmartDashboard.putBoolean(   "IMU Is Good",BaseStatusSignal.isAllGood());        
-      SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
-      SmartDashboard.putBoolean(  "Field Relative", DriveConstants.driveFieldRelative);
+      //SmartDashboard.putBoolean(   "IMU Is Good",BaseStatusSignal.isAllGood());        
+      //SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
+      //SmartDashboard.putBoolean(  "Field Relative", DriveConstants.driveFieldRelative);
       //SmartDashboard.putNumber(   "FC Toggle Count",       fieldRelativeCount);
       //SmartDashboard.putNumber(   "IMU Reset Count",       imuResetCount);
       
@@ -277,6 +277,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
   }
 
 
