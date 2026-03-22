@@ -56,9 +56,9 @@ public class VisionSubsystem extends SubsystemBase {
   public final AprilTagFieldLayout aprilTagFieldLayout;
   private final PhotonCamera poseCamera1;
   private final PhotonCamera poseCamera2;
-  //private final PhotonCamera targetingCamera1;
+  //private final PhotonCamera targetingCamera;
 
-  public Optional<PhotonPipelineResult> targetingCamera1Result;
+  //public Optional<PhotonPipelineResult> targetingCamera1Result;
 
   private final PhotonPoseEstimator poseCamera1PoseEstimator;
   private final PhotonPoseEstimator poseCamera2PoseEstimator;
@@ -74,6 +74,7 @@ public class VisionSubsystem extends SubsystemBase {
   private double turnError = 0.0;
   private boolean AimingDebug = true;
   public double range = 0.0;
+  public double twistPower = 0.0;
 
     // Simulation Config
   // A vision system sim labelled as "pose and targeting" in NetworkTables
@@ -109,7 +110,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     poseCamera1 = new PhotonCamera(Constants.PoseCamera1.name);
     poseCamera2 = new PhotonCamera(Constants.PoseCamera2.name);
-    //targetingCamera1 = new PhotonCamera(Constants.TargetingCamera1.name);
+    //targetingCamera = new PhotonCamera(Constants.PoseCamera2.name);
 
     poseCamera1PoseEstimator =
         new PhotonPoseEstimator(
@@ -285,7 +286,7 @@ public class VisionSubsystem extends SubsystemBase {
 // Read in relevant data from the Camera
     targetVisible = false;
     targetYaw = 0.0;
-    int targetID = (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID : VisionConstants.kBlueTargetID;
+    int targetID = /*(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID :*/ VisionConstants.kBlueTargetID;
     var results = poseCamera2.getAllUnreadResults();
     if (!results.isEmpty()) {
       // Camera processed a new frame since last
@@ -300,7 +301,7 @@ public class VisionSubsystem extends SubsystemBase {
             targetVisible = true;
             //double range = target.getRange();
 
-            double twistPower=targetYaw*VisionConstants.kAimAtTarget_kP;
+            twistPower=targetYaw*VisionConstants.kAimAtTarget_kP;
 
 
 
@@ -312,7 +313,7 @@ public class VisionSubsystem extends SubsystemBase {
       }
     }
 
-    return targetYaw;
+    return twistPower;
 
   }
 
@@ -329,6 +330,33 @@ public class VisionSubsystem extends SubsystemBase {
     updateGlobalPose(poseCamera1, poseCamera1PoseEstimator);
     updateGlobalPose(poseCamera2, poseCamera2PoseEstimator);
 
+// Read in relevant data from the Camera
+    targetVisible = false;
+    targetYaw = 0.0;
+    int targetID = /*(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID :*/ VisionConstants.kBlueTargetID;
+    var results = poseCamera1.getAllUnreadResults();
+    if (!results.isEmpty()) {
+      // Camera processed a new frame since last
+      // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+          // At least one AprilTag was seen by the camera
+          for (var target : result.getTargets()) {
+          if (target.getFiducialId() == targetID) {
+          // Found Tag 7, record its information
+            targetYaw = target.getYaw();
+            targetVisible = true;
+            //double range = target.getRange();
+
+            twistPower=targetYaw*VisionConstants.kAimAtTarget_kP;
+           
+          }
+        }
+      }
+    }
+
+   
+
     // Publish diagnostic info and latest vision pose for Shuffleboard
     if (VisionSystemDebug) {
       SmartDashboard.putBoolean("poseCamera1Connected", poseCamera1.isConnected());
@@ -343,6 +371,9 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Vision Pose Y", p.getY());
       SmartDashboard.putNumber("Vision Pose RotDeg", p.getRotation().getDegrees());
       SmartDashboard.putNumber("Vision Pose Timestamp", latestVisionTimestamp);
+      SmartDashboard.putNumber("Twist Power", twistPower);
+      SmartDashboard.putNumber("Target Yaw", targetYaw);
+      SmartDashboard.putBoolean("Target Found", targetVisible);
       SmartDashboard.putBoolean("Vision Pose Available", true);
     } else {
       SmartDashboard.putBoolean("Vision Pose Available", false);
@@ -362,7 +393,15 @@ public class VisionSubsystem extends SubsystemBase {
       }
       // Clear the dashboard button so repeated resets require another manual press
       SmartDashboard.putBoolean("Force Reset Odometry", false);
-    }    
+    } 
+    
+    
+
+
+
+
+
+
   }
 
   @Override

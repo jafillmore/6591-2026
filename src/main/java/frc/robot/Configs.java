@@ -143,7 +143,7 @@ public static final class Shooter {
 
             shooterFollowerConfig
                 .idleMode(IdleMode.kCoast)
-                .follow(ShooterConstants.kshooterShooterCANId, false); // Set this motor to follow the main shooter motor
+                .follow(ShooterConstants.kshooterShooterCANId, true); // Set this motor to follow the main shooter motor
         
         }
     }

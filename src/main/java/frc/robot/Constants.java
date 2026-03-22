@@ -246,7 +246,7 @@ public final class Constants {
 public static final class VisionConstants {
     public static final double kPAimingController = 0.4;
     public static final double kDAimingController = 0.0;
-    public static final double kAimAtTarget_kP = 0.1; // Proportional gain for vision turn control
+    public static final double kAimAtTarget_kP = 1.0; // Proportional gain for vision turn control
     public static final int kBlueTargetID = 26;
     public static final int kRedTargetID = 10;
   }
