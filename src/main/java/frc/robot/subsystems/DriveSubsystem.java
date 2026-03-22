@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.BaseStatusSignal;
+//import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -58,10 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
   public final PIDController headingController = new PIDController(AutoConstants.kPThetaController, 0, AutoConstants.kDThetaController);
   
 
-    //Variables for Drive System Debugging
-    public boolean DriveSystemDebug = false;
-    private int fieldRelativeCount = 0;
-    private int imuResetCount = 0;
+
 
   // Pose estimator for tracking robot pose (uses IMU, module odometry, and vision)
   private final SwerveDrivePoseEstimator m_poseEstimator = new SwerveDrivePoseEstimator(
@@ -210,7 +207,6 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_pidgey.reset();
-    imuResetCount ++;
   
   }
 
@@ -235,35 +231,12 @@ public class DriveSubsystem extends SubsystemBase {
   /** Toggle between Field Centric and Robot Centric Drive Modes */
   public void toggleFieldRelative() {
     DriveConstants.driveFieldRelative = !DriveConstants.driveFieldRelative;
-    fieldRelativeCount ++;
-    return;
-      
-    }
-  
-  //Toggle  Drive Debug Info
-  public void toggleDriveDebugInfo (){
-    DriveSystemDebug = !DriveSystemDebug;
-    return;    
-
+    return;   
   }
 
     public void updateVisionPose(Pose2d visionRobotPose, double timestamp) {
     m_poseEstimator.addVisionMeasurement(visionRobotPose, timestamp);
   }
-
-  //  Drive System Debug Info to display
-  public void driveDebugInfo(){
-    //if (DriveSystemDebug) {
-      // IMU Status
-      //SmartDashboard.putBoolean(   "IMU Is Good",BaseStatusSignal.isAllGood());        
-      //SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
-      //SmartDashboard.putBoolean(  "Field Relative", DriveConstants.driveFieldRelative);
-      //SmartDashboard.putNumber(   "FC Toggle Count",       fieldRelativeCount);
-      //SmartDashboard.putNumber(   "IMU Reset Count",       imuResetCount);
-      
-    //}
-  }
-
 
 
   @Override
@@ -280,6 +253,5 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber(   "Yaw 2D", m_pidgey.getRotation2d().getDegrees());
   }
-
 
 }

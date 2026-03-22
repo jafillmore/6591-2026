@@ -4,38 +4,30 @@
 
 package frc.robot.subsystems;
 
-import java.lang.ModuleLayer.Controller;
 import java.util.Optional;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveSubsystem;
 
 
  
@@ -264,7 +256,8 @@ public class VisionSubsystem extends SubsystemBase {
     // Desired heading in field frame
     double desiredHeading = Math.atan2(dy, dx);
     // Robot heading in field frame
-    double robotHeading = robotPose.getRotation().getRadians();
+    double robotHeading = drive.getHeading();
+    ;
     // Robot angle relative to target (radians)
     turnError = desiredHeading - robotHeading;
     double turnPower = aimingController.calculate(robotHeading, desiredHeading);
@@ -285,6 +278,47 @@ public class VisionSubsystem extends SubsystemBase {
     return turnPower;
 
   }
+
+
+  public double aimAtTarget(DriveSubsystem drive) {
+
+// Read in relevant data from the Camera
+    targetVisible = false;
+    targetYaw = 0.0;
+    int targetID = (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID : VisionConstants.kBlueTargetID;
+    var results = poseCamera2.getAllUnreadResults();
+    if (!results.isEmpty()) {
+      // Camera processed a new frame since last
+      // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+          // At least one AprilTag was seen by the camera
+          for (var target : result.getTargets()) {
+          if (target.getFiducialId() == targetID) {
+          // Found Tag 7, record its information
+            targetYaw = target.getYaw();
+            targetVisible = true;
+            //double range = target.getRange();
+
+            double twistPower=targetYaw*VisionConstants.kAimAtTarget_kP;
+
+
+
+
+            
+           
+          }
+        }
+      }
+    }
+
+    return targetYaw;
+
+  }
+
+
+
+
 
     @Override
   public void periodic() {

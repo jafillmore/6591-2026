@@ -133,7 +133,7 @@ public final class Constants {
 
     // button board buttons
     public static final int kAutoAimButton = 1;
-    public static final int kManualAimButton = 2;
+    public static final int kPointAtHubButton = 2;
     public static final int kShootButton = 3;
     //public static final int kL3EButton = 4;
     public static final int kShooterOffButton = 5;
@@ -203,7 +203,8 @@ public final class Constants {
 
     //  constants for the shooter subsystem
 
-    public static final int kshooterShooterCANId = 10; 
+    public static final int kshooterShooterFollowerCANId = 9; // Follower motor for the shooter, set to follow the main shooter motor
+    public static final int kshooterShooterCANId = 10;
     public static final double kshooterShooterSpeed = 2500.0; // Need to determine the actual speed we want to shoot at
     public static final double kbloopShooterSpeed = 2100.0; // 
     public static final double kshooterSpeedOffset= 100; // Need to determine the actual speed we want to shoot at
@@ -245,6 +246,9 @@ public final class Constants {
 public static final class VisionConstants {
     public static final double kPAimingController = 0.4;
     public static final double kDAimingController = 0.0;
+    public static final double kAimAtTarget_kP = 0.1; // Proportional gain for vision turn control
+    public static final int kBlueTargetID = 26;
+    public static final int kRedTargetID = 10;
   }
 
     // Camera Constants

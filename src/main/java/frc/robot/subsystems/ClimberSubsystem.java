@@ -69,11 +69,11 @@ public class ClimberSubsystem extends SubsystemBase {
 
 
   public void setLeftClimber (Double leftclimberPosition) {
-    m_leftClimberClosedLoopController.setReference(leftclimberPosition, ControlType.kPosition);
+    m_leftClimberClosedLoopController.setSetpoint(leftclimberPosition, ControlType.kPosition);
   }
   
   public void setRightClimber (Double rightclimberPosition) {
-    m_rightClimberClosedLoopController.setReference(rightclimberPosition, ControlType.kPosition);
+    m_rightClimberClosedLoopController.setSetpoint(rightclimberPosition, ControlType.kPosition);
   }
  
 

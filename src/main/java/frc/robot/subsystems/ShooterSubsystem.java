@@ -9,13 +9,13 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkBase.*;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 import frc.robot.Constants;
@@ -26,32 +26,33 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
 
 
-    private final SparkMax m_shooterShooterSpark;
-    private final SparkMax m_shooterTurnerSpark;
-
+    private final SparkMax m_shooterSpark;
+    private final SparkMax m_shooterSparkfollower;
+    
+    
     private final RelativeEncoder m_shooterShooterEncoder;
-    private final RelativeEncoder m_shooterTurnerEncoder;
-
+   
     private final SparkClosedLoopController m_shooterShooterClosedLoopController;
-    private final SparkClosedLoopController m_shooterTurnerClosedLoopController;
+    
     private boolean ShooterDebug = true;
 
     private double shooterSpeedAdjust =0.0;
 
-
+   
 
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    m_shooterShooterSpark = new SparkMax(Constants.ShooterConstants.kshooterShooterCANId, MotorType.kBrushless);
-    m_shooterTurnerSpark = new SparkMax(Constants.ShooterConstants.kshooterTurnerCANId, MotorType.kBrushless);
+    m_shooterSpark = new SparkMax(Constants.ShooterConstants.kshooterShooterCANId, MotorType.kBrushless);
+    m_shooterSparkfollower = new SparkMax(Constants.ShooterConstants.kshooterShooterFollowerCANId, MotorType.kBrushless);
+
 
     // Retrieve encoders and closed-loop controllers from the shooter sparks as local variables
-    m_shooterShooterEncoder = m_shooterShooterSpark.getEncoder();
-    m_shooterTurnerEncoder = m_shooterTurnerSpark.getEncoder();
+    m_shooterShooterEncoder = m_shooterSpark.getEncoder();
+    
 
-    m_shooterShooterClosedLoopController = m_shooterShooterSpark.getClosedLoopController();
-    m_shooterTurnerClosedLoopController = m_shooterTurnerSpark.getClosedLoopController();
+    m_shooterShooterClosedLoopController = m_shooterSpark.getClosedLoopController();
+    
 
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
@@ -60,11 +61,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
  
 
-    m_shooterShooterSpark.configure(Configs.Shooter.shooterShooterConfig, ResetMode.kResetSafeParameters,
+    m_shooterSpark.configure(Configs.Shooter.shooterConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    m_shooterTurnerSpark.configure(Configs.Shooter.shooterTurnerConfig, ResetMode.kResetSafeParameters,
+    m_shooterSparkfollower.configure(Configs.Shooter.shooterFollowerConfig, ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+
+
+        
+
   }
 
 
@@ -102,7 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
   public void stopShooter() {
-    m_shooterShooterSpark.stopMotor();
+    m_shooterSpark.stopMotor();
   }
 
   public void toggleShooterDebugInfo() {

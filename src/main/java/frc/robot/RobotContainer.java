@@ -116,10 +116,6 @@ public class RobotContainer {
                 DriveConstants.driveFieldRelative),
             m_robotDrive)); 
 
-
-
-
-
   }
 
   /**
@@ -211,7 +207,23 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_vision.aimAtFieldLocation(m_robotDrive), OIConstants.kDriveDeadband),
                 DriveConstants.driveFieldRelative),
-            m_robotDrive));       
+            m_robotDrive));    
+            
+    // Auto-aim at a fixed field pose while the AutoAim button is held
+    new JoystickButton(m_buttonboard, OIConstants.kPointAtHubButton)
+        .whileTrue(
+         new RunCommand(() -> m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_vision.aimAtTarget(m_robotDrive), OIConstants.kDriveDeadband),
+                DriveConstants.driveFieldRelative),
+            m_robotDrive));  
+
+
+
+
+
+
          
     //  Shooter Speed Up
     new JoystickButton(m_buttonboard, OIConstants.kshooterSpeedUpButton)
@@ -233,12 +245,6 @@ public class RobotContainer {
     
 
     //////////////////////////////////  Shuffleboard Toggles  /////////////////////////////////////////
-
-    //  Toggle Extra Info to Shuffleboard
-    new JoystickButton(m_buttonboard, OIConstants.kdriveInfoButton)
-        .whileTrue(new InstantCommand(
-            () -> m_robotDrive.toggleDriveDebugInfo(),
-            m_robotDrive));
 
 
     //  Toggle Climber Info to Shuffleboard

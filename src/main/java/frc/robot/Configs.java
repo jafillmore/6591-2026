@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public final class Configs {
     public static final class MAXSwerveModule {
@@ -19,9 +20,6 @@ public final class Configs {
                     / ModuleConstants.kDrivingMotorReduction;
             double turningFactor = 2 * Math.PI;
             double drivingVelocityFeedForward = 1 / ModuleConstants.kDriveWheelFreeSpeedRps;
-
-                   
-
            
             drivingConfig
                     .idleMode(IdleMode.kBrake)
@@ -57,7 +55,6 @@ public final class Configs {
                     .positionWrappingEnabled(true)
                     .positionWrappingInputRange(0, turningFactor);
 
-           
         }
     }
 
@@ -67,8 +64,6 @@ public final class Configs {
         public static final SparkMaxConfig upperIntakeConfig = new SparkMaxConfig();
       
         static {
-
-
 
             lowerIntakeConfig
                 .idleMode(IdleMode.kBrake)
@@ -81,11 +76,7 @@ public final class Configs {
                 .inverted(false);
 
         }
-
-
-
     }
-
 
     public static final class Climber {
 
@@ -99,8 +90,6 @@ public final class Configs {
                 .smartCurrentLimit(50)
                 .inverted(true);
         
-                        
-                            
             leftclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
@@ -111,14 +100,11 @@ public final class Configs {
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
                 .positionWrappingEnabled(false);
-                          
 
-                            
             rightclimberConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(false);
-                
                     
             rightclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -136,23 +122,17 @@ public final class Configs {
 
 
 public static final class Shooter {
-        public static final SparkMaxConfig shooterShooterConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig shooterTurnerConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig shooterTurnerResetConfig = new SparkMaxConfig();
-
-                
+        public static final SparkMaxConfig shooterConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig shooterFollowerConfig = new SparkMaxConfig();
+            
         static {           
-        
-            double shooterTurnerFactor = (2 * Math.PI) / ShooterConstants.kTurningMotorReduction;
-
-            shooterShooterConfig
+            
+            shooterConfig
                 .idleMode(IdleMode.kCoast)
                 .smartCurrentLimit(50)
                 .inverted(true);
-        
-                        
-                            
-            shooterShooterConfig.closedLoop
+          
+            shooterConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .p(ShooterConstants.kShooterP)
@@ -160,55 +140,12 @@ public static final class Shooter {
                 .d(ShooterConstants.kShooterD)
                 .outputRange(-1.0, 1.0)
                 .feedForward.kV(ShooterConstants.kShooterFF);
-               
-             
-                          
 
-                            
-            shooterTurnerConfig
-                .idleMode(IdleMode.kBrake)
-                .smartCurrentLimit(50)
-                .inverted(false);
-              
-          
-
-            
-            shooterTurnerConfig.encoder
-                    // Invert the turning encoder, since the output shaft rotates in the opposite
-                    // direction of the steering motor in the MAXSwerve Module.
-                    //.inverted(false)
-                    .positionConversionFactor(shooterTurnerFactor); // degrees
-           
-                    
-            shooterTurnerConfig.softLimit.forwardSoftLimit(ShooterConstants.kTurnerForwardSoftLimit);
-            shooterTurnerConfig.softLimit.forwardSoftLimitEnabled(true);
-            shooterTurnerConfig.softLimit.reverseSoftLimit(ShooterConstants.kTurnerReverseSoftLimit);
-            shooterTurnerConfig.softLimit.reverseSoftLimitEnabled(true);
-            shooterTurnerResetConfig.softLimit.reverseSoftLimitEnabled(false);
-            
-                    
-            shooterTurnerConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                // These are example gains you may need to them for your own robot!
-                .p(ShooterConstants.kShooterTurnerP)
-                .i(ShooterConstants.kShooterTurnerI)
-                .d(ShooterConstants.kShooterTurnerD)
-                .outputRange(ShooterConstants.kTurnerMinPower, ShooterConstants.kTurnerMaxPower)
-                // Enable PID wrap around for the turning motor. This will allow the PID
-                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
-                // to 10 degrees will go through 0 rather than the other direction which is a
-                // longer route.
-                .positionWrappingEnabled(false)
-                .feedForward.kV(ShooterConstants.kShooterTurnerFF);
-                
-            
+            shooterFollowerConfig
+                .idleMode(IdleMode.kCoast)
+                .follow(ShooterConstants.kshooterShooterCANId, false); // Set this motor to follow the main shooter motor
         
         }
     }
-
-
-
-
-
 
 }
