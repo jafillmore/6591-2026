@@ -68,7 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
   private java.util.Optional<edu.wpi.first.math.geometry.Pose2d> latestVisionPose = java.util.Optional.empty();
   private double latestVisionTimestamp = 0.0;
   
-   public final PIDController aimingController = new PIDController(VisionConstants.kPAimingController, 0, VisionConstants.kDAimingController);
+  public final PIDController aimingController = new PIDController(VisionConstants.kPAimingController, 0, VisionConstants.kDAimingController);
   
   
   private double turnError = 0.0;
@@ -258,10 +258,10 @@ public class VisionSubsystem extends SubsystemBase {
     double desiredHeading = Math.atan2(dy, dx);
     // Robot heading in field frame
     double robotHeading = drive.getHeading();
-    ;
+    double correctedHeading = Math.atan2(Math.sin(robotHeading), Math.cos(robotHeading));
     // Robot angle relative to target (radians)
-    turnError = desiredHeading - robotHeading;
-    double turnPower = aimingController.calculate(robotHeading, desiredHeading);
+    turnError = desiredHeading - correctedHeading;
+    double turnPower = aimingController.calculate(turnError, 0);
 
     
     // Normalize to [-pi, pi]
@@ -333,7 +333,7 @@ public class VisionSubsystem extends SubsystemBase {
 // Read in relevant data from the Camera
     targetVisible = false;
     targetYaw = 0.0;
-    int targetID = /*(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID :*/ VisionConstants.kBlueTargetID;
+    int targetID = (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) ? VisionConstants.kRedTargetID : VisionConstants.kBlueTargetID;
     var results = poseCamera1.getAllUnreadResults();
     if (!results.isEmpty()) {
       // Camera processed a new frame since last
