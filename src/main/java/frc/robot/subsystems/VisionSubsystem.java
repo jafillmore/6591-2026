@@ -215,6 +215,7 @@ public class VisionSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("Target Y", ay);
       SmartDashboard.putNumber("Target Yaw", targetYaw.getDegrees());
       SmartDashboard.putNumber("RobotAngleError", turnError * 180 / Math.PI);
+      SmartDashboard.putNumber("Range", range); 
     }
 
     return powerPlusRange;

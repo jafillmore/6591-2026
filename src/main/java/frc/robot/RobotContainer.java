@@ -279,7 +279,29 @@ public class RobotContainer {
         new InstantCommand(
         () ->    m_climb.setRightClimber(ClimberConstants.krightArmDown),
         m_climb));
+
+    //  Zero Climber
+    new JoystickButton (m_buttonboard,OIConstants.kzeroClimberButton)
+    .onTrue( 
+        new InstantCommand(
+        () -> m_climb.zeroClimber(),
+        m_climb));
+
+        //  Arms down (for climbing)
+    new JoystickButton (m_buttonboard,OIConstants.karmsdownButton)
+    .onTrue( 
+        new InstantCommand(
+        () -> m_climb.climberDown(),
+        m_climb));
+
+
+
+
+
   }
+
+
+
 
   private void configureDashboard() {
         

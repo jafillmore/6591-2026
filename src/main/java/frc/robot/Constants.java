@@ -144,8 +144,8 @@ public final class Constants {
     public static final int kzeroShooterButton = 10;
     public static final int kleftArmUpButton = 11;
     public static final int kleftArmDownButton = 12;
-    //  public static final int  = 13;
-    // public static final int  = 14;
+    public static final int kzeroClimberButton = 13;
+    public static final int karmsdownButton = 14;
     public static final int krightArmUpButton = 15;
     public static final int krightArmDownButton = 16;
     public static final int kshooterInfoButton = 22;
@@ -178,23 +178,21 @@ public final class Constants {
 
     //  constants for thee climber subsystem
 
-    public static final int kleftClimberCANId = 13; 
-    public static final double kleftWristPower = 0.15;
-   
-    public static final int krightClimberCANId = 14; 
-    public static final double krightWristPower = 0.15;
-
-    public static final double kclimberP = 0.3;
+    public static final int kleftClimberCANId = 14; 
+       
+    public static final int krightClimberCANId = 13; 
+  
+    public static final double kclimberP = 0.035;
     public static final double kclimberI = 0.0;
-    public static final double kclimberD = 0.0;
-    public static final double kclimberFF = 0.0;
+    public static final double kclimberD = 0.001;
+    public static final double kclimberFF = 0.000;
 
 
 
-    public static final double krightArmUp = 1.0;
-    public static final double krightArmDown = 0.0;
-    public static final double kleftArmUp =1.0; 
-    public static final double kleftArmDown = 0.0;
+    public static final double krightArmUp = 0.0;
+    public static final double krightArmDown = -40.0;
+    public static final double kleftArmUp =0.0; 
+    public static final double kleftArmDown = -40.0;
   
   }
 

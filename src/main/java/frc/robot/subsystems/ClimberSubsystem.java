@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
@@ -34,7 +35,7 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkClosedLoopController m_rightClimberClosedLoopController;
   
     //Variables for System Debugging
-  private boolean ClimberSystemDebug = false;
+  private boolean ClimberSystemDebug = true;
 
   public ClimberSubsystem() {
 
@@ -76,6 +77,31 @@ public class ClimberSubsystem extends SubsystemBase {
     m_rightClimberClosedLoopController.setSetpoint(rightclimberPosition, ControlType.kPosition);
   }
  
+  public void stopClimber() {
+    m_leftClimberSpark.stopMotor();
+    m_rightClimberSpark.stopMotor();
+  }
+
+  public void resetClimberEncoders() {
+    m_leftClimberEncoder.setPosition(0);
+    m_rightClimberEncoder.setPosition(0);
+  }
+
+  public void zeroClimber() {
+    m_leftClimberSpark.set(0.04);
+    m_rightClimberSpark.set(0.04);
+    Timer.delay(1);
+    resetClimberEncoders();
+    stopClimber();
+  }
+
+  public void climberDown() {
+    m_leftClimberSpark.set(-0.05);
+    m_rightClimberSpark.set(-0.05);
+    Timer.delay(1);
+    stopClimber();
+  }
+
 
 
   public void toggleClimberDebugInfo() {
