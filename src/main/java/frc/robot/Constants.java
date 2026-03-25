@@ -187,6 +187,7 @@ public final class Constants {
     public static final double kclimberP = 0.3;
     public static final double kclimberI = 0.0;
     public static final double kclimberD = 0.0;
+    public static final double kclimberFF = 0.0;
 
 
 
@@ -218,17 +219,12 @@ public final class Constants {
     public static final double kTurnerMaxPower = 0.5; // Max power to apply to the turret motor to prevent damage
     public static final double kTurnerMinPower = -0.5; // Min power to apply to the turret motor to prevent damage   
     
-    public static final double kShooterP = 0.0001; 
+    public static final double kShooterP = 0.001; 
     public static final double kShooterI = 0.0;
-    public static final double kShooterD = 0.0;
+    public static final double kShooterD = 0.001;
     public static final double kShooterFF = 0.0025; //12.0 / 5767 This is a feedforward gain, you may need to tune it for your own robot!
 
     public static final double kShooterTurnerP = 0.012;
-
-
-    public static final double kShooterTurnerI = 0.0;
-    public static final double kShooterTurnerD = 0.0;
-    public static final double kShooterTurnerFF = 0.008;
 
 
 
@@ -244,8 +240,8 @@ public final class Constants {
   }
     //  constants for the vision subsystem
 public static final class VisionConstants {
-    public static final double kPAimingController = 0.4;
-    public static final double kDAimingController = 0.0;
+    public static final double kPAimingController = 0.005; // Proportional gain for vision turn control, may need to be tuned for your robot
+    public static final double kDAimingController = 0.001;
     public static final double kAimAtTarget_kP = 1.0; // Proportional gain for vision turn control
     public static final int kBlueTargetID = 26;
     public static final int kRedTargetID = 10;
@@ -274,22 +270,6 @@ public static final class VisionConstants {
     private static final double xLocation = Units.inchesToMeters(5.0);
     private static final double yLocation = Units.inchesToMeters(0.0);
     private static final double zLocation = Units.inchesToMeters(31.0);
-    // ROTATION
-    public static final double roll = Units.degreesToRadians(90);
-    public static final double pitch = Units.degreesToRadians(0.0);
-    public static final double yaw = Units.degreesToRadians(0);
-
-    public static final Transform3d location =
-        new Transform3d(
-            new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
-  }
-
-  public static final class TargetingCamera1 {
-    public static final String name = "Pantherpi-Cam3";
-    // XYZ
-    private static final double xLocation = Units.inchesToMeters(-6);
-    private static final double yLocation = Units.inchesToMeters(0);
-    private static final double zLocation = Units.inchesToMeters(10.5);
     // ROTATION
     public static final double roll = Units.degreesToRadians(90);
     public static final double pitch = Units.degreesToRadians(0.0);

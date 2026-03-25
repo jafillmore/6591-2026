@@ -10,9 +10,8 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonUtils;
 import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -20,6 +19,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.Robot;
 
 
  
@@ -47,9 +46,15 @@ import frc.robot.Robot;
 
 public class VisionSubsystem extends SubsystemBase {
   /** Creates a new VisionSubsystem. */
-  public double targetYaw;
+  
   public boolean targetVisible;
   private boolean VisionSystemDebug = true;
+  private boolean AimingDebug = true;
+  public double targetYaw;
+  private double turnError = 0.0;
+  public double range = 0.0;
+  public double twistPower = 0.0;
+
   // Default hostname is "photonvision", but we changed that to "CAMERA_NAME"
   //private PhotonCamera camera;
   private final DriveSubsystem m_driveSubsystem;
@@ -62,51 +67,27 @@ public class VisionSubsystem extends SubsystemBase {
 
   private final PhotonPoseEstimator poseCamera1PoseEstimator;
   private final PhotonPoseEstimator poseCamera2PoseEstimator;
+  
   // Flag to ensure we only reset odometry once at startup from vision
   private boolean initialPoseSet = false;
+  
   // Latest vision pose and timestamp
   private java.util.Optional<edu.wpi.first.math.geometry.Pose2d> latestVisionPose = java.util.Optional.empty();
   private double latestVisionTimestamp = 0.0;
   
+  // PID controller for aiming at the center of the hub
   public final PIDController aimingController = new PIDController(VisionConstants.kPAimingController, 0, VisionConstants.kDAimingController);
   
   
-  private double turnError = 0.0;
-  private boolean AimingDebug = true;
-  public double range = 0.0;
-  public double twistPower = 0.0;
-
-    // Simulation Config
-  // A vision system sim labelled as "pose and targeting" in NetworkTables
-  private VisionSystemSim poseVisionSim;
-  private VisionSystemSim targetingVisionSim;
-
-  /*
-  // A 0.5 x 0.25 meter rectangular target
-  private final TargetModel targetModel = new TargetModel(0.5, 0.25);
-  // The pose of where the target is on the field.
-  // Its rotation determines where "forward" or the target x-axis points.
-  // Let's say this target is flat against the far wall center, facing the blue driver stations.
-  private final Pose3d targetPose = new Pose3d(16, 4, 2, new Rotation3d(0, 0, Math.PI));
-  // The given target model at the given pose
-  private final VisionTargetSim visionTarget = new VisionTargetSim(targetPose, targetModel);
-  */
-  
   // setup cameras
-  private final SimCameraProperties PoseCameraProp = new SimCameraProperties();
- 
   private PhotonCameraSim poseCamera1Sim;
   private PhotonCameraSim poseCamera2Sim;
-
-
-
-
 
 
   public VisionSubsystem(DriveSubsystem d_subsystem) {
 
     m_driveSubsystem = d_subsystem;
-    aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
     poseCamera1 = new PhotonCamera(Constants.PoseCamera1.name);
     poseCamera2 = new PhotonCamera(Constants.PoseCamera2.name);
@@ -125,52 +106,15 @@ public class VisionSubsystem extends SubsystemBase {
     poseCamera1PoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     poseCamera2PoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
-    if (Robot.isSimulation()) {
-      simulationInit();
-    }
-  }
-
-  private void simulationInit() {
-    // setup simulation for vision system
-    poseVisionSim = new VisionSystemSim("pose");
-    poseVisionSim.addAprilTags(aprilTagFieldLayout);
-
-
-
-    // Set the properties of the camera
- 
-    PoseCameraProp.setCalibration(1280, 720, Rotation2d.fromDegrees(70));
-
-    // Approximate detection noise with average and standard deviation error in pixels.
-
-    PoseCameraProp.setCalibError(0.25, 0.08);
-    // Set the camera image capture framerate (Note: this is limited by robot loop rate).
-
-    PoseCameraProp.setFPS(50);
-
-    // The average and standard deviation in milliseconds of image data latency.
-
-    PoseCameraProp.setAvgLatencyMs(35);
-
-    PoseCameraProp.setLatencyStdDevMs(15);
-
-    // initialize the cameras
-    poseCamera1Sim = new PhotonCameraSim(poseCamera1, PoseCameraProp);
-    poseCamera2Sim = new PhotonCameraSim(poseCamera2, PoseCameraProp);
-
-
-    // Set Camera locations and add them to the vision simulation
-    poseVisionSim.addCamera(poseCamera1Sim, Constants.PoseCamera1.location);
-    poseVisionSim.addCamera(poseCamera2Sim, Constants.PoseCamera2.location);
 
   }
 
-      /**
-     * Gets the last procesesd frame captured by camera
-     *
-     * @param camera Desired camera to get result from
-     * @return Targets in the frame.
-      */
+    /**
+    * Gets the last procesesd frame captured by camera
+    *
+    * @param camera Desired camera to get result from
+    * @return Targets in the frame.
+    */
     private Optional<PhotonPipelineResult> getPipelineResults(PhotonCamera camera) {
       var results = camera.getAllUnreadResults();
       if (!results.isEmpty()) {
@@ -230,16 +174,13 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
 
-
-
-
   /**
-   * Aim the turret at a fixed field location.
+   * Aim at a fixed field location.
    *
    * @param fieldTarget The target pose on the field to aim at (x,y used; rotation ignored)
    * @param drive The DriveSubsystem to get the robot's current pose from
    */
-  public double aimAtFieldLocation(DriveSubsystem drive) {
+  public double[] aimAtFieldLocation(DriveSubsystem drive) {
     Pose2d robotPose = drive.getPose();
 
     double ax;
@@ -251,18 +192,18 @@ public class VisionSubsystem extends SubsystemBase {
       ax = ShooterConstants.kBlueHubXPosition;
       ay = ShooterConstants.kBlueHubYPosition;        
     }
-    // Compute vector from robot to target in field coordinates
-    double dx = ax - robotPose.getX();
-    double dy = ay - robotPose.getY();
-    // Desired heading in field frame
-    double desiredHeading = Math.atan2(dy, dx);
-    // Robot heading in field frame
-    double robotHeading = drive.getHeading();
-    double correctedHeading = Math.atan2(Math.sin(robotHeading), Math.cos(robotHeading));
-    // Robot angle relative to target (radians)
-    turnError = desiredHeading - correctedHeading;
-    double turnPower = aimingController.calculate(turnError, 0);
 
+    // Define the target pose on the field (x and y in meters, rotation ignored for aiming)
+    Pose2d fieldTarget = new Pose2d(ax, ay, new Rotation2d(0));
+
+    Rotation2d targetYaw = PhotonUtils.getYawToPose(robotPose, fieldTarget);
+    double turnError = MathUtil.angleModulus(targetYaw.getRadians()); // Since we want to aim the front of the robot, the error is just the yaw to the target pose
+  
+    double range = PhotonUtils.getDistanceToPose(robotPose, fieldTarget);
+
+
+    double turnPower = aimingController.calculate(turnError*180/Math.PI, 0);
+    double powerPlusRange[] = {turnPower, range};
     
     // Normalize to [-pi, pi]
     // turnError = Math.atan2(Math.sin(turnError), Math.cos(turnError));
@@ -272,11 +213,11 @@ public class VisionSubsystem extends SubsystemBase {
     if (AimingDebug) {
       SmartDashboard.putNumber("Target X", ax);
       SmartDashboard.putNumber("Target Y", ay);
-      SmartDashboard.putNumber("DesiredHeadingdeg", desiredHeading * 180 / Math.PI);
+      SmartDashboard.putNumber("Target Yaw", targetYaw.getDegrees());
       SmartDashboard.putNumber("RobotAngleError", turnError * 180 / Math.PI);
     }
 
-    return turnPower;
+    return powerPlusRange;
 
   }
 
@@ -303,10 +244,6 @@ public class VisionSubsystem extends SubsystemBase {
 
             twistPower=targetYaw*VisionConstants.kAimAtTarget_kP;
 
-
-
-
-            
            
           }
         }
@@ -404,13 +341,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-    // Update with the simulated drivetrain pose. This should be called every loop in simulation.
-    poseVisionSim.update(m_driveSubsystem.getPose());
-    targetingVisionSim.update(m_driveSubsystem.getPose());
-  }  
+ 
 
 }
 

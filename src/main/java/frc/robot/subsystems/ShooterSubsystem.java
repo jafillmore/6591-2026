@@ -105,6 +105,11 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed+shooterSpeedAdjust, ControlType.kVelocity);
   }
 
+  public void setShooterSpeedFromRange(double range) {
+    double shooterSpeed = 0.2929*range*range - 49.207*range + 4813.5; // Quadratic fit for range to speed, from testing data
+    m_shooterShooterClosedLoopController.setSetpoint(shooterSpeed, ControlType.kVelocity);
+  }
+
 
   public void stopShooter() {
     m_shooterSpark.stopMotor();

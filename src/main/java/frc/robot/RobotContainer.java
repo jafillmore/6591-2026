@@ -5,18 +5,10 @@
 package frc.robot;
 
 import java.util.Optional;
-import java.util.concurrent.RunnableFuture;
 
-import choreo.Choreo;
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
-import choreo.auto.AutoRoutine;
-import choreo.auto.AutoTrajectory;
-import choreo.trajectory.SwerveSample;
-import choreo.trajectory.Trajectory;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -30,18 +22,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 /*
@@ -202,12 +192,18 @@ public class RobotContainer {
     // Auto-aim at a fixed field pose while the AutoAim button is held
     new JoystickButton(m_buttonboard, OIConstants.kAutoAimButton)
         .whileTrue(
-         new RunCommand(() -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_vision.aimAtFieldLocation(m_robotDrive), OIConstants.kDriveDeadband),
-                DriveConstants.driveFieldRelative),
-            m_robotDrive));    
+            new RunCommand(() -> {
+                double[] powerPlusRange = m_vision.aimAtFieldLocation(m_robotDrive);
+                m_robotDrive.drive(
+                    -MathUtil.applyDeadband(m_leftJoystick.getY(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(m_leftJoystick.getX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(powerPlusRange[0], OIConstants.kDriveDeadband),
+                    DriveConstants.driveFieldRelative);
+                m_shooter.setShooterSpeedFromRange(powerPlusRange[1]);
+            }, m_vision, m_robotDrive, m_shooter));
+
+
+
             
     // Auto-aim at a fixed field pose while the AutoAim button is held
     new JoystickButton(m_buttonboard, OIConstants.kPointAtHubButton)
