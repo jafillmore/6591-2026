@@ -54,8 +54,7 @@ public class RobotContainer {
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ClimberSubsystem m_climb = new ClimberSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-    private final AutoFactory autoFactory;
-
+   
     private final Timer timer = new Timer();
     
 
@@ -73,15 +72,6 @@ public class RobotContainer {
    */
   public RobotContainer() {
     
-    autoFactory = new AutoFactory(
-           m_robotDrive::getPose, // A function that returns the current robot pose
-           m_robotDrive::resetOdometry, // A function that resets the current robot pose to the provided Pose2d
-           m_robotDrive::followTrajectory, // The drive subsystem trajectory follower 
-            true, // If alliance flipping should be enabled 
-            m_robotDrive // The drive subsystem
-        );
-
-
     
     // Run configuration options for Pigeon 2 navigation module
     m_robotDrive.pidgeyConfig();
@@ -306,12 +296,12 @@ public class RobotContainer {
     AutoChooser autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addCmd("Left Shoot n Move", this::leftShootMoveCommand);
-    autoChooser.addCmd("Left Shoot n Move", this::leftShootStayCommand);
-    autoChooser.addCmd("Right Shoot n Move", this::rightShootMoveCommand);
-    autoChooser.addCmd("Right Shoot n Move", this::rightShootStayCommand);
-    autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
-    autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
+    autoChooser.addCmd("Left Center Climb", this::leftCenterClimbCommand);
+    //autoChooser.addCmd("Left Shoot n Move", this::leftShootStayCommand);
+    //autoChooser.addCmd("Right Shoot n Move", this::rightShootMoveCommand);
+    //autoChooser.addCmd("Right Shoot n Move", this::rightShootStayCommand);
+    //autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
+    //autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
 
 
     // Put the auto chooser on the dashboard
@@ -350,7 +340,7 @@ public class RobotContainer {
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command leftShootMoveCommand() {
+    public Command leftCenterClimbCommand() {
         autonStatus = "Left Wall ShootnMove";
         SmartDashboard.putString("Attempting", autonStatus);
 
@@ -393,237 +383,7 @@ public class RobotContainer {
     }/////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        public Command leftShootStayCommand() {
-        autonStatus = "Left Wall ShootnStay";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-        return Commands.sequence(
-            // Set shooter speed once
-            new InstantCommand(
-                () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
-                m_shooter
-            ),
-
-            // Wait for shooter to spin up
-            Commands.waitSeconds(2),
-
-            
-             
-            // Start intake (one-shot to set motors)
-            new InstantCommand(
-                () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                m_intake
-            ),
-        
-
-            // Wait for shots
-            Commands.waitSeconds(10.0),
-
-            // Drive forward for 1 second while intake/shooter are running
-            Commands.run(() -> m_robotDrive.drive(-0.09, 0.0, 0.0,true), m_robotDrive).withTimeout(1.0),
-
-            // Stop drive and intake when done
-            new InstantCommand(
-                () -> {
-                    m_robotDrive.drive(0.0, 0.0, 0.0,true);
-                    m_intake.setIntake(0, 0);
-                },
-                m_robotDrive,
-                m_intake
-            )
-        );
-    }/////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command rightShootMoveCommand() {
-        autonStatus = "Right Shoot n Move";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-    return Commands.sequence(
-            autoFactory.resetOdometry("RightSide"), // 
-
-            Commands.deadline(
-                autoFactory.trajectoryCmd("RightSide") //
-                // 
-                ),
-            
-                // Set shooter speed once
-                new InstantCommand(
-                    () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
-                    m_shooter
-                ),
-
-
-                // Wait for shooter to spin up and turret to rotate
-                Commands.waitSeconds(2),
-                
-                // Start intake (one-shot to set motors)
-                new InstantCommand(
-                    () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                    m_intake
-                ),
-            
-
-                // Wait for shots
-                Commands.waitSeconds(10.0),
-
-                // Drive forward for 1 second while intake/shooter are running
-                //Commands.run(() -> m_robotDrive.drive(-0.09, 0.0, 0.0,true), m_robotDrive).withTimeout(1.0),
-
-                // Stop drive and intake when done
-                new InstantCommand(
-                    () -> {
-                        m_robotDrive.drive(0.0, 0.0, 0.0,true);
-                        m_intake.setIntake(0, 0);
-                       
-                    },
-                    m_robotDrive,
-                    m_intake,
-                    m_shooter
-                )
-            );
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command rightShootStayCommand() {
-        autonStatus = "Right Shoot n Stay";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-    return Commands.sequence(
-                // Set shooter speed once
-                new InstantCommand(
-                    () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
-                    m_shooter
-                ),
-
-
-                // Wait for shooter to spin up and turret to rotate
-                Commands.waitSeconds(2),
-                 
-                
-                // Start intake (one-shot to set motors)
-                new InstantCommand(
-                    () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                    m_intake
-                ),
-            
-
-                // Wait for shots
-                Commands.waitSeconds(10.0),
-
-              
-                // Stop drive and intake when done
-                new InstantCommand(
-                    () -> m_intake.setIntake(0.0, 0.0),
-                    m_intake
-                )
-            );
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command centerShootMoveCommand() {
-        autonStatus = "Center Shoot n Move";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-    return Commands.sequence(
-                // Set shooter speed once
-                new InstantCommand(
-                    () -> m_shooter.setShooterSpeed(ShooterConstants.kbloopShooterSpeed),
-                    m_shooter
-                ),
-                
-                // Drive forward for 1 second while intake/shooter are running
-                Commands.run(
-                    () -> m_robotDrive.drive(-0.12, 0.0, 0.0,true), m_robotDrive).withTimeout(3.0),
-
-       
-                // Wait robot to move for shooter to spin up and turret to rotate
-                Commands.waitSeconds(5),
-                
-                // Start intake (one-shot to set motors)
-                new InstantCommand(
-                    () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                    m_intake
-                ),
-             
-                // Drive forward for 1 second while intake/shooter are running
-                Commands.run(
-                    () -> m_robotDrive.drive(0.0, 0.0, 0.0,true), m_robotDrive).withTimeout(2.5),            
-
-                // Wait for shots
-                Commands.waitSeconds(10.0),
-
-                // Stop drive and intake when done
-                new InstantCommand(
-                    () -> {
-                        m_robotDrive.drive(0.0, 0.0, 0.0,true);
-                        m_intake.setIntake(0, 0);
-
-                    },
-                    m_robotDrive,
-                    m_intake,
-                    m_shooter
-                )
-            );
-        
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command centerShootStayCommand() {
-        autonStatus = "Center Shoot n Stay";
-        SmartDashboard.putString("Attempting", autonStatus);
-
-    return Commands.sequence(
-                // Set shooter speed once
-                new InstantCommand(
-                    () -> m_shooter.setShooterSpeed(ShooterConstants.kbloopShooterSpeed),
-                    m_shooter
-                ),
-
-
-
-                // Wait for shooter to spin up and turret to rotate
-                Commands.waitSeconds(2),
-              
-
-                
-                
-                // Start intake (one-shot to set motors)
-                new InstantCommand(
-                    () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                    m_intake
-                ),
-            
-
-                // Wait for shots
-                Commands.waitSeconds(10.0),
-
-              
-                // Stop drive and intake when done
-                new InstantCommand(
-                    () -> m_intake.setIntake(0.0, 0.0),
-                    m_intake
-                )
-            );
-        
-
-
-
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////    
+ 
 
 
 
