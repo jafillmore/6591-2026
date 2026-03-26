@@ -253,8 +253,8 @@ public static final class VisionConstants {
     private static final double yLocation = Units.inchesToMeters(9.0);
     private static final double zLocation = Units.inchesToMeters(27.875);
     // ROTATION
-    public static final double roll = Units.degreesToRadians(90);
-    public static final double pitch = Units.degreesToRadians(-5.0);
+    public static final double roll = Units.degreesToRadians(0);
+    public static final double pitch = Units.degreesToRadians(0.0);
     public static final double yaw = Units.degreesToRadians(180);
 
     public static final Transform3d location =
@@ -269,7 +269,7 @@ public static final class VisionConstants {
     private static final double yLocation = Units.inchesToMeters(0.0);
     private static final double zLocation = Units.inchesToMeters(27.875);
     // ROTATION
-    public static final double roll = Units.degreesToRadians(90);
+    public static final double roll = Units.degreesToRadians(0);
     public static final double pitch = Units.degreesToRadians(0.0);
     public static final double yaw = Units.degreesToRadians(0);
 
@@ -277,23 +277,6 @@ public static final class VisionConstants {
         new Transform3d(
             new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
   }
-
-  public static final class TargetingCamera1 {
-    public static final String name = "Pantherpi-Cam3";
-    // XYZ
-    private static final double xLocation = Units.inchesToMeters(-6);
-    private static final double yLocation = Units.inchesToMeters(0);
-    private static final double zLocation = Units.inchesToMeters(27.875);
-    // ROTATION
-    public static final double roll = Units.degreesToRadians(90);
-    public static final double pitch = Units.degreesToRadians(-2.0);
-    public static final double yaw = Units.degreesToRadians(0);
-
-    public static final Transform3d location =
-        new Transform3d(
-            new Translation3d(xLocation, yLocation, zLocation), new Rotation3d(roll, pitch, yaw));
-  }
-
 
 
 }

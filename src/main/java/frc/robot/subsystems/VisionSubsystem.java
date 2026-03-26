@@ -78,12 +78,7 @@ public class VisionSubsystem extends SubsystemBase {
   // PID controller for aiming at the center of the hub
   public final PIDController aimingController = new PIDController(VisionConstants.kPAimingController, 0, VisionConstants.kDAimingController);
   
-  
-  // setup cameras
-  private PhotonCameraSim poseCamera1Sim;
-  private PhotonCameraSim poseCamera2Sim;
-
-
+ 
   public VisionSubsystem(DriveSubsystem d_subsystem) {
 
     m_driveSubsystem = d_subsystem;
