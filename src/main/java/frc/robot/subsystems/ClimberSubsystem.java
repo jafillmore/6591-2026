@@ -44,8 +44,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     m_blackClimberSpark = new SparkMax(ClimberConstants.kblackClimberCANId, MotorType.kBrushless);
     m_orangeClimberSpark = new SparkMax(ClimberConstants.korangeClimberCANId, MotorType.kBrushless);
-    m_blackArmSpark = new SparkMax(ClimberConstants.kblackClimberCANId, MotorType.kBrushless);
-    m_orangeArmSpark = new SparkMax(ClimberConstants.korangeClimberCANId, MotorType.kBrushless);
+    m_blackArmSpark = new SparkMax(ClimberConstants.kblackArmCANId, MotorType.kBrushless);
+    m_orangeArmSpark = new SparkMax(ClimberConstants.korangeArmCANId, MotorType.kBrushless);
 
     m_blackClimberEncoder = m_blackClimberSpark.getEncoder();
     m_orangeClimberEncoder = m_orangeClimberSpark.getEncoder();

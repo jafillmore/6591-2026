@@ -221,14 +221,7 @@ public final class Constants {
     public static final double kbloopShooterSpeed = 2100.0; // 
     public static final double kshooterSpeedOffset= 100; // Need to determine the actual speed we want to shoot at
    
-    public static final int kshooterTurnerCANId = 9; 
-    public static final double kshooterturnerhomePostion = 0.0;
-    public static final double kTurningMotorReduction = (18.0/144.0)*20.0; // 20:1 gear reduction on the turning motor
-    public static final double kTurnerForwardSoftLimit = 182.0; // degrees
-    public static final double kTurnerReverseSoftLimit = -2.0; // radians
-    public static final double kTurnerResetPostion = -15.0; // Need to determine the actual reset position for the turret
-    public static final double kTurnerMaxPower = 0.5; // Max power to apply to the turret motor to prevent damage
-    public static final double kTurnerMinPower = -0.5; // Min power to apply to the turret motor to prevent damage   
+    
     
     public static final double kShooterP = 0.0004; 
     public static final double kShooterI = 0.0;
