@@ -23,36 +23,51 @@ import frc.robot.Constants.ClimberConstants;
 public class ClimberSubsystem extends SubsystemBase {
  
   /** Creates a new Climber. */
-  private final SparkMax m_leftClimberSpark; 
-  private final SparkMax m_rightClimberSpark;  
- 
+  private final SparkMax m_blackClimberSpark; 
+  private final SparkMax m_orangeClimberSpark;  
+  private final SparkMax m_blackArmSpark;
+  private final SparkMax m_orangeArmSpark;
 
-  private final RelativeEncoder m_leftClimberEncoder;
-  private final RelativeEncoder m_rightClimberEncoder;
+  private final RelativeEncoder m_blackClimberEncoder;
+  private final RelativeEncoder m_orangeClimberEncoder;
+  private final RelativeEncoder m_blackArmEncoder;
+  private final RelativeEncoder m_orangeArmEncoder;
 
-
-  private final SparkClosedLoopController m_leftClimberClosedLoopController;
-  private final SparkClosedLoopController m_rightClimberClosedLoopController;
-  
+  private final SparkClosedLoopController m_blackClimberClosedLoopController;
+  private final SparkClosedLoopController m_orangeClimberClosedLoopController;
+  private final SparkClosedLoopController m_blackArmClosedLoopController;
+  private final SparkClosedLoopController m_orangeArmClosedLoopController;
     //Variables for System Debugging
   private boolean ClimberSystemDebug = true;
 
   public ClimberSubsystem() {
 
-    m_leftClimberSpark = new SparkMax(ClimberConstants.kleftClimberCANId, MotorType.kBrushless);
-    m_rightClimberSpark = new SparkMax(ClimberConstants.krightClimberCANId, MotorType.kBrushless);
-    
-    
-    m_leftClimberEncoder = m_leftClimberSpark.getEncoder();
-    m_rightClimberEncoder = m_rightClimberSpark.getEncoder();
+    m_blackClimberSpark = new SparkMax(ClimberConstants.kblackClimberCANId, MotorType.kBrushless);
+    m_orangeClimberSpark = new SparkMax(ClimberConstants.korangeClimberCANId, MotorType.kBrushless);
+    m_blackArmSpark = new SparkMax(ClimberConstants.kblackClimberCANId, MotorType.kBrushless);
+    m_orangeArmSpark = new SparkMax(ClimberConstants.korangeClimberCANId, MotorType.kBrushless);
 
-    m_leftClimberClosedLoopController = m_leftClimberSpark.getClosedLoopController();
-    m_rightClimberClosedLoopController = m_rightClimberSpark.getClosedLoopController();
-    
-    m_leftClimberSpark.configure(Configs.Climber.leftclimberConfig, ResetMode.kResetSafeParameters,
+    m_blackClimberEncoder = m_blackClimberSpark.getEncoder();
+    m_orangeClimberEncoder = m_orangeClimberSpark.getEncoder();
+    m_blackArmEncoder = m_blackArmSpark.getEncoder();
+    m_orangeArmEncoder = m_orangeArmSpark.getEncoder();
+
+
+    m_blackClimberClosedLoopController = m_blackClimberSpark.getClosedLoopController();
+    m_orangeClimberClosedLoopController = m_orangeClimberSpark.getClosedLoopController();
+    m_blackArmClosedLoopController = m_blackArmSpark.getClosedLoopController();
+    m_orangeArmClosedLoopController = m_orangeArmSpark.getClosedLoopController();
+
+    m_blackClimberSpark.configure(Configs.Climber.blackclimberConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
-    m_rightClimberSpark.configure(Configs.Climber.rightclimberConfig, ResetMode.kResetSafeParameters,
+    m_orangeClimberSpark.configure(Configs.Climber.orangeclimberConfig, ResetMode.kResetSafeParameters,
+    PersistMode.kPersistParameters);
+
+    m_blackArmSpark.configure(Configs.Climber.blackarmConfig, ResetMode.kResetSafeParameters,
+    PersistMode.kPersistParameters);
+
+    m_orangeArmSpark.configure(Configs.Climber.orangearmConfig, ResetMode.kResetSafeParameters,
     PersistMode.kPersistParameters);
 
     
@@ -69,35 +84,47 @@ public class ClimberSubsystem extends SubsystemBase {
   
 
 
-  public void setLeftClimber (Double leftclimberPosition) {
-    m_leftClimberClosedLoopController.setSetpoint(leftclimberPosition, ControlType.kPosition);
+  public void setBlackClimber (Double blackclimberPosition) {
+    m_blackClimberClosedLoopController.setSetpoint(blackclimberPosition, ControlType.kPosition);
+  }
+  //
+  public void setBlackArm(Double blackarmPower) {
+    m_blackArmSpark.set(blackarmPower);
   }
   
-  public void setRightClimber (Double rightclimberPosition) {
-    m_rightClimberClosedLoopController.setSetpoint(rightclimberPosition, ControlType.kPosition);
+  public void setOrangeClimber (Double orangeclimberPosition) {
+    m_orangeClimberClosedLoopController.setSetpoint(orangeclimberPosition, ControlType.kPosition);
+  }
+ //
+  public void setOrangeArm(Double orangearmPower) {
+    m_orangeArmSpark.set(orangearmPower);
   }
  
   public void stopClimber() {
-    m_leftClimberSpark.stopMotor();
-    m_rightClimberSpark.stopMotor();
+    m_blackClimberSpark.stopMotor();
+    m_orangeClimberSpark.stopMotor();
+    m_blackArmSpark.stopMotor();
+    m_orangeArmSpark.stopMotor();
   }
 
   public void resetClimberEncoders() {
-    m_leftClimberEncoder.setPosition(0);
-    m_rightClimberEncoder.setPosition(0);
+    m_blackClimberEncoder.setPosition(0);
+    m_orangeClimberEncoder.setPosition(0);
   }
 
   public void zeroClimber() {
-    m_leftClimberSpark.set(0.04);
-    m_rightClimberSpark.set(0.04);
+    m_blackClimberSpark.set(0.04);
+    m_orangeClimberSpark.set(0.04);
     Timer.delay(1);
     resetClimberEncoders();
     stopClimber();
   }
 
   public void climberDown() {
-    m_leftClimberSpark.set(-0.05);
-    m_rightClimberSpark.set(-0.05);
+    m_blackArmSpark.stopMotor();
+    m_orangeArmSpark.stopMotor();
+    m_blackClimberSpark.set(-0.05);
+    m_orangeClimberSpark.set(-0.05);
     Timer.delay(1);
     stopClimber();
   }
@@ -112,8 +139,8 @@ public class ClimberSubsystem extends SubsystemBase {
   //  System Debug Info to display
   public void climberDebugInfo(){
     if (ClimberSystemDebug) {
-      SmartDashboard.putNumber(  "LC Actual", m_leftClimberEncoder.getPosition());
-      SmartDashboard.putNumber(  "RC Actual", m_rightClimberEncoder.getPosition());
+      SmartDashboard.putNumber(  "LC Actual", m_blackClimberEncoder.getPosition());
+      SmartDashboard.putNumber(  "RC Actual", m_orangeClimberEncoder.getPosition());
     }
   }
 

@@ -252,32 +252,70 @@ public class RobotContainer {
 
     // ********************Arm Stuff**************************
 
-    //  Left Arm Up
-    new JoystickButton (m_buttonboard,OIConstants.kleftArmUpButton)
+    //  Arms up
+    new JoystickButton (m_buttonboard,OIConstants.karmsUpButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setLeftClimber(ClimberConstants.kleftArmUp),
+        () -> {
+            m_climb.setBlackArm(ClimberConstants.karmPower);
+            m_climb.setOrangeArm(ClimberConstants.karmPower);
+        },
         m_climb));
 
-    //  Left Arm Down
-    new JoystickButton (m_buttonboard,OIConstants.kleftArmDownButton)
+    //  Orange Arm Up
+    new JoystickButton (m_buttonboard,OIConstants.korangeArmUpButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setLeftClimber(ClimberConstants.kleftArmDown),
+        () -> m_climb.setOrangeArm(ClimberConstants.karmPower),
+        m_climb));
+
+     //  Orange Arm Down
+     new JoystickButton (m_buttonboard,OIConstants.korangeArmDownButton)
+     .whileTrue( 
+         new InstantCommand(
+         () -> m_climb.setOrangeArm(-ClimberConstants.karmPower),
+         m_climb));
+
+     //  Black Arm Up
+     new JoystickButton (m_buttonboard,OIConstants.kblackArmUpButton)
+     .whileTrue( 
+         new InstantCommand(
+         () -> m_climb.setBlackArm(ClimberConstants.karmPower),
+         m_climb));
+
+      //  Black Arm Down
+      new JoystickButton (m_buttonboard,OIConstants.kblackArmDownButton)
+      .whileTrue( 
+          new InstantCommand(
+          () -> m_climb.setBlackArm(-ClimberConstants.karmPower),
+          m_climb));    
+
+    //  Black Climber Up
+    new JoystickButton (m_buttonboard,OIConstants.kblackClimberUpButton)
+    .whileTrue( 
+        new InstantCommand(
+        () -> m_climb.setBlackClimber(ClimberConstants.kblackClimberUp),
+        m_climb));
+
+    //  Black Climber Down
+    new JoystickButton (m_buttonboard,OIConstants.kblackaClimberDownButton)
+    .whileTrue( 
+        new InstantCommand(
+        () -> m_climb.setBlackClimber(ClimberConstants.kblackClimberDown),
         m_climb));
   
-    //  Right Arm Up
-    new JoystickButton (m_buttonboard,OIConstants.krightArmUpButton)
+    //  Orange Climber Up
+    new JoystickButton (m_buttonboard,OIConstants.korangeClimberUpButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setRightClimber(ClimberConstants.krightArmUp),
+        () -> m_climb.setOrangeClimber(ClimberConstants.korangeClimberUp),
         m_climb));
 
-    //  Right Arm Down
-    new JoystickButton (m_buttonboard,OIConstants.krightArmDownButton)
+    //  Orange Climber Down
+    new JoystickButton (m_buttonboard,OIConstants.korangeClimberDownButton)
     .whileTrue( 
         new InstantCommand(
-        () ->    m_climb.setRightClimber(ClimberConstants.krightArmDown),
+        () ->    m_climb.setOrangeClimber(ClimberConstants.korangeClimberDown),
         m_climb));
 
     //  Zero Climber
@@ -287,14 +325,14 @@ public class RobotContainer {
         () -> m_climb.zeroClimber(),
         m_climb));
 
-        //  Arms down (for climbing)
-    new JoystickButton (m_buttonboard,OIConstants.karmsdownButton)
+    //  Climber down (for climbing)
+    new JoystickButton (m_buttonboard,OIConstants.kclimberdownButton)
     .onTrue( 
         new InstantCommand(
         () -> m_climb.climberDown(),
         m_climb));
 
-
+    
 
 
 

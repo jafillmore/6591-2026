@@ -80,17 +80,18 @@ public final class Configs {
 
     public static final class Climber {
 
-        public static final SparkMaxConfig leftclimberConfig = new SparkMaxConfig();
-        public static final SparkMaxConfig rightclimberConfig = new SparkMaxConfig();
-          
-        static {           
-        
-            leftclimberConfig
+        public static final SparkMaxConfig blackclimberConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig orangeclimberConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig blackarmConfig = new SparkMaxConfig();
+        public static final SparkMaxConfig orangearmConfig = new SparkMaxConfig();
+
+        static {        
+            blackclimberConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(false);
         
-            leftclimberConfig.closedLoop
+            blackclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
@@ -101,12 +102,12 @@ public final class Configs {
                 // longer route.
                 .positionWrappingEnabled(true);
 
-            rightclimberConfig
+            orangeclimberConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
                 .inverted(false);
                     
-            rightclimberConfig.closedLoop
+            orangeclimberConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
@@ -115,7 +116,51 @@ public final class Configs {
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(true);           
+                .positionWrappingEnabled(true);  
+                
+                // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+                 blackarmConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
+        
+            blackarmConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ClimberConstants.karmP,ClimberConstants.karmI,ClimberConstants.karmD)
+                .outputRange(-.9, .9)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(true);
+
+            orangearmConfig
+                .idleMode(IdleMode.kBrake)
+                .smartCurrentLimit(50)
+                .inverted(false);
+                    
+            orangearmConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                // These are example gains you may need to them for your own robot!
+                .pid(ClimberConstants.karmP,ClimberConstants.karmI,ClimberConstants.karmD)
+                .outputRange(-.9, .9)
+                // Enable PID wrap around for the turning motor. This will allow the PID
+                // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
+                // to 10 degrees will go through 0 rather than the other direction which is a
+                // longer route.
+                .positionWrappingEnabled(true);  
+
+
+
+
+
+
+
+
+
+                
         
         }
     }

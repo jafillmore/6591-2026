@@ -141,13 +141,17 @@ public final class Constants {
     //public static final int kL1TButton = 7;
     //public static final int kL2TButton = 8;
     //public static final int kL3TButton = 9;
-    public static final int kzeroShooterButton = 10;
-    public static final int kleftArmUpButton = 11;
-    public static final int kleftArmDownButton = 12;
+    public static final int karmsUpButton = 10;
+    public static final int kblackClimberUpButton = 11;
+    public static final int kblackaClimberDownButton = 12;
     public static final int kzeroClimberButton = 13;
-    public static final int karmsdownButton = 14;
-    public static final int krightArmUpButton = 15;
-    public static final int krightArmDownButton = 16;
+    public static final int kclimberdownButton = 14;
+    public static final int korangeClimberUpButton = 15;
+    public static final int korangeClimberDownButton = 16;
+    public static final int korangeArmUpButton = 17;
+    public static final int kblackArmUpButton = 18;
+    public static final int korangeArmDownButton = 19;
+    public static final int kblackArmDownButton = 20;
     public static final int kshooterInfoButton = 22;
     public static final int kClimberInfoButton = 23;
     public static final int kdriveInfoButton = 24; // Moved from left stick
@@ -177,22 +181,31 @@ public final class Constants {
   public static final class ClimberConstants {
 
     //  constants for thee climber subsystem
-
-    public static final int kleftClimberCANId = 14; 
-       
-    public static final int krightClimberCANId = 13; 
+    
+    public static final int korangeClimberCANId = 13; 
+    public static final int kblackClimberCANId = 14; 
+    public static final int kblackArmCANId = 15; 
+    public static final int korangeArmCANId = 16;
+    
   
     public static final double kclimberP = 0.035;
     public static final double kclimberI = 0.0;
     public static final double kclimberD = 0.001;
     public static final double kclimberFF = 0.000;
+    
+    public static final double karmP = 0.035;
+    public static final double karmI = 0.0;
+    public static final double karmD = 0.001;
+    public static final double karmFF = 0.000;
+    
+    public static final double karmPower = 15.0;
 
 
 
-    public static final double krightArmUp = 0.0;
-    public static final double krightArmDown = -40.0;
-    public static final double kleftArmUp =0.0; 
-    public static final double kleftArmDown = -40.0;
+    public static final double korangeClimberUp = 0.0;
+    public static final double korangeClimberDown = -40.0;
+    public static final double kblackClimberUp =0.0; 
+    public static final double kblackClimberDown = -40.0;
   
   }
 
