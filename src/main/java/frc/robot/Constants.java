@@ -198,7 +198,10 @@ public final class Constants {
     public static final double karmD = 0.001;
     public static final double karmFF = 0.000;
     
-    public static final double karmPower = 15.0;
+    public static final double korangeArmUp = 2.5;
+    public static final double korangeArmDown = 0;
+    public static final double kblackArmUp = 2.5;
+    public static final double kblackArmDown = 0.0;
 
 
 

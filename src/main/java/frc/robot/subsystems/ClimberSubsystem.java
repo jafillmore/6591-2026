@@ -88,16 +88,16 @@ public class ClimberSubsystem extends SubsystemBase {
     m_blackClimberClosedLoopController.setSetpoint(blackclimberPosition, ControlType.kPosition);
   }
   //
-  public void setBlackArm(Double blackarmPower) {
-    m_blackArmSpark.set(blackarmPower);
+  public void setBlackArm(Double blackarmPsn) {
+    m_blackArmClosedLoopController.setSetpoint(blackarmPsn, ControlType.kPosition);
   }
   
   public void setOrangeClimber (Double orangeclimberPosition) {
     m_orangeClimberClosedLoopController.setSetpoint(orangeclimberPosition, ControlType.kPosition);
   }
  //
-  public void setOrangeArm(Double orangearmPower) {
-    m_orangeArmSpark.set(orangearmPower);
+  public void setOrangeArm(Double orangearmPsn) {
+    m_orangeArmClosedLoopController.setSetpoint(orangearmPsn, ControlType.kPosition);
   }
  
   public void stopClimber() {
@@ -120,12 +120,12 @@ public class ClimberSubsystem extends SubsystemBase {
     stopClimber();
   }
 
-  public void climberDown() {
-    m_blackArmSpark.stopMotor();
-    m_orangeArmSpark.stopMotor();
-    m_blackClimberSpark.set(-0.05);
-    m_orangeClimberSpark.set(-0.05);
-    Timer.delay(1);
+  public void climbCombined() {
+    m_blackArmClosedLoopController.setSetpoint(ClimberConstants.kblackArmDown, ControlType.kPosition);
+    m_orangeArmClosedLoopController.setSetpoint(ClimberConstants.korangeArmDown, ControlType.kPosition);
+    m_orangeClimberClosedLoopController.setSetpoint(ClimberConstants.korangeClimberDown, ControlType.kPosition);
+    m_blackClimberClosedLoopController.setSetpoint(ClimberConstants.kblackClimberDown, ControlType.kPosition);
+    Timer.delay(1.5);
     stopClimber();
   }
 

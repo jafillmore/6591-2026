@@ -257,8 +257,8 @@ public class RobotContainer {
     .whileTrue( 
         new InstantCommand(
         () -> {
-            m_climb.setBlackArm(ClimberConstants.karmPower);
-            m_climb.setOrangeArm(ClimberConstants.karmPower);
+            m_climb.setBlackArm(ClimberConstants.kblackArmUp);
+            m_climb.setOrangeArm(ClimberConstants.korangeArmUp);
         },
         m_climb));
 
@@ -266,28 +266,28 @@ public class RobotContainer {
     new JoystickButton (m_buttonboard,OIConstants.korangeArmUpButton)
     .whileTrue( 
         new InstantCommand(
-        () -> m_climb.setOrangeArm(ClimberConstants.karmPower),
+        () -> m_climb.setOrangeArm(ClimberConstants.korangeArmUp),
         m_climb));
 
      //  Orange Arm Down
      new JoystickButton (m_buttonboard,OIConstants.korangeArmDownButton)
      .whileTrue( 
          new InstantCommand(
-         () -> m_climb.setOrangeArm(-ClimberConstants.karmPower),
+         () -> m_climb.setOrangeArm(-ClimberConstants.korangeArmDown),
          m_climb));
 
      //  Black Arm Up
      new JoystickButton (m_buttonboard,OIConstants.kblackArmUpButton)
      .whileTrue( 
          new InstantCommand(
-         () -> m_climb.setBlackArm(ClimberConstants.karmPower),
+         () -> m_climb.setBlackArm(ClimberConstants.kblackArmUp),
          m_climb));
 
       //  Black Arm Down
       new JoystickButton (m_buttonboard,OIConstants.kblackArmDownButton)
       .whileTrue( 
           new InstantCommand(
-          () -> m_climb.setBlackArm(-ClimberConstants.karmPower),
+          () -> m_climb.setBlackArm(-ClimberConstants.kblackArmDown),
           m_climb));    
 
     //  Black Climber Up
@@ -325,11 +325,11 @@ public class RobotContainer {
         () -> m_climb.zeroClimber(),
         m_climb));
 
-    //  Climber down (for climbing)
+    //  Climb! Combinded Command
     new JoystickButton (m_buttonboard,OIConstants.kclimberdownButton)
     .onTrue( 
         new InstantCommand(
-        () -> m_climb.climberDown(),
+        () -> m_climb.climbCombined(),
         m_climb));
 
     
