@@ -123,7 +123,7 @@ public final class Configs {
                  blackarmConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
-                .inverted(false);
+                .inverted(true);
         
             blackarmConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)

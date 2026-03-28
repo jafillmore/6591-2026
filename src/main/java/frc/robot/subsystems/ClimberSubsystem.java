@@ -121,8 +121,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void zeroClimber() {
     m_blackClimberSpark.set(0.04);
     m_orangeClimberSpark.set(0.04);
-    m_blackArmSpark.set(0.01);
-    m_orangeArmSpark.set(0.01);
+    m_blackArmSpark.set(0.02);
+    m_orangeArmSpark.set(0.02);
     Timer.delay(1);
     resetClimberEncoders();
     stopClimber();

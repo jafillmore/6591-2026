@@ -199,7 +199,7 @@ public final class Constants {
     public static final double kblackarmFF = 0.012;
     public static final double korangearmFF = 0.8;
     
-    public static final double korangeArmUp = 3.4;
+    public static final double korangeArmUp = 3.9;
     public static final double korangeArmDown = 0;
     public static final double kblackArmUp = 3.4;
     public static final double kblackArmDown = 0.0;
