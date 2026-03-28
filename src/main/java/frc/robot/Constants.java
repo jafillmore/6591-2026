@@ -221,6 +221,7 @@ public final class Constants {
     public static final int kshooterShooterFollowerCANId = 9; // Follower motor for the shooter, set to follow the main shooter motor
     public static final int kshooterShooterCANId = 10;
     public static final double kshooterShooterSpeed = 2500.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterAutonShootSpeed = 2750.0; // Need to determine the actual speed we want to shoot at
     public static final double kbloopShooterSpeed = 2100.0; // 
     public static final double kshooterSpeedOffset= 100; // Need to determine the actual speed we want to shoot at
    

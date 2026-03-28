@@ -54,6 +54,8 @@ public class RobotContainer {
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ClimberSubsystem m_climb = new ClimberSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final AutoFactory autoFactory;
+    
    
     private final Timer timer = new Timer();
     
@@ -71,6 +73,14 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+        autoFactory = new AutoFactory(
+           m_robotDrive::getPose, // A function that returns the current robot pose
+           m_robotDrive::resetOdometry, // A function that resets the current robot pose to the provided Pose2d
+           m_robotDrive::followTrajectory, // The drive subsystem trajectory follower 
+            false, // If alliance flipping should be enabled 
+            m_robotDrive // The drive subsystem
+        );
     
     
     // Run configuration options for Pigeon 2 navigation module
@@ -356,9 +366,9 @@ public class RobotContainer {
     AutoChooser autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addCmd("Left Center Climb", this::leftCenterClimbCommand);
-    //autoChooser.addCmd("Left Shoot n Move", this::leftShootStayCommand);
-    //autoChooser.addCmd("Right Shoot n Move", this::rightShootMoveCommand);
+    autoChooser.addCmd("Left Center Climb", this::leftMoveShootCommand);
+    //autoChooser.addCmd("Left Shoot n Move", this::centerMoveShootCommand);
+    //autoChooser.addCmd("Right Shoot n Move", this::rightMoveShootCommand);
     //autoChooser.addCmd("Right Shoot n Move", this::rightShootStayCommand);
     //autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
     //autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
@@ -400,46 +410,27 @@ public class RobotContainer {
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Command leftCenterClimbCommand() {
-        autonStatus = "Left Wall ShootnMove";
+    public Command leftMoveShootCommand() {
+        autonStatus = "Left Wall Move Then Shoot";
         SmartDashboard.putString("Attempting", autonStatus);
 
         return Commands.sequence(
-            // Set shooter speed once
             
-            new InstantCommand(
-                () -> m_shooter.setShooterSpeed(ShooterConstants.kshooterShooterSpeed),
-                m_shooter
-            ),
+          
+            autoFactory.resetOdometry("left2Shoot"), 
+            Commands.parallel(
+                autoFactory.trajectoryCmd("left2Shoot"),
+                new InstantCommand(() -> m_shooter.setShooterSpeed(ShooterConstants.kshooterAutonShootSpeed), m_shooter),
+                Commands.waitSeconds(2.0),
+                new InstantCommand(() -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
+                    m_intake)
+          
 
-
-            // Wait for shooter to spin up
-            Commands.waitSeconds(2),
-             
-            // Start intake (one-shot to set motors)
-            new InstantCommand(
-                () -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
-                m_intake
-            ),
+                
+        ));
         
-            // Wait for shots
-            Commands.waitSeconds(10.0),
-
-            // Drive forward for 1 second while intake/shooter are running
-            Commands.run(() -> m_robotDrive.drive(-0.10, 0.0, 0.0,true), m_robotDrive).withTimeout(2.5),
-
-            // Stop drive and intake when done
-            new InstantCommand(
-                () -> {
-                    m_robotDrive.drive(0.0, 0.0, 0.0,true);
-                    m_intake.setIntake(0, 0);
-
-                },
-                m_robotDrive,
-                m_intake,
-                m_shooter
-            )
-        );
+        
+       
     }/////////////////////////////////////////////////////////////////////////////////////////////
 
 
