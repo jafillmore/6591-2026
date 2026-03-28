@@ -366,7 +366,7 @@ public class RobotContainer {
     AutoChooser autoChooser = new AutoChooser();
 
     // Add options to the chooser
-    autoChooser.addCmd("Left Center Climb", this::leftMoveShootCommand);
+    autoChooser.addCmd("Left Move Shoot", this::leftMoveShootCommand);
     //autoChooser.addCmd("Left Shoot n Move", this::centerMoveShootCommand);
     //autoChooser.addCmd("Right Shoot n Move", this::rightMoveShootCommand);
     //autoChooser.addCmd("Right Shoot n Move", this::rightShootStayCommand);
@@ -419,14 +419,13 @@ public class RobotContainer {
           
             autoFactory.resetOdometry("left2Shoot"), 
             Commands.parallel(
-                autoFactory.trajectoryCmd("left2Shoot"),
+                autoFactory.trajectoryCmd("left2Shoot")   /* ,
+             
                 new InstantCommand(() -> m_shooter.setShooterSpeed(ShooterConstants.kshooterAutonShootSpeed), m_shooter),
                 Commands.waitSeconds(2.0),
                 new InstantCommand(() -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
                     m_intake)
-          
-
-                
+             */            
         ));
         
         
