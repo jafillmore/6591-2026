@@ -193,14 +193,15 @@ public final class Constants {
     public static final double kclimberD = 0.001;
     public static final double kclimberFF = 0.000;
     
-    public static final double karmP = 0.035;
+    public static final double karmP = 0.25;
     public static final double karmI = 0.0;
-    public static final double karmD = 0.001;
-    public static final double karmFF = 0.000;
+    public static final double karmD = 0.005;
+    public static final double kblackarmFF = 0.012;
+    public static final double korangearmFF = 0.8;
     
-    public static final double korangeArmUp = 2.5;
+    public static final double korangeArmUp = 3.4;
     public static final double korangeArmDown = 0;
-    public static final double kblackArmUp = 2.5;
+    public static final double kblackArmUp = 3.4;
     public static final double kblackArmDown = 0.0;
 
 
@@ -220,8 +221,8 @@ public final class Constants {
 
     public static final int kshooterShooterFollowerCANId = 9; // Follower motor for the shooter, set to follow the main shooter motor
     public static final int kshooterShooterCANId = 10;
-    public static final double kshooterShooterSpeed = 2500.0; // Need to determine the actual speed we want to shoot at
-    public static final double kshooterAutonShootSpeed = 2750.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterShooterSpeed = 2750.0; // Need to determine the actual speed we want to shoot at
+    public static final double kshooterAutonShootSpeed = 2800.0; // Need to determine the actual speed we want to shoot at
     public static final double kbloopShooterSpeed = 2100.0; // 
     public static final double kshooterSpeedOffset= 100; // Need to determine the actual speed we want to shoot at
    

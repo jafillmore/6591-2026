@@ -76,8 +76,12 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    climberDebugInfo();
+    //climberDebugInfo();
+    SmartDashboard.putNumber(  "LC Actual", m_blackClimberEncoder.getPosition());
+    SmartDashboard.putNumber(  "RC Actual", m_orangeClimberEncoder.getPosition());
+    SmartDashboard.putNumber(  "BA Actual", m_blackArmEncoder.getPosition());
+    SmartDashboard.putNumber(  "OA Actual", m_orangeArmEncoder.getPosition());
+    
   
   }
 
@@ -110,11 +114,15 @@ public class ClimberSubsystem extends SubsystemBase {
   public void resetClimberEncoders() {
     m_blackClimberEncoder.setPosition(0);
     m_orangeClimberEncoder.setPosition(0);
+    m_blackArmEncoder.setPosition(0);
+    m_orangeArmEncoder.setPosition(0);
   }
 
   public void zeroClimber() {
     m_blackClimberSpark.set(0.04);
     m_orangeClimberSpark.set(0.04);
+    m_blackArmSpark.set(0.01);
+    m_orangeArmSpark.set(0.01);
     Timer.delay(1);
     resetClimberEncoders();
     stopClimber();
@@ -139,8 +147,10 @@ public class ClimberSubsystem extends SubsystemBase {
   //  System Debug Info to display
   public void climberDebugInfo(){
     if (ClimberSystemDebug) {
-      SmartDashboard.putNumber(  "LC Actual", m_blackClimberEncoder.getPosition());
-      SmartDashboard.putNumber(  "RC Actual", m_orangeClimberEncoder.getPosition());
+      //SmartDashboard.putNumber(  "LC Actual", m_blackClimberEncoder.getPosition());
+      //SmartDashboard.putNumber(  "RC Actual", m_orangeClimberEncoder.getPosition());
+      SmartDashboard.putNumber(  "BA Actual", m_blackArmEncoder.getPosition());
+      SmartDashboard.putNumber(  "OA Actual", m_orangeArmEncoder.getPosition());
     }
   }
 

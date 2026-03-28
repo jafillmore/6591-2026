@@ -48,8 +48,8 @@ public class VisionSubsystem extends SubsystemBase {
   /** Creates a new VisionSubsystem. */
   
   public boolean targetVisible;
-  private boolean VisionSystemDebug = true;
-  private boolean AimingDebug = true;
+  private boolean VisionSystemDebug = false;
+  private boolean AimingDebug = false;
   public double targetYaw;
   private double turnError = 0.0;
   public double range = 0.0;

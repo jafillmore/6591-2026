@@ -111,30 +111,31 @@ public final class Configs {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ClimberConstants.kclimberP,ClimberConstants.kclimberI,ClimberConstants.kclimberD)
-                .outputRange(-.9, .9)
+                .outputRange(-0.12, 0.12)
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
                 .positionWrappingEnabled(true);  
                 
-                // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                  blackarmConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(50)
-                .inverted(true);
+                .inverted(false);
         
             blackarmConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ClimberConstants.karmP,ClimberConstants.karmI,ClimberConstants.karmD)
-                .outputRange(-0.03, 0.03)
-                // Enable PID wrap around for the turning motor. This will allow the PID
+                .outputRange(-0.17, 0.17)
+                .feedForward.kS(ClimberConstants.kblackarmFF);
+                // Enable PID wap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(true);
+                //.positionWrappingEnabled(true);
 
             orangearmConfig
                 .idleMode(IdleMode.kBrake)
@@ -145,12 +146,13 @@ public final class Configs {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 // These are example gains you may need to them for your own robot!
                 .pid(ClimberConstants.karmP,ClimberConstants.karmI,ClimberConstants.karmD)
-                .outputRange(-0.03, 0.03)
+                .outputRange(-0.5, 0.5)
+                .feedForward.kS(ClimberConstants.korangearmFF);
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
                 // longer route.
-                .positionWrappingEnabled(true);  
+               // .positionWrappingEnabled(false);  
 
 
 
