@@ -411,7 +411,7 @@ public class RobotContainer {
         autonStatus = "Basic Backup Command";
         SmartDashboard.putString("Attempting", autonStatus);
         return Commands.sequence(
-            Commands.run(() -> m_robotDrive.drive(-10.0,0,0,false)).withTimeout(10),
+            Commands.run(() -> m_robotDrive.drive(-10.0,0,0,false)).withTimeout(3),
             new InstantCommand(() -> m_shooter.setShooterSpeed(ShooterConstants.kshooterAutonShootSpeed), m_shooter),
             Commands.waitSeconds(2.0) .andThen(
                 new InstantCommand(() -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
