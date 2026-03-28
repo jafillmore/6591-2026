@@ -367,7 +367,7 @@ public class RobotContainer {
 
     // Add options to the chooser
     autoChooser.addCmd("Left Center Climb", this::leftMoveShootCommand);
-    //autoChooser.addCmd("Left Shoot n Move", this::centerMoveShootCommand);
+    autoChooser.addCmd("Basic", this::basicBackupCommand);
     //autoChooser.addCmd("Right Shoot n Move", this::rightMoveShootCommand);
     //autoChooser.addCmd("Right Shoot n Move", this::rightShootStayCommand);
     //autoChooser.addCmd("Center Shoot n Move", this::centerShootMoveCommand);
@@ -406,7 +406,25 @@ public class RobotContainer {
     
   }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public Command basicBackupCommand() {
+        autonStatus = "Basic Backup Command";
+        SmartDashboard.putString("Attempting", autonStatus);
+        return Commands.sequence(
+            
+            Commands.run(() -> m_robotDrive.drive(-1.0,0,0,true)).withTimeout(1),
+            new InstantCommand(() -> m_shooter.setShooterSpeed(ShooterConstants.kshooterAutonShootSpeed), m_shooter),
+            Commands.waitSeconds(2.0) .andThen(
+                new InstantCommand(() -> m_intake.setIntake(IntakeConstants.klowerIntakeShootPower, IntakeConstants.kupperIntakeShootPower),
+                    m_intake))
 
+            //Commands.waitSeconds(5),
+            //Commands.runOnce(() -> m_robotDrive.drive(0, 0, 0, true)).withTimeout(2)
+        );
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
